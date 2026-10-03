@@ -354,24 +354,6 @@ Converts a 2D vector into its angle in radians.
 
 - Radians `Float`: Angle of the vector in radians
 
-### A3D_Wiggle
-
-**Description**
-
-Applies a physics-driven jiggle to a mesh using the motion of the object.
-
-**Inputs**
-
-- Geometry `Geometry`: The mesh to apply the wiggle to
-- Influence `Float`: Per-point strength of the wobble
-- Damping `Float`: How quickly the oscillation dies out
-- Frequency `Float`: How fast the mesh oscillates, in Hz
-- Gravity `Vector`: Constant acceleration in world space
-
-**Outputs**
-
-- Geometry `Geometry`: The input geometry with the simulated wobble applied to its point positions.
-
 ## Geometry Generation & Distribution
 
 ### A3D_Dodecahedron
@@ -2245,6 +2227,24 @@ Derives and writes a per-point velocity attribute across simulation steps, with 
 
 - Geometry `Geometry`: Geometry with the updated velocity
 - Velocity `Vector`: Simulated velocity of each element
+
+### A3D_Wiggle
+
+**Description**
+
+Applies a physics-driven jiggle to a mesh using the motion of the object.
+
+**Inputs**
+
+- Geometry `Geometry`: The mesh to apply the wiggle to
+- Influence `Float`: Per-point strength of the wobble
+- Damping `Float`: How quickly the oscillation dies out
+- Frequency `Float`: How fast the mesh oscillates, in Hz
+- Gravity `Vector`: Constant acceleration in world space
+
+**Outputs**
+
+- Geometry `Geometry`: The input geometry with the simulated wobble applied to its point positions.
 
 ### A3D_XPBD Solver
 
