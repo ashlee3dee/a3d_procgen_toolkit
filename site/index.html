@@ -1,0 +1,2053 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A3D Procgen Toolkit - Node Reference</title>
+<style>
+body{margin:0;font:16px/1.6 system-ui,sans-serif;color:#222}
+nav{width:260px;height:100vh;overflow:auto;position:sticky;top:0;padding:1rem;background:#f4f4f6;box-sizing:border-box}
+nav input{width:100%;padding:.4rem;box-sizing:border-box;margin-bottom:.5rem}
+nav a{display:block;padding:.15rem 0;color:#333;text-decoration:none;font-size:14px}
+nav a:hover{text-decoration:underline}
+main{max-width:800px;padding:1rem 2rem;flex:1}
+h3{margin-top:2.5rem;border-bottom:1px solid #ddd;padding-bottom:.2rem}
+code{background:#eee;padding:0 .25em;border-radius:3px}
+@media(max-width:700px){.wrap{display:block}nav{width:auto;height:auto;position:static}}
+</style></head><body>
+<nav><input id="q" placeholder="Filter nodes..." aria-label="Filter nodes"><a href="#a3d_abn">A3D_(A⊙B)ⁿ</a><a href="#a3d_2d-line-cut">A3D_2D Line Cut</a><a href="#a3d_2d-navier-stokes-solver">A3D_2D Navier Stokes Solver</a><a href="#a3d_2d-shape-cut">A3D_2D Shape Cut</a><a href="#a3d_3x3-polar-decomposition">A3D_3x3 Polar Decomposition</a><a href="#a3d_active-camera-transform">A3D_Active Camera Transform</a><a href="#a3d_age-cull">A3D_Age Cull</a><a href="#a3d_age-initialize">A3D_Age Initialize</a><a href="#a3d_age-update">A3D_Age Update</a><a href="#a3d_angle-between-vectors">A3D_Angle Between Vectors</a><a href="#a3d_angle-to-vector">A3D_Angle to Vector</a><a href="#a3d_axis-alignment">A3D_Axis Alignment</a><a href="#a3d_axis-picker">A3D_Axis Picker</a><a href="#a3d_anbn">A3D_Aⁿ⊙Bⁿ</a><a href="#a3d_ballistic-arc">A3D_Ballistic Arc</a><a href="#a3d_bell-curve">A3D_Bell Curve</a><a href="#a3d_boolean-grid-check">A3D_Boolean Grid Check</a><a href="#a3d_bounce-reflect">A3D_Bounce Reflect</a><a href="#a3d_camera-cull">A3D_Camera Cull</a><a href="#a3d_camera-fov">A3D_Camera FOV</a><a href="#a3d_catenary-curve">A3D_Catenary Curve</a><a href="#a3d_cell-fracture">A3D_Cell Fracture</a><a href="#a3d_circumcircle-test">A3D_Circumcircle Test</a><a href="#a3d_clamp-vector">A3D_Clamp Vector</a><a href="#a3d_conform-to-surface">A3D_Conform To Surface</a><a href="#a3d_coordinate-of-grid-index">A3D_Coordinate of Grid Index</a><a href="#a3d_cotangent">A3D_Cotangent</a><a href="#a3d_debug-vectors">A3D_Debug Vectors</a><a href="#a3d_deform-to-uv-surface">A3D_Deform To UV Surface</a><a href="#a3d_delaunay-triangulation">A3D_Delaunay Triangulation</a><a href="#a3d_derivative">A3D_Derivative</a><a href="#a3d_derive-velocity">A3D_Derive Velocity</a><a href="#a3d_direction-on-surface">A3D_Direction On Surface</a><a href="#a3d_distance-from-axis">A3D_Distance From Axis</a><a href="#a3d_distance-from-plane">A3D_Distance From Plane</a><a href="#a3d_distance-to-boundary">A3D_Distance to Boundary</a><a href="#a3d_dodecahedron">A3D_Dodecahedron</a><a href="#a3d_domain-index">A3D_Domain Index</a><a href="#a3d_edge-array">A3D_Edge Array</a><a href="#a3d_edge-info">A3D_Edge Info</a><a href="#a3d_expand-selection">A3D_Expand Selection</a><a href="#a3d_extended-camera-info">A3D_Extended Camera Info</a><a href="#a3d_extended-vertex-neighbors">A3D_Extended Vertex Neighbors</a><a href="#a3d_face-corner-info">A3D_Face Corner Info</a><a href="#a3d_face-winding-direction">A3D_Face Winding Direction</a><a href="#a3d_fermat-spiral">A3D_Fermat Spiral</a><a href="#a3d_gaussian-curvature">A3D_Gaussian Curvature</a><a href="#a3d_geometry-motion-path">A3D_Geometry Motion Path</a><a href="#a3d_golden-ratio">A3D_Golden Ratio</a><a href="#a3d_grid-float-neighbors-2d">A3D_Grid Float Neighbors 2D</a><a href="#a3d_grid-integer-neighbors-2d">A3D_Grid Integer Neighbors 2D</a><a href="#a3d_grid-laplacian-2d">A3D_Grid Laplacian 2D</a><a href="#a3d_grid-selection-kernel-2d">A3D_Grid Selection Kernel 2D</a><a href="#a3d_grid-vector-neighbors-2d">A3D_Grid Vector Neighbors 2D</a><a href="#a3d_ground-impact-solve">A3D_Ground Impact Solve</a><a href="#a3d_grow-on-surface">A3D_Grow on Surface</a><a href="#a3d_harmonic-field">A3D_Harmonic Field</a><a href="#a3d_helix">A3D_Helix</a><a href="#a3d_ik-solver">A3D_IK Solver</a><a href="#a3d_index-of-grid-coordinate">A3D_Index of Grid Coordinate</a><a href="#a3d_inset-faces">A3D_Inset Faces</a><a href="#a3d_inside-bbox">A3D_Inside BBox</a><a href="#a3d_inside-frustum">A3D_Inside Frustum</a><a href="#a3d_inside-frustum-legacy">A3D_Inside Frustum (Legacy)</a><a href="#a3d_inside-prism">A3D_Inside Prism</a><a href="#a3d_inside-quad-face">A3D_Inside Quad Face</a><a href="#a3d_inside-rectangle">A3D_Inside Rectangle</a><a href="#a3d_instance-info">A3D_Instance Info</a><a href="#a3d_instance-info-legacy">A3D_Instance Info (Legacy)</a><a href="#a3d_instance-matrix">A3D_Instance Matrix</a><a href="#a3d_instance-on-faces">A3D_Instance on Faces</a><a href="#a3d_integer-clamp">A3D_Integer Clamp</a><a href="#a3d_laplacian">A3D_Laplacian</a><a href="#a3d_largest-island">A3D_Largest Island</a><a href="#a3d_line-intersect">A3D_Line Intersect</a><a href="#a3d_line-intersect-point">A3D_Line Intersect Point</a><a href="#a3d_line-line-intersection">A3D_Line-Line Intersection</a><a href="#a3d_looping-coordinates">A3D_Looping Coordinates</a><a href="#a3d_make-curve-acyclic">A3D_Make Curve Acyclic</a><a href="#a3d_merge-by-distance">A3D_Merge by Distance</a><a href="#a3d_mesh-to-lattice">A3D_Mesh to Lattice</a><a href="#a3d_midpoint-range-to-min-max">A3D_Midpoint Range to Min Max</a><a href="#a3d_mirror">A3D_Mirror</a><a href="#a3d_multivariate-newton-solver">A3D_Multivariate Newton Solver</a><a href="#a3d_n-nearest-neighbors">A3D_N Nearest Neighbors</a><a href="#a3d_nearest-point-info">A3D_Nearest Point Info</a><a href="#a3d_neighbors-of-vertex">A3D_Neighbors of Vertex</a><a href="#a3d_node-name">A3D_Node Name</a><a href="#a3d_noodle">A3D_Noodle</a><a href="#a3d_normalize-field">A3D_Normalize Field</a><a href="#a3d_object-motion-path">A3D_Object Motion Path</a><a href="#a3d_octree">A3D_Octree</a><a href="#a3d_opposite-corner-of-triangle-adjacent-to-edge">A3D_Opposite Corner of Triangle Adjacent to Edge</a><a href="#a3d_pack-curves">A3D_Pack Curves</a><a href="#a3d_particle-tracking">A3D_Particle Tracking</a><a href="#a3d_patch-mesh">A3D_Patch Mesh</a><a href="#a3d_pbd-solver-repeat">A3D_PBD Solver Repeat</a><a href="#a3d_plane-normal">A3D_Plane Normal</a><a href="#a3d_plexus">A3D_Plexus</a><a href="#a3d_point-slope-line">A3D_Point Slope Line</a><a href="#a3d_poke-faces">A3D_Poke Faces</a><a href="#a3d_poke-triangle">A3D_Poke Triangle</a><a href="#a3d_position-components">A3D_Position Components</a><a href="#a3d_project-to-plane">A3D_Project To Plane</a><a href="#a3d_quad-corners">A3D_Quad Corners</a><a href="#a3d_quad-sphere">A3D_Quad Sphere</a><a href="#a3d_quad-tangent">A3D_Quad Tangent</a><a href="#a3d_random-point-in-shell">A3D_Random Point In Shell</a><a href="#a3d_random-triangulate">A3D_Random Triangulate</a><a href="#a3d_random-xyz">A3D_Random XY+Z</a><a href="#a3d_roll-curve">A3D_Roll Curve</a><a href="#a3d_scatter-points">A3D_Scatter Points</a><a href="#a3d_seam-distance">A3D_Seam Distance</a><a href="#a3d_set-position-by-attribute">A3D_Set Position by Attribute</a><a href="#a3d_smooth-curve">A3D_Smooth Curve</a><a href="#a3d_solve-xpbd-edge-constraints">A3D_Solve XPBD Edge Constraints</a><a href="#a3d_sphere-collision">A3D_Sphere Collision</a><a href="#a3d_split-quad">A3D_Split Quad</a><a href="#a3d_split-to-instances">A3D_Split to Instances</a><a href="#a3d_split-to-instances_edge">A3D_Split to Instances_Edge</a><a href="#a3d_split-to-instances_face">A3D_Split to Instances_Face</a><a href="#a3d_split-to-instances_instance">A3D_Split to Instances_Instance</a><a href="#a3d_split-to-instances_point">A3D_Split to Instances_Point</a><a href="#a3d_split-to-instances_spline">A3D_Split to Instances_Spline</a><a href="#a3d_surface-gradient">A3D_Surface Gradient</a><a href="#a3d_surface-normal">A3D_Surface Normal</a><a href="#a3d_sweep-curve">A3D_Sweep Curve</a><a href="#a3d_tetrahedron">A3D_Tetrahedron</a><a href="#a3d_tetrahedron-volume">A3D_Tetrahedron Volume</a><a href="#a3d_univariate-newton-solver">A3D_Univariate Newton Solver</a><a href="#a3d_uv-mapped-strip">A3D_UV Mapped Strip</a><a href="#a3d_uv-unwrap">A3D_UV Unwrap</a><a href="#a3d_vector-to-angle">A3D_Vector to Angle</a><a href="#a3d_velocity-simulation">A3D_Velocity Simulation</a><a href="#a3d_view-transform">A3D_View Transform</a><a href="#a3d_volume-of-mesh">A3D_Volume of Mesh</a><a href="#a3d_wiggle">A3D_Wiggle</a><a href="#a3d_xpbd-solver">A3D_XPBD Solver</a><a href="#a3d_xpbd-solver-step">A3D_XPBD Solver Step</a></nav>
+<main><h1>A3D Procgen Toolkit - Node Reference</h1><h3 id="a3d_abn">A3D_(A⊙B)ⁿ</h3>
+<p class="sec sec-Description">Description</p>
+<p>Applies a selectable math operation to two values, then raises the result to a given exponent.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Operation <code class="s s-Menu">Menu</code> — Type of operation to perform</li>
+<li>A <code class="s s-Float">Float</code> — First operand</li>
+<li>B <code class="s s-Float">Float</code> — Second operand</li>
+<li>Exponent <code class="s s-Float">Float</code> — Power the result is raised to</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Value <code class="s s-Float">Float</code> — Result of the operation raised to the exponent</li>
+</ul>
+<h3 id="a3d_2d-line-cut">A3D_2D Line Cut</h3>
+<p class="sec sec-Description">Description</p>
+<p>Cuts a body mesh against a tool mesh's edges along a shared plane, returning the resulting mesh along with intersection status and position for each intersected element.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Body Mesh <code class="s s-Geometry">Geometry</code> — Geometry to split</li>
+<li>Tool Mesh <code class="s s-Geometry">Geometry</code> — Geometry that will perform the cut</li>
+<li>Selection <code class="s s-Boolean">Boolean</code> — Which edges in body geometry to cut</li>
+<li>Cut Body <code class="s s-Boolean">Boolean</code> — Insert new edge (cut)</li>
+<li>Tool Index <code class="s s-Integer">Integer</code> — Index of edge in tool body to be used</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Mesh <code class="s s-Geometry">Geometry</code> — Body mesh with the cut applied</li>
+<li>Intersected <code class="s s-Boolean">Boolean</code> — True where the tool edge intersects the body</li>
+<li>Position <code class="s s-Vector">Vector</code> — Position of the intersection</li>
+</ul>
+<h3 id="a3d_2d-navier-stokes-solver">A3D_2D Navier Stokes Solver</h3>
+<p class="sec sec-Description">Description</p>
+<p>A 2D fluid solver operating on a grid, advecting velocity, pressure, density, and color fields with configurable damping and external force/collision input, for smoke and liquid style simulations.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Geometry <code class="s s-Geometry">Geometry</code> — Grid geometry the simulation runs on</li>
+<li>Resolution <code class="s s-Integer">Integer</code> — Number of vertices in the X direction</li>
+<li>Scale <code class="s s-Float">Float</code> — Scale of the simulation grid</li>
+<li>Damping <code class="s s-Float">Float</code> — Amount the velocity is damped each step</li>
+<li>Velocity <code class="s s-Vector">Vector</code> — Velocity field of the fluid</li>
+<li>Pressure <code class="s s-Float">Float</code> — Pressure field of the fluid</li>
+<li>Density <code class="s s-Float">Float</code> — Density field of the fluid</li>
+<li>Color <code class="s s-Color">Color</code> — Color field carried along by the fluid</li>
+<li>External <code class="s s-Boolean">Boolean</code> — Enable interaction with an external object</li>
+<li>External Object <code class="s s-Object">Object</code> — Object that interacts with the fluid</li>
+<li>External Dampening <code class="s s-Float">Float</code> — How much to damp the velocity</li>
+<li>External Collision Proximity <code class="s s-Float">Float</code> — Distance within which the external object affects the fluid</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Geometry <code class="s s-Geometry">Geometry</code> — Grid geometry with the updated simulation fields</li>
+</ul>
+<h3 id="a3d_2d-shape-cut">A3D_2D Shape Cut</h3>
+<p class="sec sec-Description">Description</p>
+<p>Cuts a body mesh using an arbitrary 2D tool mesh as the cutting shape, returning the cut mesh, intersection status, and intersection positions.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Cut Body <code class="s s-Boolean">Boolean</code> — Insert vertex (cut) geometry</li>
+<li>Body Mesh <code class="s s-Geometry">Geometry</code> — Geometry to be cut</li>
+<li>Body Selection <code class="s s-Boolean">Boolean</code> — Limit affected edges</li>
+<li>Tool Mesh <code class="s s-Geometry">Geometry</code> — Cutting geometry</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Mesh <code class="s s-Geometry">Geometry</code> — Body mesh with the cut applied</li>
+<li>Intersected <code class="s s-Boolean">Boolean</code> — True where the tool mesh intersects the body</li>
+<li>Intersection Position <code class="s s-Vector">Vector</code> — Position of the intersection</li>
+</ul>
+<h3 id="a3d_3x3-polar-decomposition">A3D_3x3 Polar Decomposition</h3>
+<p class="sec sec-Description">Description</p>
+<p>Decomposes a 3x3 matrix, given as three column vectors, into a rotation and a stretch component using iterative refinement.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Column 1 <code class="s s-Vector">Vector</code> — First column of the 3x3 matrix</li>
+<li>Column 2 <code class="s s-Vector">Vector</code> — Second column of the 3x3 matrix</li>
+<li>Column 3 <code class="s s-Vector">Vector</code> — Third column of the 3x3 matrix</li>
+<li>Initial Guess <code class="s s-Rotation">Rotation</code> — Starting rotation estimate for the iteration</li>
+<li>Iterations <code class="s s-Integer">Integer</code> — Number of refinement iterations</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Rotation <code class="s s-Rotation">Rotation</code> — Rotation component of the decomposition</li>
+<li>Stretch <code class="s s-Vector">Vector</code> — Stretch component of the decomposition</li>
+</ul>
+<h3 id="a3d_active-camera-transform">A3D_Active Camera Transform</h3>
+<p class="sec sec-Description">Description</p>
+<p>Returns the transform (and separately, location/rotation/scale) of the scene's active camera, with a mode switch for which representation to output.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Mode <code class="s s-Menu">Menu</code> — Which representation of the transform to output</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Transform <code class="s s-Matrix">Matrix</code> — Transformation matrix containing the location, rotation and scale of the camera</li>
+<li>Location <code class="s s-Vector">Vector</code> — Location of the active camera</li>
+<li>Rotation <code class="s s-Rotation">Rotation</code> — Rotation of the active camera</li>
+<li>Scale <code class="s s-Vector">Vector</code> — Scale of the active camera</li>
+</ul>
+<h3 id="a3d_age-cull">A3D_Age Cull</h3>
+<p class="sec sec-Description">Description</p>
+<p>Deletes Geometry on the selected Domain when <code>age</code> is greater than or equal to <code>max_age</code>. Used with other Age* nodes.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Geometry <code class="s s-Geometry">Geometry</code> — Geometry to remove expired elements from</li>
+<li>Selection <code class="s s-Boolean">Boolean</code> — Elements that can be culled</li>
+<li>Domain <code class="s s-Menu">Menu</code> — Domain to cull on</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Geometry <code class="s s-Geometry">Geometry</code> — Geometry with expired elements removed</li>
+</ul>
+<h3 id="a3d_age-initialize">A3D_Age Initialize</h3>
+<p class="sec sec-Description">Description</p>
+<p>Write the attribute <code>max_age</code> on the selected Domain. Used with other Age* nodes.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Geometry <code class="s s-Geometry">Geometry</code> — Geometry to store the max_age attribute on</li>
+<li>Selection <code class="s s-Boolean">Boolean</code> — Elements to initialize</li>
+<li>Domain <code class="s s-Menu">Menu</code> — Domain to store max_age on</li>
+<li>Max Age <code class="s s-Float">Float</code> — Age at which an element is considered expired</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Geometry <code class="s s-Geometry">Geometry</code> — Geometry with the max_age attribute stored</li>
+</ul>
+<h3 id="a3d_age-update">A3D_Age Update</h3>
+<p class="sec sec-Description">Description</p>
+<p>Increments the attribute <code>age</code> by input <code>Delta Time</code> on the selected Domain. Used with other Age* nodes.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Geometry <code class="s s-Geometry">Geometry</code> — Geometry to update the age attribute on</li>
+<li>Selection <code class="s s-Boolean">Boolean</code> — Elements to age</li>
+<li>Delta Time <code class="s s-Float">Float</code> — Amount of time added to age</li>
+<li>Domain <code class="s s-Menu">Menu</code> — Domain the age attribute is stored on</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Geometry <code class="s s-Geometry">Geometry</code> — Geometry with the age attribute updated</li>
+</ul>
+<h3 id="a3d_angle-between-vectors">A3D_Angle Between Vectors</h3>
+<p class="sec sec-Description">Description</p>
+<p>Computes the angle in radians between two input vectors.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Vector A <code class="s s-Vector">Vector</code> — First vector</li>
+<li>Vector B <code class="s s-Vector">Vector</code> — Second vector</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Radians <code class="s s-Float">Float</code> — Angle between the vectors in radians</li>
+</ul>
+<h3 id="a3d_angle-to-vector">A3D_Angle to Vector</h3>
+<p class="sec sec-Description">Description</p>
+<p>Converts a 2D angle (radians) into a unit direction vector.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Angle <code class="s s-Float">Float</code> — Angle in radians</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Vector <code class="s s-Vector">Vector</code> — Unit direction vector for the angle</li>
+</ul>
+<h3 id="a3d_axis-alignment">A3D_Axis Alignment</h3>
+<p class="sec sec-Description">Description</p>
+<p>Determines which world axis (X, Y, or Z) a given vector is most closely aligned to, within an epsilon tolerance, and outputs boolean results per axis.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Vector <code class="s s-Vector">Vector</code> — Direction Vector</li>
+<li>Epsilon <code class="s s-Float">Float</code> — Comparison threshold</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>X <code class="s s-Boolean">Boolean</code> — Aligned to X Axis</li>
+<li>Y <code class="s s-Boolean">Boolean</code> — Aligned to Y Axis</li>
+<li>Z <code class="s s-Boolean">Boolean</code> — Aligned to Z Axis</li>
+</ul>
+<h3 id="a3d_axis-picker">A3D_Axis Picker</h3>
+<p class="sec sec-Description">Description</p>
+<p>A menu-driven axis picker that outputs a unit vector for the selected X, Y, or Z axis, with an invert option.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Axis <code class="s s-Menu">Menu</code> — Direction to Return</li>
+<li>Invert <code class="s s-Boolean">Boolean</code> — Flip the direction of the returned axis</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Vector <code class="s s-Vector">Vector</code> — Direction unit vector</li>
+</ul>
+<h3 id="a3d_anbn">A3D_Aⁿ⊙Bⁿ</h3>
+<p class="sec sec-Description">Description</p>
+<p>Raises inputs A and B to a given exponent before combining them with a selectable math operation.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Operation <code class="s s-Menu">Menu</code> — Type of operation to perform</li>
+<li>A <code class="s s-Float">Float</code> — First operand, raised to the exponent</li>
+<li>B <code class="s s-Float">Float</code> — Second operand, raised to the exponent</li>
+<li>Exponent <code class="s s-Float">Float</code> — Power A and B are raised to</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Value <code class="s s-Float">Float</code> — Result of the operation</li>
+</ul>
+<h3 id="a3d_ballistic-arc">A3D_Ballistic Arc</h3>
+<p class="sec sec-Description">Description</p>
+<p>Computes the position and velocity of a point along a ballistic (projectile) trajectory at a given time, from an initial position, initial velocity, and gravity vector.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Initial Position <code class="s s-Vector">Vector</code> — Position at launch</li>
+<li>Initial Velocity <code class="s s-Vector">Vector</code> — Velocity at launch</li>
+<li>Gravity <code class="s s-Vector">Vector</code> — Gravity acceleration vector</li>
+<li>Time <code class="s s-Float">Float</code> — Time elapsed since launch</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Position <code class="s s-Vector">Vector</code> — Position at the given time</li>
+<li>Velocity <code class="s s-Vector">Vector</code> — Velocity at the given time</li>
+</ul>
+<h3 id="a3d_bell-curve">A3D_Bell Curve</h3>
+<p class="sec sec-Description">Description</p>
+<p>Evaluates a Gaussian (normal distribution) bell curve for an input value, given a mean and standard deviation.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Value <code class="s s-Float">Float</code> — Value to evaluate the curve at</li>
+<li>Mean <code class="s s-Float">Float</code> — Center (peak) of the curve</li>
+<li>Standard Deviation <code class="s s-Float">Float</code> — Width of the curve</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Value <code class="s s-Float">Float</code> — Height of the curve at the input value</li>
+</ul>
+<h3 id="a3d_boolean-grid-check">A3D_Boolean Grid Check</h3>
+<p class="sec sec-Description">Description</p>
+<p>Tests a boolean value against a rectangular sub-region (width/height) of a resolution-addressed grid at a given index.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Index <code class="s s-Integer">Integer</code> — Index of the grid cell the sub-region is positioned at</li>
+<li>Width <code class="s s-Integer">Integer</code> — Width of the sub-region in grid cells</li>
+<li>Height <code class="s s-Integer">Integer</code> — Height of the sub-region in grid cells</li>
+<li>Boolean <code class="s s-Boolean">Boolean</code> — Boolean value to test</li>
+<li>Resolution <code class="s s-Integer">Integer</code> — Resolution of the grid</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Boolean <code class="s s-Boolean">Boolean</code> — Result of the test over the sub-region</li>
+</ul>
+<h3 id="a3d_bounce-reflect">A3D_Bounce Reflect</h3>
+<p class="sec sec-Description">Description</p>
+<p>Reflects an incoming velocity off a plane defined by a normal, with restitution controlling bounce energy retention and friction damping the tangential component.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Incoming Velocity <code class="s s-Vector">Vector</code> — Velocity before the bounce</li>
+<li>Plane Normal <code class="s s-Vector">Vector</code> — Normal of the surface being bounced off</li>
+<li>Restitution <code class="s s-Float">Float</code> — Fraction of energy kept after the bounce</li>
+<li>Friction <code class="s s-Float">Float</code> — Damping applied to the tangential component</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Reflected Velocity <code class="s s-Vector">Vector</code> — Velocity after the bounce</li>
+</ul>
+<h3 id="a3d_camera-cull">A3D_Camera Cull</h3>
+<p class="sec sec-Description">Description</p>
+<p>Removes or masks geometry that falls outside a camera's view frustum, with padding and a minimum-distance cutoff, useful for render-time optimization.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Geometry <code class="s s-Geometry">Geometry</code> — Geometry to cull</li>
+<li>Source <code class="s s-Menu">Menu</code> — Where the camera comes from</li>
+<li>Camera <code class="s s-Object">Object</code> — Camera object to cull against</li>
+<li>Domain <code class="s s-Menu">Menu</code> — Which type of element to Cull</li>
+<li>Padding <code class="s s-Float">Float</code> — Extend bounds of frustum beyond edge of screen</li>
+<li>Min Distance <code class="s s-Float">Float</code> — Minimum distance after which to begin culling</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Geometry <code class="s s-Geometry">Geometry</code> — Geometry with out-of-view elements removed</li>
+</ul>
+<h3 id="a3d_camera-fov">A3D_Camera FOV</h3>
+<p class="sec sec-Description">Description</p>
+<p>Returns the horizontal and vertical field of view of a camera, optionally defaulting to the active scene camera.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Use Active <code class="s s-Boolean">Boolean</code> — Use the active scene camera</li>
+<li>Camera <code class="s s-Object">Object</code> — Camera object to read the field of view from</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Horizontal FOV <code class="s s-Float">Float</code> — Horizontal field of view of the camera</li>
+<li>Vertical FOV <code class="s s-Float">Float</code> — Vertical field of view of the camera</li>
+</ul>
+<h3 id="a3d_catenary-curve">A3D_Catenary Curve</h3>
+<p class="sec sec-Description">Description</p>
+<p>Relaxes a curve's selected control points into a catenary (hanging-chain) shape based on a stiffness parameter. Useful for cables, ropes, and chains.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Curve <code class="s s-Geometry">Geometry</code> — Curve to relax into a catenary shape</li>
+<li>Selection <code class="s s-Boolean">Boolean</code> — Control points to affect</li>
+<li>Stiffness <code class="s s-Float">Float</code> — How rigid the hanging shape is</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Curve <code class="s s-Geometry">Geometry</code> — Curve with a catenary shape</li>
+</ul>
+<h3 id="a3d_cell-fracture">A3D_Cell Fracture</h3>
+<p class="sec sec-Description">Description</p>
+<p>Fractures input geometry into a set of instanced cell pieces using Voronoi-style cell partitioning, with controls for fracture scale/detail/gap, remeshing, and edge-wear seeding.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Geometry <code class="s s-Geometry">Geometry</code> — Geometry to fracture</li>
+<li>Fracture Scale <code class="s s-Float">Float</code> — Scale of Voronoi noise</li>
+<li>Fracture Detail <code class="s s-Float">Float</code> — The scale of a Voronoi layer relative to that of the previous layer</li>
+<li>Fracture Gap <code class="s s-Float">Float</code> — Spacing between cells</li>
+<li>Seed <code class="s s-Integer">Integer</code> — Random seed for the fracture pattern</li>
+<li>Remesh Mode <code class="s s-Menu">Menu</code> — How the geometry is remeshed before fracturing</li>
+<li>Remesh Voxel Size <code class="s s-Float">Float</code> — Size of the voxels used when remeshing</li>
+<li>Remesh Accuracy <code class="s s-Integer">Integer</code> — Accuracy of the remesh</li>
+<li>Edge Wear Seed <code class="s s-Integer">Integer</code> — Random seed for the edge wear pattern</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Instances <code class="s s-Geometry">Geometry</code> — Fractured pieces as instances</li>
+</ul>
+<h3 id="a3d_circumcircle-test">A3D_Circumcircle Test</h3>
+<p class="sec sec-Description">Description</p>
+<p>Determines whether a test point lies inside, on, or outside the circumcircle defined by three points.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Test Against <code class="s s-Menu">Menu</code> — Field method for circle origins</li>
+<li>Position <code class="s s-Vector">Vector</code> — Point to test</li>
+<li>Point A <code class="s s-Vector">Vector</code> — First triangle point</li>
+<li>Point B <code class="s s-Vector">Vector</code> — Second triangle point</li>
+<li>Point C <code class="s s-Vector">Vector</code> — Third triangle point</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Determinant <code class="s s-Float">Float</code> — Sign shows whether the point is inside, on, or outside the circumcircle</li>
+</ul>
+<h3 id="a3d_clamp-vector">A3D_Clamp Vector</h3>
+<p class="sec sec-Description">Description</p>
+<p>Clamps each component of a vector independently between corresponding min and max vectors.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Vector <code class="s s-Vector">Vector</code> — Vector to clamp</li>
+<li>Min <code class="s s-Vector">Vector</code> — Per-component minimum</li>
+<li>Max <code class="s s-Vector">Vector</code> — Per-component maximum</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Vector <code class="s s-Vector">Vector</code> — Clamped vector</li>
+</ul>
+<h3 id="a3d_conform-to-surface">A3D_Conform To Surface</h3>
+<p class="sec sec-Description">Description</p>
+<p>Snaps or projects a mesh's selected vertices onto a target surface mesh within a snapping distance, with an additional surface offset.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Mesh <code class="s s-Geometry">Geometry</code> — Mesh to snap</li>
+<li>Selection <code class="s s-Boolean">Boolean</code> — Vertices to snap</li>
+<li>Surface Mesh <code class="s s-Geometry">Geometry</code> — Surface to snap to</li>
+<li>Snapping Distance <code class="s s-Float">Float</code> — Maximum distance to search for the surface</li>
+<li>Surface Offset <code class="s s-Float">Float</code> — Offset from the surface after snapping</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Mesh <code class="s s-Geometry">Geometry</code> — Mesh with vertices snapped to the surface</li>
+</ul>
+<h3 id="a3d_coordinate-of-grid-index">A3D_Coordinate of Grid Index</h3>
+<p class="sec sec-Description">Description</p>
+<p>Converts a flat grid index into 2D (X, Y) coordinates for a grid of a given resolution. The inverse of Index of Grid Coordinate.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Resolution <code class="s s-Integer">Integer</code> — Resolution of the grid</li>
+<li>Index <code class="s s-Integer">Integer</code> — Flat index into the grid</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>X <code class="s s-Integer">Integer</code> — X coordinate in the grid</li>
+<li>Y <code class="s s-Integer">Integer</code> — Y coordinate in the grid</li>
+</ul>
+<h3 id="a3d_cotangent">A3D_Cotangent</h3>
+<p class="sec sec-Description">Description</p>
+<p>Computes the cotangent of an angle in radians.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Value <code class="s s-Float">Float</code> — Angle in radians</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Value <code class="s s-Float">Float</code> — Cotangent of the angle</li>
+</ul>
+<h3 id="a3d_debug-vectors">A3D_Debug Vectors</h3>
+<p class="sec sec-Description">Description</p>
+<p>Generates arrow-like geometry that visualizes vectors, for debugging vector data.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Geometry <code class="s s-Geometry">Geometry</code> — Points to draw the vectors at</li>
+<li>Vertices <code class="s s-Integer">Integer</code> — The number of vertices on the top and bottom circles</li>
+<li>Vector <code class="s s-Vector">Vector</code> — Vector to visualize</li>
+<li>Length <code class="s s-Float">Float</code> — Length of the arrows</li>
+<li>Radius <code class="s s-Float">Float</code> — Radius of the arrows</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Geometry <code class="s s-Geometry">Geometry</code> — Generated debug arrow geometry</li>
+</ul>
+<h3 id="a3d_deform-to-uv-surface">A3D_Deform To UV Surface</h3>
+<p class="sec sec-Description">Description</p>
+<p>Deforms a mesh to conform to a target surface using a UV-space transfer map, with an optional debug output for visualizing the mapping. Input Mesh be placed within a +1 unit bounding box on the XY plane.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Mesh <code class="s s-Geometry">Geometry</code> — Surface to deform</li>
+<li>Transfer Surface <code class="s s-Object">Object</code> — Surface to transfer to</li>
+<li>Transfer Map <code class="s s-String">String</code> — Name of the UV transfer map to use</li>
+<li>Debug <code class="s s-Boolean">Boolean</code> — Show UV Space Geometry</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Mesh <code class="s s-Geometry">Geometry</code> — Mesh deformed onto the target surface</li>
+</ul>
+<h3 id="a3d_delaunay-triangulation">A3D_Delaunay Triangulation</h3>
+<p class="sec sec-Description">Description</p>
+<p>Builds a Delaunay triangulation over the input geometry's points, with controls for minimum spacing, density falloff, boundary preservation, and inset.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Geometry <code class="s s-Geometry">Geometry</code> — Points to triangulate</li>
+<li>Distance Min <code class="s s-Float">Float</code> — Minimum spacing between points</li>
+<li>Density Max <code class="s s-Float">Float</code> — Maximum point density</li>
+<li>Density Factor <code class="s s-Float">Float</code> — How quickly density falls off</li>
+<li>Seed <code class="s s-Integer">Integer</code> — Random seed</li>
+<li>Keep Boundaries <code class="s s-Boolean">Boolean</code> — Preserve the boundary of the input</li>
+<li>Inset <code class="s s-Float">Float</code> — Distance to inset from the boundary</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Geometry <code class="s s-Geometry">Geometry</code> — Triangulated geometry</li>
+</ul>
+<h3 id="a3d_derivative">A3D_Derivative</h3>
+<p class="sec sec-Description">Description</p>
+<p>Numerically differentiates a function closure at a point X using a finite-difference delta, returning the local slope and Y-intercept of the tangent line.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Function Closure <code class="s s-Closure">Closure</code> — Function to differentiate</li>
+<li>X <code class="s s-Float">Float</code> — Point to evaluate the slope at</li>
+<li>Delta <code class="s s-Float">Float</code> — Step size for the finite difference</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Slope <code class="s s-Float">Float</code> — Slope of the tangent line at X</li>
+<li>Y Intercept <code class="s s-Float">Float</code> — Y intercept of the tangent line</li>
+</ul>
+<h3 id="a3d_derive-velocity">A3D_Derive Velocity</h3>
+<p class="sec sec-Description">Description</p>
+<p>Derives a per-point velocity vector from the difference between a previous and current position, with damping applied.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Previous Position <code class="s s-Vector">Vector</code> — Position on the previous step</li>
+<li>Position <code class="s s-Vector">Vector</code> — Current position</li>
+<li>Damping <code class="s s-Float">Float</code> — Damping applied to the velocity</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Vector <code class="s s-Vector">Vector</code> — Derived velocity</li>
+</ul>
+<h3 id="a3d_direction-on-surface">A3D_Direction On Surface</h3>
+<p class="sec sec-Description">Description</p>
+<p>Projects an arbitrary direction vector onto a surface's tangent plane defined by a normal, keeping the result tangent to the surface.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Direction <code class="s s-Vector">Vector</code> — Direction to project</li>
+<li>Normal <code class="s s-Vector">Vector</code> — Surface normal</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Vector <code class="s s-Vector">Vector</code> — Direction projected onto the surface tangent plane</li>
+</ul>
+<h3 id="a3d_distance-from-axis">A3D_Distance From Axis</h3>
+<p class="sec sec-Description">Description</p>
+<p>Computes the perpendicular distance from a position to an infinite axis defined by an origin and direction.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Position <code class="s s-Vector">Vector</code> — Position to measure from</li>
+<li>Origin <code class="s s-Vector">Vector</code> — Point on the axis</li>
+<li>Axis <code class="s s-Vector">Vector</code> — Direction of the axis</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Distance <code class="s s-Float">Float</code> — Perpendicular distance from the position to the axis</li>
+</ul>
+<h3 id="a3d_distance-from-plane">A3D_Distance From Plane</h3>
+<p class="sec sec-Description">Description</p>
+<p>Computes the signed distance from a position to a plane defined by an origin and two in-plane axis vectors.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Position <code class="s s-Vector">Vector</code> — Position to measure from</li>
+<li>Origin <code class="s s-Vector">Vector</code> — Origin of the plane</li>
+<li>U Axis <code class="s s-Vector">Vector</code> — First in-plane axis</li>
+<li>V Axis <code class="s s-Vector">Vector</code> — Second in-plane axis</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Distance <code class="s s-Float">Float</code> — Signed distance from the position to the plane</li>
+</ul>
+<h3 id="a3d_distance-to-boundary">A3D_Distance to Boundary</h3>
+<p class="sec sec-Description">Description</p>
+<p>Computes each element's distance to the nearest open/mesh boundary edge.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Geometry <code class="s s-Geometry">Geometry</code> — Geometry to measure boundary distance on</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Distance <code class="s s-Float">Float</code> — Number of topology steps to the nearest edge</li>
+</ul>
+<h3 id="a3d_dodecahedron">A3D_Dodecahedron</h3>
+<p class="sec sec-Description">Description</p>
+<p>Generates a regular dodecahedron mesh of a given radius, built from a convex hull of instanced pentagonal faces.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Radius <code class="s s-Float">Float</code> — Radius of the dodecahedron</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Mesh <code class="s s-Geometry">Geometry</code> — Generated dodecahedron mesh</li>
+</ul>
+<h3 id="a3d_domain-index">A3D_Domain Index</h3>
+<p class="sec sec-Description">Description</p>
+<p>Returns the index of the current element for a selectable geometry domain (point, edge, face, etc.), abstracting over Blender's per-domain index nodes.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Domain <code class="s s-Menu">Menu</code> — Domain to evaluate Index Field on</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Index <code class="s s-Integer">Integer</code> — Index of the selected Domain type.</li>
+</ul>
+<h3 id="a3d_edge-array">A3D_Edge Array</h3>
+<p class="sec sec-Description">Description</p>
+<p>Distributes instanced or inset geometry along selected edges at a controllable spacing/count, with per-instance scale, alignment, rotation, and randomized selection.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Mesh <code class="s s-Geometry">Geometry</code> — Geometry whose elements are iterated over</li>
+<li>Selection <code class="s s-Boolean">Boolean</code> — Selection on the iteration domain</li>
+<li>Inset <code class="s s-Float">Float</code> — Inset applied to the generated geometry</li>
+<li>Radius <code class="s s-Float">Float</code> — The radius of the cylinder</li>
+<li>Depth <code class="s s-Float">Float</code> — The height of the cylinder</li>
+<li>Vertices <code class="s s-Integer">Integer</code> — The number of vertices on the top and bottom circles</li>
+<li>Length <code class="s s-Float">Float</code> — Length of each array element along the edge</li>
+<li>Probability <code class="s s-Float">Float</code> — Chance that each element is generated</li>
+<li>Seed <code class="s s-Integer">Integer</code> — Random seed for the selection</li>
+<li>Instance <code class="s s-Geometry">Geometry</code> — Geometry that is instanced on the points</li>
+<li>Pick Instance <code class="s s-Boolean">Boolean</code> — Choose instances from the "Instance" input at each point instead of instancing the entire geometry</li>
+<li>Scale <code class="s s-Vector">Vector</code> — Scale of the instances</li>
+<li>Align <code class="s s-Boolean">Boolean</code> — Align instances to the edge direction</li>
+<li>Rotation <code class="s s-Rotation">Rotation</code> — Rotation applied to each instance</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Mesh <code class="s s-Geometry">Geometry</code> — Result of joining generated geometries from each iteration</li>
+</ul>
+<h3 id="a3d_edge-info">A3D_Edge Info</h3>
+<p class="sec sec-Description">Description</p>
+<p>Reports whether an edge is horizontal or vertical, its direction vector, and its length, for a given edge index.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Edge Index <code class="s s-Integer">Integer</code> — Index of the edge to read</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Horizontal <code class="s s-Boolean">Boolean</code> — True if the edge is horizontal</li>
+<li>Vertical <code class="s s-Boolean">Boolean</code> — True if the edge is vertical</li>
+<li>Direction <code class="s s-Vector">Vector</code> — Direction vector of the edge</li>
+<li>Length <code class="s s-Float">Float</code> — Length of the edge</li>
+</ul>
+<h3 id="a3d_expand-selection">A3D_Expand Selection</h3>
+<p class="sec sec-Description">Description</p>
+<p>Grows or shrinks a boolean selection outward across a chosen domain by a number of steps, with probabilistic falloff and seeded randomness.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Selection <code class="s s-Boolean">Boolean</code> — Selection to expand</li>
+<li>Steps <code class="s s-Integer">Integer</code> — Number of steps to grow the selection</li>
+<li>Domain <code class="s s-Menu">Menu</code> — Domain to expand across</li>
+<li>Mode <code class="s s-Menu">Menu</code> — Whether the selection grows or shrinks</li>
+<li>Probability <code class="s s-Float">Float</code> — Chance that each neighbor is included per step</li>
+<li>Seed <code class="s s-Integer">Integer</code> — Random seed</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Result <code class="s s-Boolean">Boolean</code> — Expanded selection</li>
+</ul>
+<h3 id="a3d_extended-camera-info">A3D_Extended Camera Info</h3>
+<p class="sec sec-Description">Description</p>
+<p>A comprehensive camera data node. combines transform, projection matrix, focal length, sensor size, shift, clipping planes, focus distance, orthographic state/scale, and both view distance/direction and field-of-view in one lookup.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Source <code class="s s-Menu">Menu</code> — Where the camera comes from</li>
+<li>Camera <code class="s s-Object">Object</code> — Camera object to read</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Transform <code class="s s-Matrix">Matrix</code> — Transformation matrix containing the location, rotation and scale of the camera</li>
+<li>Location <code class="s s-Vector">Vector</code> — Location of the camera</li>
+<li>Rotation <code class="s s-Rotation">Rotation</code> — Rotation of the camera</li>
+<li>Scale <code class="s s-Vector">Vector</code> — Scale of the camera</li>
+<li>Projection Matrix <code class="s s-Matrix">Matrix</code> — Camera projection matrix</li>
+<li>Focal Length <code class="s s-Float">Float</code> — Perspective camera focal length</li>
+<li>Sensor <code class="s s-Vector">Vector</code> — Size of the camera sensor</li>
+<li>Shift <code class="s s-Vector">Vector</code> — Camera shift</li>
+<li>Clip Start <code class="s s-Float">Float</code> — Camera near clipping distance</li>
+<li>Clip End <code class="s s-Float">Float</code> — Camera far clipping distance</li>
+<li>Focus Distance <code class="s s-Float">Float</code> — Distance to the focus point for depth of field</li>
+<li>Is Orthographic <code class="s s-Boolean">Boolean</code> — Whether the camera is using orthographic projection</li>
+<li>Orthographic Scale <code class="s s-Float">Float</code> — Orthographic camera scale (similar to zoom)</li>
+<li>Distance <code class="s s-Float">Float</code> — Distance from the camera to the evaluated position</li>
+<li>Direction <code class="s s-Vector">Vector</code> — Direction from the camera to the evaluated position</li>
+<li>Horizontal FOV <code class="s s-Float">Float</code> — Horizontal field of view of the camera</li>
+<li>Vertical FOV <code class="s s-Float">Float</code> — Vertical field of view of the camera</li>
+</ul>
+<h3 id="a3d_extended-vertex-neighbors">A3D_Extended Vertex Neighbors</h3>
+<p class="sec sec-Description">Description</p>
+<p>Returns a sortable pair of neighboring vertex indices around a given vertex, along with the total connected vertex and face counts.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Vertex Index <code class="s s-Integer">Integer</code> — The vertex to retrieve data from. Defaults to the vertex from the context</li>
+<li>Sort Index <code class="s s-Integer">Integer</code> — Which of the sorted edges to output</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Vertex Index 1 <code class="s s-Integer">Integer</code> — Index of the first sorted neighboring vertex</li>
+<li>Vertex Index 2 <code class="s s-Integer">Integer</code> — Index of the second sorted neighboring vertex</li>
+<li>Vertex Count <code class="s s-Integer">Integer</code> — The number of vertices connected to this vertex with an edge, equal to the number of connected edges</li>
+<li>Face Count <code class="s s-Integer">Integer</code> — Number of faces that contain the vertex</li>
+</ul>
+<h3 id="a3d_face-corner-info">A3D_Face Corner Info</h3>
+<p class="sec sec-Description">Description</p>
+<p>Returns the position and corner index of a specific corner of a given face, offset from a weighted reference corner.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Face Index <code class="s s-Integer">Integer</code> — The face to retrieve data from. Defaults to the face from the context</li>
+<li>Weights <code class="s s-Float">Float</code> — Values used to sort the face's corners. Uses indices by default</li>
+<li>Offset <code class="s s-Integer">Integer</code> — The number of corners to move around the face before finding the result, circling around the start of the face if necessary</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Position <code class="s s-Vector">Vector</code> — Position of the resulting corner</li>
+<li>Corner Index <code class="s s-Integer">Integer</code> — A corner of the face, chosen by the sort index</li>
+</ul>
+<h3 id="a3d_face-winding-direction">A3D_Face Winding Direction</h3>
+<p class="sec sec-Description">Description</p>
+<p>Returns the signed winding direction (+1/-1) of the current face, useful for detecting flipped normals or inconsistent topology.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<p><em>None — reads directly from the geometry context (e.g. current point/face/edge).</em></p>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Sign <code class="s s-Float">Float</code> — Winding direction of the face, +1 or -1</li>
+</ul>
+<h3 id="a3d_fermat-spiral">A3D_Fermat Spiral</h3>
+<p class="sec sec-Description">Description</p>
+<p>Generates a set of points arranged in a Fermat (golden-angle) spiral, controlled by point count and a scaling factor. Commonly used for even radial packing.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Count <code class="s s-Integer">Integer</code> — The number of points to create</li>
+<li>Scaling Factor <code class="s s-Float">Float</code> — Scales the spread of the spiral</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Points <code class="s s-Geometry">Geometry</code> — Generated spiral points</li>
+</ul>
+<h3 id="a3d_gaussian-curvature">A3D_Gaussian Curvature</h3>
+<p class="sec sec-Description">Description</p>
+<p>Estimates per-vertex Gaussian curvature via angle defect (the deviation of the sum of incident face angles from 2π), for curvature-driven shading or deformation.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<p><em>None — reads directly from the geometry context (e.g. current point/face/edge).</em></p>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Curvature <code class="s s-Float">Float</code> — Gaussian curvature at each vertex</li>
+</ul>
+<h3 id="a3d_geometry-motion-path">A3D_Geometry Motion Path</h3>
+<p class="sec sec-Description">Description</p>
+<p>Builds a trailing motion-path mesh from a set of animated points, with configurable substeps and a maximum trail age.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Points <code class="s s-Geometry">Geometry</code> — Animated points to trace</li>
+<li>Selection <code class="s s-Boolean">Boolean</code> — Points to include</li>
+<li>Substeps <code class="s s-Integer">Integer</code> — Quality of inbetween motion estimation</li>
+<li>Max Trail Age <code class="s s-Float">Float</code> — Maximum age of the trail before it is removed</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Geometry <code class="s s-Geometry">Geometry</code> — Generated motion path geometry</li>
+</ul>
+<h3 id="a3d_golden-ratio">A3D_Golden Ratio</h3>
+<p class="sec sec-Description">Description</p>
+<p>Outputs the constant φ (the golden ratio, ≈1.618) for use in proportion-driven procedural setups.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<p><em>None — reads directly from the geometry context (e.g. current point/face/edge).</em></p>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>φ <code class="s s-Float">Float</code> — The golden ratio, approximately 1.618</li>
+</ul>
+<h3 id="a3d_grid-float-neighbors-2d">A3D_Grid Float Neighbors 2D</h3>
+<p class="sec sec-Description">Description</p>
+<p>Samples a 3×3 neighborhood of float values around a given index in a resolution-addressed grid, returning each row of neighboring values.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Resolution <code class="s s-Integer">Integer</code> — Number of vertices in the X direction</li>
+<li>Value <code class="s s-Float">Float</code> — Float value to sample the neighbors of</li>
+<li>Index <code class="s s-Integer">Integer</code> — Index of the center cell</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Row 1 <code class="s s-Float">Float</code> — Neighbor at row 1 of column 1</li>
+<li>Row 2 <code class="s s-Float">Float</code> — Neighbor at row 2 of column 1</li>
+<li>Row 3 <code class="s s-Float">Float</code> — Neighbor at row 3 of column 1</li>
+<li>Row 1 <code class="s s-Float">Float</code> — Neighbor at row 1 of column 2</li>
+<li>Row 3 <code class="s s-Float">Float</code> — Neighbor at row 3 of column 2</li>
+<li>Row 1 <code class="s s-Float">Float</code> — Neighbor at row 1 of column 3</li>
+<li>Row 2 <code class="s s-Float">Float</code> — Neighbor at row 2 of column 3</li>
+<li>Row 3 <code class="s s-Float">Float</code> — Neighbor at row 3 of column 3</li>
+</ul>
+<h3 id="a3d_grid-integer-neighbors-2d">A3D_Grid Integer Neighbors 2D</h3>
+<p class="sec sec-Description">Description</p>
+<p>Samples a 3×3 neighborhood of integer values around a given index in a resolution-addressed grid, returning each row of neighboring values.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Resolution <code class="s s-Integer">Integer</code> — Number of vertices in the X direction</li>
+<li>Value <code class="s s-Integer">Integer</code> — Integer value to sample the neighbors of</li>
+<li>Index <code class="s s-Integer">Integer</code> — Index of the center cell</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Row 1 <code class="s s-Integer">Integer</code> — Neighbor at row 1 of column 1</li>
+<li>Row 2 <code class="s s-Integer">Integer</code> — Neighbor at row 2 of column 1</li>
+<li>Row 3 <code class="s s-Integer">Integer</code> — Neighbor at row 3 of column 1</li>
+<li>Row 1 <code class="s s-Integer">Integer</code> — Neighbor at row 1 of column 2</li>
+<li>Row 3 <code class="s s-Integer">Integer</code> — Neighbor at row 3 of column 2</li>
+<li>Row 1 <code class="s s-Integer">Integer</code> — Neighbor at row 1 of column 3</li>
+<li>Row 2 <code class="s s-Integer">Integer</code> — Neighbor at row 2 of column 3</li>
+<li>Row 3 <code class="s s-Integer">Integer</code> — Neighbor at row 3 of column 3</li>
+</ul>
+<h3 id="a3d_grid-laplacian-2d">A3D_Grid Laplacian 2D</h3>
+<p class="sec sec-Description">Description</p>
+<p>Computes a discrete Laplacian (second-difference) of a value field across grid-connected edges, up to a maximum edge count.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Value <code class="s s-Float">Float</code> — Value field to take the Laplacian of</li>
+<li>Max Edges <code class="s s-Integer">Integer</code></li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Value <code class="s s-Float">Float</code> — Laplacian of the value field</li>
+</ul>
+<h3 id="a3d_grid-selection-kernel-2d">A3D_Grid Selection Kernel 2D</h3>
+<p class="sec sec-Description">Description</p>
+<p>Builds a boolean selection over a rectangular width/height kernel positioned at an index within a resolution-addressed grid.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Index <code class="s s-Integer">Integer</code> — Index of the grid cell the kernel is positioned at</li>
+<li>Height <code class="s s-Integer">Integer</code> — Height of the kernel in cells</li>
+<li>Width <code class="s s-Integer">Integer</code> — Width of the kernel in cells</li>
+<li>Resolution <code class="s s-Integer">Integer</code> — Resolution of the grid</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Boolean <code class="s s-Boolean">Boolean</code> — True for cells inside the kernel</li>
+</ul>
+<h3 id="a3d_grid-vector-neighbors-2d">A3D_Grid Vector Neighbors 2D</h3>
+<p class="sec sec-Description">Description</p>
+<p>Samples a 3×3 neighborhood of vector values around a given index in a resolution-addressed grid, returning each row of neighboring values.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Resolution <code class="s s-Integer">Integer</code> — Number of vertices in the X direction</li>
+<li>Value <code class="s s-Vector">Vector</code> — Vector value to sample the neighbors of</li>
+<li>Index <code class="s s-Integer">Integer</code> — Index of the center cell</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Row 1 <code class="s s-Vector">Vector</code> — Neighbor at row 1 of column 1</li>
+<li>Row 2 <code class="s s-Vector">Vector</code> — Neighbor at row 2 of column 1</li>
+<li>Row 3 <code class="s s-Vector">Vector</code> — Neighbor at row 3 of column 1</li>
+<li>Row 1 <code class="s s-Vector">Vector</code> — Neighbor at row 1 of column 2</li>
+<li>Row 3 <code class="s s-Vector">Vector</code> — Neighbor at row 3 of column 2</li>
+<li>Row 1 <code class="s s-Vector">Vector</code> — Neighbor at row 1 of column 3</li>
+<li>Row 2 <code class="s s-Vector">Vector</code> — Neighbor at row 2 of column 3</li>
+<li>Row 3 <code class="s s-Vector">Vector</code> — Neighbor at row 3 of column 3</li>
+</ul>
+<h3 id="a3d_ground-impact-solve">A3D_Ground Impact Solve</h3>
+<p class="sec sec-Description">Description</p>
+<p>Analytically solves for where and when a ballistic trajectory (defined by an initial position, velocity, and gravity) intersects a plane, returning the impact time, position, and velocity.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Initial Position <code class="s s-Vector">Vector</code> — Position at launch</li>
+<li>Initial Velocity <code class="s s-Vector">Vector</code> — Velocity at launch</li>
+<li>Gravity <code class="s s-Vector">Vector</code> — Gravity acceleration vector</li>
+<li>Plane Point <code class="s s-Vector">Vector</code> — Point on the plane</li>
+<li>Plane Normal <code class="s s-Vector">Vector</code> — Normal of the plane</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Impact Time <code class="s s-Float">Float</code> — Time until the trajectory reaches the plane</li>
+<li>Impact Position <code class="s s-Vector">Vector</code> — Position where the trajectory reaches the plane</li>
+<li>Impact Velocity <code class="s s-Vector">Vector</code> — Velocity at the moment of impact</li>
+</ul>
+<h3 id="a3d_grow-on-surface">A3D_Grow on Surface</h3>
+<p class="sec sec-Description">Description</p>
+<p>Grows a path of points across a surface from a starting direction, stepping and rotating with each iteration and staying offset from the surface .</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Points <code class="s s-Geometry">Geometry</code> — Starting points of the paths</li>
+<li>Geometry <code class="s s-Geometry">Geometry</code> — Surface to grow across</li>
+<li>Start Direction <code class="s s-Vector">Vector</code> — Initial direction of the particles</li>
+<li>Rotation Angle <code class="s s-Float">Float</code> — How much the particle can turn each step</li>
+<li>Step Size <code class="s s-Float">Float</code> — Distance particle travels in one frame</li>
+<li>Surface Offset <code class="s s-Float">Float</code> — Offset to keep particle from clipping through surface</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Geometry <code class="s s-Geometry">Geometry</code> — Grown path geometry</li>
+</ul>
+<h3 id="a3d_harmonic-field">A3D_Harmonic Field</h3>
+<p class="sec sec-Description">Description</p>
+<p>Propagates a starting scalar value across a mesh from source points toward sink points over a number of iterations, returning both the updated mesh and its gradient field.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Mesh <code class="s s-Geometry">Geometry</code> — Mesh to propagate the value across</li>
+<li>Starting Value <code class="s s-Float">Float</code> — Value assigned at the sources</li>
+<li>Iterations <code class="s s-Integer">Integer</code> — Number of propagation iterations</li>
+<li>Sinks <code class="s s-Boolean">Boolean</code> — Points the value flows toward</li>
+<li>Sources <code class="s s-Boolean">Boolean</code> — Points the value flows from</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Mesh <code class="s s-Geometry">Geometry</code> — Mesh with the propagated value</li>
+<li>Gradient <code class="s s-Float">Float</code> — Gradient of the propagated field</li>
+</ul>
+<h3 id="a3d_helix">A3D_Helix</h3>
+<p class="sec sec-Description">Description</p>
+<p>Displaces curve points into a helical pattern around the curve's path, driven by frequency, amplitude, and phase.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Curves <code class="s s-Geometry">Geometry</code> — Curves to displace</li>
+<li>Source <code class="s s-Menu">Menu</code> — Source used to orient the helix</li>
+<li>Frequency <code class="s s-Float">Float</code> — Tightness of the spiral</li>
+<li>Amplitude <code class="s s-Float">Float</code> — Radius of the spiral</li>
+<li>Phase <code class="s s-Float">Float</code> — Offset of the spiral</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Curves <code class="s s-Geometry">Geometry</code> — Curves displaced into a helix</li>
+</ul>
+<h3 id="a3d_ik-solver">A3D_IK Solver</h3>
+<p class="sec sec-Description">Description</p>
+<p>Solves inverse kinematics for a chain of geometry between a start and end point (with an optional pole target), iterating to convergence.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Geometry <code class="s s-Geometry">Geometry</code> — Chain to solve</li>
+<li>Iterations <code class="s s-Integer">Integer</code> — Number of solver iterations</li>
+<li>Start <code class="s s-Vector">Vector</code> — Position of the chain root</li>
+<li>End <code class="s s-Vector">Vector</code> — Target position for the end of the chain</li>
+<li>Pole <code class="s s-Vector">Vector</code> — Pole target controlling the bend direction</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Geometry <code class="s s-Geometry">Geometry</code> — Solved chain</li>
+</ul>
+<h3 id="a3d_index-of-grid-coordinate">A3D_Index of Grid Coordinate</h3>
+<p class="sec sec-Description">Description</p>
+<p>Converts 2D (X, Y) grid coordinates into a flat index for a grid of a given resolution, with an in-bounds check.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Resolution <code class="s s-Integer">Integer</code> — Resolution of the grid</li>
+<li>X <code class="s s-Integer">Integer</code> — X coordinate in the grid</li>
+<li>Y <code class="s s-Integer">Integer</code> — Y coordinate in the grid</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Index <code class="s s-Integer">Integer</code> — Flat index of the coordinate</li>
+<li>In Bounds <code class="s s-Boolean">Boolean</code> — True if the coordinate is inside the grid</li>
+</ul>
+<h3 id="a3d_inset-faces">A3D_Inset Faces</h3>
+<p class="sec sec-Description">Description</p>
+<p>Face inset operation supporting individual or grouped insets, independent thickness/depth control, and even-distance/even-depth modes, returning the inset mesh split into inner and outer face groups.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Mesh <code class="s s-Geometry">Geometry</code> — Mesh to inset faces on</li>
+<li>Selection <code class="s s-Boolean">Boolean</code> — Faces to inset</li>
+<li>Individual <code class="s s-Boolean">Boolean</code> — Inset each face separately</li>
+<li>Thickness <code class="s s-Float">Float</code> — Amount to inset by</li>
+<li>Depth <code class="s s-Float">Float</code> — Offset of the inset faces along their normal</li>
+<li>Even Distance <code class="s s-Boolean">Boolean</code> — Keep the inset distance even around corners</li>
+<li>Even Depth <code class="s s-Boolean">Boolean</code> — Keep the depth even across angled faces</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Mesh <code class="s s-Geometry">Geometry</code> — Mesh with the faces inset</li>
+<li>Inner <code class="s s-Boolean">Boolean</code> — Faces created by the inset</li>
+<li>Outer <code class="s s-Boolean">Boolean</code> — Faces surrounding the inset faces</li>
+</ul>
+<h3 id="a3d_inside-bbox">A3D_Inside BBox</h3>
+<p class="sec sec-Description">Description</p>
+<p>Tests whether a position lies inside the bounding box of the input geometry.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Geometry <code class="s s-Geometry">Geometry</code> — Geometry whose bounding box is tested</li>
+<li>Position <code class="s s-Vector">Vector</code> — Position to test</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Inside <code class="s s-Boolean">Boolean</code> — True if the position is inside the bounding box</li>
+</ul>
+<h3 id="a3d_inside-frustum">A3D_Inside Frustum</h3>
+<p class="sec sec-Description">Description</p>
+<p>Tests whether a position lies inside a camera's view frustum, with configurable padding.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Source <code class="s s-Menu">Menu</code> — Where the camera comes from</li>
+<li>Camera <code class="s s-Object">Object</code> — Camera object whose frustum is tested</li>
+<li>Position <code class="s s-Vector">Vector</code> — Position to sample (Default Position)</li>
+<li>Horizontal Padding <code class="s s-Float">Float</code> — Amount to extend the frustum horizontally, along the camera's X axis</li>
+<li>Vertical Padding <code class="s s-Float">Float</code> — Amount to extend the frustum vertically, along the camera's Y axis</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>In Frustum <code class="s s-Boolean">Boolean</code> — Returns true if the position is inside the frustum</li>
+</ul>
+<h3 id="a3d_inside-frustum-legacy">A3D_Inside Frustum (Legacy)</h3>
+<p class="sec sec-Description">Description</p>
+<p>An earlier frustum-containment test driven by explicit render resolution, padding, and camera FOV rather than direct camera data.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Use Active Camera <code class="s s-Boolean">Boolean</code> — Use the active scene camera</li>
+<li>Culling Camera <code class="s s-Object">Object</code> — Camera object to test against</li>
+<li>Horizontal Resolution <code class="s s-Integer">Integer</code> — Horizontal render resolution</li>
+<li>Vertical Resolution <code class="s s-Integer">Integer</code> — Vertical render resolution</li>
+<li>Horizontal Padding <code class="s s-Float">Float</code> — Amount to extend the frustum horizontally</li>
+<li>Vertical Padding <code class="s s-Float">Float</code> — Amount to extend the frustum vertically</li>
+<li>Camera FOV <code class="s s-Float">Float</code> — Field of view of the camera</li>
+<li>Position <code class="s s-Vector">Vector</code> — Position to test</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Inside Frustum <code class="s s-Boolean">Boolean</code> — True if the position is inside the frustum</li>
+</ul>
+<h3 id="a3d_inside-prism">A3D_Inside Prism</h3>
+<p class="sec sec-Description">Description</p>
+<p>Tests whether a position lies inside a prism volume defined by four reference points.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Position <code class="s s-Vector">Vector</code> — Position to test</li>
+<li>A <code class="s s-Vector">Vector</code> — First reference point of the prism</li>
+<li>B <code class="s s-Vector">Vector</code> — Second reference point of the prism</li>
+<li>C <code class="s s-Vector">Vector</code> — Third reference point of the prism</li>
+<li>D <code class="s s-Vector">Vector</code> — Fourth reference point of the prism</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Boolean <code class="s s-Boolean">Boolean</code> — True if the position is inside the prism</li>
+</ul>
+<h3 id="a3d_inside-quad-face">A3D_Inside Quad Face</h3>
+<p class="sec sec-Description">Description</p>
+<p>Tests whether a position lies inside the bounds of a specific quad face.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Position <code class="s s-Vector">Vector</code> — Position to test</li>
+<li>Face Index <code class="s s-Integer">Integer</code> — Index of the quad face</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Inside <code class="s s-Boolean">Boolean</code> — True if the position is inside the face</li>
+</ul>
+<h3 id="a3d_inside-rectangle">A3D_Inside Rectangle</h3>
+<p class="sec sec-Description">Description</p>
+<p>Tests whether a position lies inside a rectangle defined by three of its corner vertices.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Position <code class="s s-Vector">Vector</code> — Position to test</li>
+<li>Vertex A <code class="s s-Vector">Vector</code> — First corner of the rectangle</li>
+<li>Vertex B <code class="s s-Vector">Vector</code> — Second corner of the rectangle</li>
+<li>Vertex C <code class="s s-Vector">Vector</code> — Third corner of the rectangle</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Boolean <code class="s s-Boolean">Boolean</code> — True if the position is inside the rectangle</li>
+</ul>
+<h3 id="a3d_instance-info">A3D_Instance Info</h3>
+<p class="sec sec-Description">Description</p>
+<p>Returns the bounding min, max, and origin of the current instance.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<p><em>None — reads directly from the geometry context (e.g. current point/face/edge).</em></p>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Min <code class="s s-Vector">Vector</code> — Minimum corner of the instance bounds</li>
+<li>Max <code class="s s-Vector">Vector</code> — Maximum corner of the instance bounds</li>
+<li>Origin <code class="s s-Vector">Vector</code> — Origin of the instance</li>
+</ul>
+<h3 id="a3d_instance-info-legacy">A3D_Instance Info (Legacy)</h3>
+<p class="sec sec-Description">Description</p>
+<p>An earlier version of Instance Info that takes an explicit instances input rather than reading the current instance context.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Instances <code class="s s-Geometry">Geometry</code> — Instances to read the bounds from</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Min <code class="s s-Vector">Vector</code> — Minimum corner of the instance bounds</li>
+<li>Max <code class="s s-Vector">Vector</code> — Maximum corner of the instance bounds</li>
+<li>Origin <code class="s s-Vector">Vector</code> — Origin of the instance</li>
+</ul>
+<h3 id="a3d_instance-matrix">A3D_Instance Matrix</h3>
+<p class="sec sec-Description">Description</p>
+<p>Builds an instance transform matrix from a mesh and instance geometry, with depth, selection, and instance-index/pick-instance controls.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Mesh <code class="s s-Geometry">Geometry</code> — Mesh the instances are placed on</li>
+<li>Instance <code class="s s-Geometry">Geometry</code> — Geometry to instance</li>
+<li>Depth <code class="s s-Float">Float</code> — Depth of the instances</li>
+<li>Selection <code class="s s-Boolean">Boolean</code> — Elements to place instances on</li>
+<li>Instance Index <code class="s s-Integer">Integer</code> — Index of the instance used for each point. This is only used when Pick Instances is on. By default the point index is used</li>
+<li>Pick Instance <code class="s s-Boolean">Boolean</code> — Choose instances from the "Instance" input at each point instead of instancing the entire geometry</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Instances <code class="s s-Geometry">Geometry</code> — Generated instances</li>
+</ul>
+<h3 id="a3d_instance-on-faces">A3D_Instance on Faces</h3>
+<p class="sec sec-Description">Description</p>
+<p>Instances geometry onto selected faces of a mesh, with pick-instance and instance-index controls for choosing which instance goes where.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Mesh <code class="s s-Geometry">Geometry</code> — Mesh whose faces receive instances</li>
+<li>Selection <code class="s s-Boolean">Boolean</code> — Faces to place instances on</li>
+<li>Instance <code class="s s-Geometry">Geometry</code> — Geometry that is instanced on the faces</li>
+<li>Pick Instance <code class="s s-Boolean">Boolean</code> — Choose instances from the "Instance" input at each face instead of instancing the entire geometry</li>
+<li>Instance Index <code class="s s-Integer">Integer</code> — Index of the instance used for each face. This is only used when Pick Instance is on. By default the face index is used</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Instances <code class="s s-Geometry">Geometry</code> — Generated instances</li>
+</ul>
+<h3 id="a3d_integer-clamp">A3D_Integer Clamp</h3>
+<p class="sec sec-Description">Description</p>
+<p>Clamps an integer value between a minimum and maximum.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Value <code class="s s-Integer">Integer</code> — Value to clamp</li>
+<li>Min <code class="s s-Integer">Integer</code> — Minimum allowed value</li>
+<li>Max <code class="s s-Integer">Integer</code> — Maximum allowed value</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Value <code class="s s-Integer">Integer</code> — Clamped value</li>
+</ul>
+<h3 id="a3d_laplacian">A3D_Laplacian</h3>
+<p class="sec sec-Description">Description</p>
+<p>A generalized Laplacian (connectivity-based blur) operator that works across float, integer, and vector value types over a given number of iterations.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Value <code class="s s-Float">Float</code> — Float value to blur</li>
+<li>Integer <code class="s s-Integer">Integer</code> — Integer value to blur</li>
+<li>Vector <code class="s s-Vector">Vector</code> — Vector value to blur</li>
+<li>Iterations <code class="s s-Integer">Integer</code> — How many times to blur the values for all elements</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Value <code class="s s-Float">Float</code> — Blurred float value</li>
+<li>Integer <code class="s s-Integer">Integer</code> — Blurred integer value</li>
+<li>Vector <code class="s s-Vector">Vector</code> — Blurred vector value</li>
+</ul>
+<h3 id="a3d_largest-island">A3D_Largest Island</h3>
+<p class="sec sec-Description">Description</p>
+<p>Returns a boolean selection marking the largest connected mesh island.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<p><em>None — reads directly from the geometry context (e.g. current point/face/edge).</em></p>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Boolean <code class="s s-Boolean">Boolean</code> — Is the largest mesh island</li>
+</ul>
+<h3 id="a3d_line-intersect">A3D_Line Intersect</h3>
+<p class="sec sec-Description">Description</p>
+<p>Tests whether two line segments (each defined by two endpoints) intersect.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Edge A Position 1 <code class="s s-Vector">Vector</code> — First endpoint of edge A</li>
+<li>Edge A Position 2 <code class="s s-Vector">Vector</code> — Second endpoint of edge A</li>
+<li>Edge B Position 1 <code class="s s-Vector">Vector</code> — First endpoint of edge B</li>
+<li>Edge B Position 2 <code class="s s-Vector">Vector</code> — Second endpoint of edge B</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Intersect <code class="s s-Boolean">Boolean</code> — True if the two segments intersect</li>
+</ul>
+<h3 id="a3d_line-intersect-point">A3D_Line Intersect Point</h3>
+<p class="sec sec-Description">Description</p>
+<p>Computes the intersection point of two line segments (each defined by two endpoints), assuming they intersect.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Edge A Position 1 <code class="s s-Vector">Vector</code> — First endpoint of edge A</li>
+<li>Edge A Position 2 <code class="s s-Vector">Vector</code> — Second endpoint of edge A</li>
+<li>Edge B Position 1 <code class="s s-Vector">Vector</code> — First endpoint of edge B</li>
+<li>Edge B Position 2 <code class="s s-Vector">Vector</code> — Second endpoint of edge B</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Intersection Point <code class="s s-Vector">Vector</code> — Point where the two segments intersect</li>
+</ul>
+<h3 id="a3d_line-line-intersection">A3D_Line-Line Intersection</h3>
+<p class="sec sec-Description">Description</p>
+<p>Combines intersection testing and position calculation for two line segments into a single node, returning both whether they intersect and where.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Edge A Position 1 <code class="s s-Vector">Vector</code> — First endpoint of edge A</li>
+<li>Edge A Position 2 <code class="s s-Vector">Vector</code> — Second endpoint of edge A</li>
+<li>Edge B Position 1 <code class="s s-Vector">Vector</code> — First endpoint of edge B</li>
+<li>Edge B Position 2 <code class="s s-Vector">Vector</code> — Second endpoint of edge B</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Intersects <code class="s s-Boolean">Boolean</code> — True if the two segments intersect</li>
+<li>Intersection Position <code class="s s-Vector">Vector</code> — Point where the two segments intersect</li>
+</ul>
+<h3 id="a3d_looping-coordinates">A3D_Looping Coordinates</h3>
+<p class="sec sec-Description">Description</p>
+<p>Generates cyclically looping XYZ and W coordinates over a given loop duration, for seamless periodic animation or tiling.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Loop Duration <code class="s s-Integer">Integer</code> — Number of frames in one loop</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>XYZ <code class="s s-Vector">Vector</code> — Looping XYZ coordinates</li>
+<li>W <code class="s s-Float">Float</code> — Looping W coordinate</li>
+</ul>
+<h3 id="a3d_make-curve-acyclic">A3D_Make Curve Acyclic</h3>
+<p class="sec sec-Description">Description</p>
+<p>Converts a cyclic (closed) curve into an acyclic (open) curve while preserving its shape.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Curve <code class="s s-Geometry">Geometry</code> — Curve to open</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Curve <code class="s s-Geometry">Geometry</code> — Curve with cyclic splines made acyclic</li>
+</ul>
+<h3 id="a3d_merge-by-distance">A3D_Merge by Distance</h3>
+<p class="sec sec-Description">Description</p>
+<p>Merges mesh elements within a given distance of each other, with options to limit merging to islands and to merge by group ID.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Mesh <code class="s s-Geometry">Geometry</code> — Point cloud or mesh to merge points of</li>
+<li>Limit Islands <code class="s s-Boolean">Boolean</code> — Only merge elements within the same island</li>
+<li>Group ID <code class="s s-Integer">Integer</code> — Only merge elements with the same group ID</li>
+<li>Position <code class="s s-Vector">Vector</code> — Position used to measure distances</li>
+<li>Distance <code class="s s-Float">Float</code> — Maximum distance between elements to merge</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Mesh <code class="s s-Geometry">Geometry</code> — Mesh with nearby elements merged</li>
+</ul>
+<h3 id="a3d_mesh-to-lattice">A3D_Mesh to Lattice</h3>
+<p class="sec sec-Description">Description</p>
+<p>Converts a mesh into a lattice-cell structure using a selectable cell type and object, with a configurable cell size and interior band width.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Mesh <code class="s s-Geometry">Geometry</code> — Mesh to convert</li>
+<li>Cell Type <code class="s s-Menu">Menu</code> — Type of cell to use for each lattice element</li>
+<li>Cell Object <code class="s s-Object">Object</code> — Object used as the lattice cell, must be exactly 1m³</li>
+<li>Cell Size <code class="s s-Float">Float</code> — Size of each lattice cell</li>
+<li>Interior Band Width <code class="s s-Float">Float</code> — Width of the gradient inside of the mesh</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Mesh <code class="s s-Geometry">Geometry</code> — Lattice generated from the mesh</li>
+</ul>
+<h3 id="a3d_midpoint-range-to-min-max">A3D_Midpoint Range to Min Max</h3>
+<p class="sec sec-Description">Description</p>
+<p>An alternate/duplicate implementation of Midpoint Range, converting a midpoint-and-range pair into explicit min/max bounds.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Midpoint <code class="s s-Float">Float</code> — Center of the range</li>
+<li>Range <code class="s s-Float">Float</code> — Total width of the range</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Min <code class="s s-Float">Float</code> — Lower bound of the range</li>
+<li>Max <code class="s s-Float">Float</code> — Upper bound of the range</li>
+</ul>
+<h3 id="a3d_mirror">A3D_Mirror</h3>
+<p class="sec sec-Description">Description</p>
+<p>Mirrors a mesh across chosen X/Y/Z axes, either about the origin or about a separate mirror object.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Mesh <code class="s s-Geometry">Geometry</code> — Mesh to mirror</li>
+<li>X <code class="s s-Boolean">Boolean</code> — Mirror across the X axis</li>
+<li>Y <code class="s s-Boolean">Boolean</code> — Mirror across the Y axis</li>
+<li>Z <code class="s s-Boolean">Boolean</code> — Mirror across the Z axis</li>
+<li>Use Object <code class="s s-Boolean">Boolean</code> — Mirror about an object instead of the origin</li>
+<li>Mirror Object <code class="s s-Object">Object</code> — Object to mirror about</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Mesh <code class="s s-Geometry">Geometry</code> — Mirrored mesh</li>
+</ul>
+<h3 id="a3d_multivariate-newton-solver">A3D_Multivariate Newton Solver</h3>
+<p class="sec sec-Description">Description</p>
+<p>Solves a system of equations for a root using multivariate Newton's method, iterating from an initial guess with a configurable step size and function closure.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Function Closure <code class="s s-Closure">Closure</code> — Function to find the root of</li>
+<li>Iterations <code class="s s-Integer">Integer</code> — Number of Newton iterations</li>
+<li>Initial Guess <code class="s s-Vector">Vector</code> — Starting point for the search</li>
+<li>Step Size <code class="s s-Float">Float</code> — Step size used for the numerical derivative</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Root <code class="s s-Vector">Vector</code> — Root found by the solver</li>
+</ul>
+<h3 id="a3d_n-nearest-neighbors">A3D_N Nearest Neighbors</h3>
+<p class="sec sec-Description">Description</p>
+<p>Finds the N nearest neighboring points to each input point.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Points <code class="s s-Geometry">Geometry</code> — Points to find neighbors for</li>
+<li>Neighbors <code class="s s-Integer">Integer</code> — Number of nearest neighbors to find</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Points <code class="s s-Geometry">Geometry</code> — Points with neighbor connections</li>
+</ul>
+<h3 id="a3d_nearest-point-info">A3D_Nearest Point Info</h3>
+<p class="sec sec-Description">Description</p>
+<p>Returns the index, radius, distance, direction, and offset of the nearest point (optionally within a group ID) to a given position.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Position <code class="s s-Vector">Vector</code> — Position to sample from</li>
+<li>Group ID <code class="s s-Integer">Integer</code> — Splits the geometry into groups which can be sampled individually</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Index <code class="s s-Integer">Integer</code> — Index of Nearest</li>
+<li>Radius <code class="s s-Float">Float</code> — 'radius' attribute of Nearest</li>
+<li>Distance <code class="s s-Float">Float</code> — Distance to Nearest</li>
+<li>Direction <code class="s s-Vector">Vector</code> — Normalized direction towards Nearest</li>
+<li>Offset <code class="s s-Vector">Vector</code> — Offset between current and Nearest</li>
+</ul>
+<h3 id="a3d_neighbors-of-vertex">A3D_Neighbors of Vertex</h3>
+<p class="sec sec-Description">Description</p>
+<p>Returns a weighted, sortable list of a vertex's connected neighbor vertices and their total count.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Vertex Index <code class="s s-Integer">Integer</code> — The vertex to retrieve data from. Defaults to the vertex from the context</li>
+<li>Weights <code class="s s-Float">Float</code> — Values used to sort the edges connected to the vertex. Uses indices by default</li>
+<li>Sort Index <code class="s s-Integer">Integer</code> — Which of the sorted edges to output. Negative indexing is supported</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Other Vertex <code class="s s-Integer">Integer</code> — Index of the selected neighboring vertex</li>
+<li>Total <code class="s s-Integer">Integer</code> — Number of vertices connected to this vertex</li>
+</ul>
+<h3 id="a3d_node-name">A3D_Node Name</h3>
+<p class="sec sec-Description">Description</p>
+<p>One or two sentences on what the node does and what it returns.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Socket Name <code>Type</code> — Short description of the socket</li>
+<li>Another Socket <code>Type</code> — Short description</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Socket Name <code>Type</code> — Short description</li>
+</ul>
+<h3 id="a3d_noodle">A3D_Noodle</h3>
+<p class="sec sec-Description">Description</p>
+<p>Generates a tube ('noodle') mesh along a curve, with adjustable scale and profile/cap resolution.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Curve <code class="s s-Geometry">Geometry</code> — Curve to generate the tube along</li>
+<li>Scale <code class="s s-Float">Float</code> — Radius of the tube</li>
+<li>Profile Resolution <code class="s s-Integer">Integer</code> — Number of points around the tube profile</li>
+<li>Cap Resolution <code class="s s-Integer">Integer</code> — Number of segments in each end cap</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Mesh <code class="s s-Geometry">Geometry</code> — Generated tube mesh</li>
+</ul>
+<h3 id="a3d_normalize-field">A3D_Normalize Field</h3>
+<p class="sec sec-Description">Description</p>
+<p>Remaps a per-element float attribute to the 0–1 range based on the minimum and maximum values found across the field's domain.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Value <code class="s s-Float">Float</code> — The values the minimum and maximum will be calculated from</li>
+<li>Group ID <code class="s s-Integer">Integer</code> — An index used to group values together for multiple separate operations</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Normalized Value <code class="s s-Float">Float</code> — Value remapped to the 0-1 range</li>
+</ul>
+<h3 id="a3d_object-motion-path">A3D_Object Motion Path</h3>
+<p class="sec sec-Description">Description</p>
+<p>Builds a trailing motion-path mesh tracking an object's movement over time, with configurable substeps and maximum trail age.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Object <code class="s s-Object">Object</code> — Object to trace</li>
+<li>Substeps <code class="s s-Integer">Integer</code> — Quality of inbetween motion estimation</li>
+<li>Max Trail Age <code class="s s-Float">Float</code> — Maximum age of the trail before it is removed</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Geometry <code class="s s-Geometry">Geometry</code> — Generated motion path geometry</li>
+</ul>
+<h3 id="a3d_octree">A3D_Octree</h3>
+<p class="sec sec-Description">Description</p>
+<p>Builds an octree spatial subdivision of a point cloud between a min and max bound, iterating to the target depth.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Points <code class="s s-Geometry">Geometry</code> — Points to subdivide</li>
+<li>Iterations <code class="s s-Integer">Integer</code> — Number of subdivision levels</li>
+<li>Min <code class="s s-Vector">Vector</code> — Minimum corner of the bounds</li>
+<li>Max <code class="s s-Vector">Vector</code> — Maximum corner of the bounds</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Geometry <code class="s s-Geometry">Geometry</code> — Generated octree geometry</li>
+</ul>
+<h3 id="a3d_opposite-corner-of-triangle-adjacent-to-edge">A3D_Opposite Corner of Triangle Adjacent to Edge</h3>
+<p class="sec sec-Description">Description</p>
+<p>Returns the vertex opposite an edge in a triangle attached to that edge, with weights and a sort index to choose between the attached corners.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Edge Index <code class="s s-Integer">Integer</code> — The edge to retrieve data from. Defaults to the edge from the context</li>
+<li>Weights <code class="s s-Float">Float</code> — Values that sort the corners attached to the edge</li>
+<li>Sort Index <code class="s s-Integer">Integer</code> — Which of the sorted corners to output. Negative indexing is supported</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Vertex Index <code class="s s-Integer">Integer</code> — The vertex the corner is attached to</li>
+</ul>
+<h3 id="a3d_pack-curves">A3D_Pack Curves</h3>
+<p class="sec sec-Description">Description</p>
+<p>Packs curve geometry onto a target panel/surface using a cost-based path-growth algorithm (base cost plus per-step increment), respecting a vertex group and a maximum curve count.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Geometry <code class="s s-Geometry">Geometry</code> — Geometry to pack curves onto</li>
+<li>Selection <code class="s s-Boolean">Boolean</code> — Parts of the geometry to pack curves onto</li>
+<li>Base Path Cost <code class="s s-Float">Float</code> — Starting cost of each path</li>
+<li>Path Cost Increment <code class="s s-Float">Float</code> — Cost added per step along a path</li>
+<li>Vertex Group <code class="s s-String">String</code> — Name of the vertex group that limits the packing</li>
+<li>Max Curves <code class="s s-Integer">Integer</code> — Maximum number of curves to generate</li>
+<li>Seed <code class="s s-Integer">Integer</code> — Random seed</li>
+<li>Panel <code class="s s-Boolean">Boolean</code> — Restrict packing to the target panel</li>
+<li>Target Position <code class="s s-Vector">Vector</code> — Position the curves are packed toward</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Curve <code class="s s-Geometry">Geometry</code> — Packed curves</li>
+</ul>
+<h3 id="a3d_particle-tracking">A3D_Particle Tracking</h3>
+<p class="sec sec-Description">Description</p>
+<p>Emits and tracks particles toward a target position with per-particle emission/tracking delay and velocity ranges plus noise-driven trajectory variation, outputting velocity and age attributes.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Geometry <code class="s s-Geometry">Geometry</code> — Geometry to emit particles from</li>
+<li>Selection <code class="s s-Boolean">Boolean</code> — Points that emit particles</li>
+<li>Target Position <code class="s s-Vector">Vector</code> — (Required) world space point particles tend to follow</li>
+<li>Emission Delay Min <code class="s s-Float">Float</code> — Minimum time to wait before emitting a particle</li>
+<li>Emission Delay Max <code class="s s-Float">Float</code> — Maximum time to wait before emitting a particle</li>
+<li>Emission Velocity <code class="s s-Float">Float</code> — Initial velocity during the launch phase, before Tracking Delay has elapsed</li>
+<li>Tracking Delay <code class="s s-Float">Float</code> — Time to wait before the particle begins to seek Target Position</li>
+<li>Tracking Velocity <code class="s s-Float">Float</code> — Velocity during the tracking phase, after Tracking Delay has elapsed</li>
+<li>Trajectory Noise Scale <code class="s s-Float">Float</code> — Scale of noise that alters trajectory</li>
+<li>Trajectory Noise Strength <code class="s s-Float">Float</code> — Strength of noise that alters trajectory</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Geometry <code class="s s-Geometry">Geometry</code> — Emitted particles</li>
+<li>Velocity <code class="s s-Vector">Vector</code> — Velocity of each particle</li>
+<li>Age <code class="s s-Float">Float</code> — Current age of each particle</li>
+<li>Start Age <code class="s s-Float">Float</code> — Age at which each particle starts</li>
+</ul>
+<h3 id="a3d_patch-mesh">A3D_Patch Mesh</h3>
+<p class="sec sec-Description">Description</p>
+<p>Fills or patches holes in a mesh's topology.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Mesh <code class="s s-Geometry">Geometry</code> — Mesh to patch</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Mesh <code class="s s-Geometry">Geometry</code> — Mesh with holes filled</li>
+</ul>
+<h3 id="a3d_pbd-solver-repeat">A3D_PBD Solver Repeat</h3>
+<p class="sec sec-Description">Description</p>
+<p>Runs a position-based dynamics (PBD) solve over multiple outer iterations and substeps, with fixed points, external force, damping, stretch stiffness, pretension, volume preservation, and mesh collision.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Geometry <code class="s s-Geometry">Geometry</code> — Rope geometry to simulate</li>
+<li>Iterations <code class="s s-Integer">Integer</code> — Number of constraint solver iterations</li>
+<li>Substeps <code class="s s-Integer">Integer</code> — Quality of simulation</li>
+<li>Fixed Points <code class="s s-Boolean">Boolean</code> — Which points are fixed/immobile</li>
+<li>Animated <code class="s s-Boolean">Boolean</code> — Are fixed points animated/updating every frame (use for rigs)</li>
+<li>External Force <code class="s s-Vector">Vector</code> — External force acting on simulation</li>
+<li>Damping <code class="s s-Float">Float</code> — Velocity reduction (recommended &gt;0)</li>
+<li>Stretch Stiffness <code class="s s-Float">Float</code> — How much the rope resists stretching. High values require higher steps</li>
+<li>Pretension <code class="s s-Float">Float</code> — Tension in the rope before simulation. Helps keep ropes stiff</li>
+<li>Preserve Volume <code class="s s-Boolean">Boolean</code> — Keep the rope from losing volume when stretched</li>
+<li>Collision <code class="s s-Boolean">Boolean</code> — Enable collision with a mesh</li>
+<li>Collision Mesh <code class="s s-Geometry">Geometry</code> — Mesh the rope collides with</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Geometry <code class="s s-Geometry">Geometry</code> — Simulated rope geometry</li>
+</ul>
+<h3 id="a3d_plane-normal">A3D_Plane Normal</h3>
+<p class="sec sec-Description">Description</p>
+<p>Computes the normal vector of the plane defined by three points.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Point A <code class="s s-Vector">Vector</code> — First point on the plane</li>
+<li>Point B <code class="s s-Vector">Vector</code> — Second point on the plane</li>
+<li>Point C <code class="s s-Vector">Vector</code> — Third point on the plane</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Vector <code class="s s-Vector">Vector</code> — Normal vector of the plane</li>
+</ul>
+<h3 id="a3d_plexus">A3D_Plexus</h3>
+<p class="sec sec-Description">Description</p>
+<p>Builds a connective 'plexus' mesh linking nearby points based on a connectivity parameter, commonly used for network/energy-field visuals.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Points <code class="s s-Geometry">Geometry</code> — Points to connect</li>
+<li>Connectivity <code class="s s-Integer">Integer</code> — Maximum number of connections per point</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Mesh <code class="s s-Geometry">Geometry</code> — Generated network of connections</li>
+</ul>
+<h3 id="a3d_point-slope-line">A3D_Point Slope Line</h3>
+<p class="sec sec-Description">Description</p>
+<p>Constructs a line segment of a given length from a point-slope definition (X, Y, slope), returning its start and end points.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>X <code class="s s-Float">Float</code> — X coordinate of the point</li>
+<li>Y <code class="s s-Float">Float</code> — Y coordinate of the point</li>
+<li>Slope <code class="s s-Float">Float</code> — Slope of the line</li>
+<li>Length <code class="s s-Float">Float</code> — Length of the line segment</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Start Point <code class="s s-Vector">Vector</code> — Start of the line segment</li>
+<li>End Point <code class="s s-Vector">Vector</code> — End of the line segment</li>
+</ul>
+<h3 id="a3d_poke-faces">A3D_Poke Faces</h3>
+<p class="sec sec-Description">Description</p>
+<p>Pokes (fan-triangulates from a center point) all faces in the input geometry.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Geometry <code class="s s-Geometry">Geometry</code> — Geometry to poke faces on</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Geometry <code class="s s-Geometry">Geometry</code> — Geometry with faces poked</li>
+</ul>
+<h3 id="a3d_poke-triangle">A3D_Poke Triangle</h3>
+<p class="sec sec-Description">Description</p>
+<p>Pokes a single face at a given position, splitting it into a triangle fan from that point.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Mesh <code class="s s-Geometry">Geometry</code> — Mesh containing the face to poke</li>
+<li>Position <code class="s s-Vector">Vector</code> — Location of central vertex</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Mesh <code class="s s-Geometry">Geometry</code> — Mesh with the face poked</li>
+</ul>
+<h3 id="a3d_position-components">A3D_Position Components</h3>
+<p class="sec sec-Description">Description</p>
+<p>Splits the current position attribute into its X, Y, and Z components.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<p><em>None — reads directly from the geometry context (e.g. current point/face/edge).</em></p>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>X <code class="s s-Float">Float</code> — X component of the position</li>
+<li>Y <code class="s s-Float">Float</code> — Y component of the position</li>
+<li>Z <code class="s s-Float">Float</code> — Z component of the position</li>
+</ul>
+<h3 id="a3d_project-to-plane">A3D_Project To Plane</h3>
+<p class="sec sec-Description">Description</p>
+<p>Projects a position onto a plane defined by an origin and normal.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Position <code class="s s-Vector">Vector</code> — Position to project</li>
+<li>Origin <code class="s s-Vector">Vector</code> — Origin of the plane</li>
+<li>Plane Normal <code class="s s-Vector">Vector</code> — Normal of the plane</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Vector <code class="s s-Vector">Vector</code> — Position projected onto the plane</li>
+</ul>
+<h3 id="a3d_quad-corners">A3D_Quad Corners</h3>
+<p class="sec sec-Description">Description</p>
+<p>Returns the four corner positions (A–D) of a quad face at a given offset.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Face Index <code class="s s-Integer">Integer</code> — The face to retrieve data from. Defaults to the face from the context</li>
+<li>Offset <code class="s s-Integer">Integer</code> — Number of corners to rotate the corner order by</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Corner A <code class="s s-Vector">Vector</code> — Position of the first corner</li>
+<li>Corner B <code class="s s-Vector">Vector</code> — Position of the second corner</li>
+<li>Corner C <code class="s s-Vector">Vector</code> — Position of the third corner</li>
+<li>Corner D <code class="s s-Vector">Vector</code> — Position of the fourth corner</li>
+</ul>
+<h3 id="a3d_quad-sphere">A3D_Quad Sphere</h3>
+<p class="sec sec-Description">Description</p>
+<p>Generates a quad-topology sphere (cube-projected) of a given radius and subdivision level, with a UV map output.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Radius <code class="s s-Float">Float</code> — Radius of the sphere</li>
+<li>Subdivisions <code class="s s-Integer">Integer</code> — Number of subdivisions per cube face</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Mesh <code class="s s-Geometry">Geometry</code> — Generated sphere mesh</li>
+<li>UV Map <code class="s s-Vector">Vector</code> — UV coordinates of the sphere</li>
+</ul>
+<h3 id="a3d_quad-tangent">A3D_Quad Tangent</h3>
+<p class="sec sec-Description">Description</p>
+<p>Computes the tangent vector of a quad face.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Face Index <code class="s s-Integer">Integer</code> — The face to retrieve data from. Defaults to the face from the context</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Tangent <code class="s s-Vector">Vector</code> — Vector pointing along the longest axis of the face</li>
+</ul>
+<h3 id="a3d_random-point-in-shell">A3D_Random Point In Shell</h3>
+<p class="sec sec-Description">Description</p>
+<p>Generates a seeded random point within a spherical shell between a minimum and maximum radius.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Min Radius <code class="s s-Float">Float</code> — Radius of inner boundary</li>
+<li>Max Radius <code class="s s-Float">Float</code> — Radius of outer boundary</li>
+<li>ID <code class="s s-Integer">Integer</code> — ID used to vary the random value per element</li>
+<li>Seed <code class="s s-Integer">Integer</code> — Random Seed</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Position <code class="s s-Vector">Vector</code> — Random position within the shell</li>
+</ul>
+<h3 id="a3d_random-triangulate">A3D_Random Triangulate</h3>
+<p class="sec sec-Description">Description</p>
+<p>Randomly triangulates a subset of the mesh's faces based on a seeded probability.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Mesh <code class="s s-Geometry">Geometry</code> — Mesh to triangulate</li>
+<li>Probability <code class="s s-Float">Float</code> — Chance that each face is triangulated</li>
+<li>Seed <code class="s s-Integer">Integer</code> — Random seed</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Mesh <code class="s s-Geometry">Geometry</code> — Mesh with some faces triangulated</li>
+</ul>
+<h3 id="a3d_random-xyz">A3D_Random XY+Z</h3>
+<p class="sec sec-Description">Description</p>
+<p>Generates a seeded random vector with independently ranged XY (planar) and Z (vertical) components.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>XY Min <code class="s s-Float">Float</code> — Minimum of the X and Y components</li>
+<li>XY Max <code class="s s-Float">Float</code> — Maximum of the X and Y components</li>
+<li>Z Min <code class="s s-Float">Float</code> — Minimum of the Z component</li>
+<li>Z Max <code class="s s-Float">Float</code> — Maximum of the Z component</li>
+<li>ID <code class="s s-Integer">Integer</code> — ID used to vary the random value per element</li>
+<li>Seed <code class="s s-Integer">Integer</code> — Random seed</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Vector <code class="s s-Vector">Vector</code> — Random vector</li>
+</ul>
+<h3 id="a3d_roll-curve">A3D_Roll Curve</h3>
+<p class="sec sec-Description">Description</p>
+<p>Rolls (twists) a curve's cross-section around its tangent by a factor and tightness, with a custom roll vector and free/flip controls.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Curve <code class="s s-Geometry">Geometry</code> — Curve to roll</li>
+<li>Factor <code class="s s-Float">Float</code> — Amount of roll applied</li>
+<li>Tightness <code class="s s-Float">Float</code> — How tightly the roll follows the curve</li>
+<li>Roll Vector <code class="s s-Menu">Menu</code> — How the vector to roll about is chosen</li>
+<li>Free <code class="s s-Vector">Vector</code> — Roll direction used when the roll vector is free</li>
+<li>Flip <code class="s s-Boolean">Boolean</code> — Flip the roll direction</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Curve <code class="s s-Geometry">Geometry</code> — Rolled curve</li>
+</ul>
+<h3 id="a3d_scatter-points">A3D_Scatter Points</h3>
+<p class="sec sec-Description">Description</p>
+<p>Scatters points across a mesh surface using a selectable distribution mode, minimum spacing, and density falloff, returning per-point normal and rotation. When 'Use Rest Position' is True and the 'rest_position' attribute exists on the Geometry, the point positions are transferred from the un-deformed mesh to avoid popping.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Mesh <code class="s s-Geometry">Geometry</code> — Mesh to scatter points on</li>
+<li>Mode <code class="s s-Menu">Menu</code> — Change distribution mode</li>
+<li>Selection <code class="s s-Boolean">Boolean</code> — Faces to scatter points on</li>
+<li>Distance Min <code class="s s-Float">Float</code> — Minimum spacing between points</li>
+<li>Density <code class="s s-Float">Float</code> — Number of points per unit area</li>
+<li>Density Factor <code class="s s-Float">Float</code> — Factor to scale the density by</li>
+<li>Seed <code class="s s-Integer">Integer</code> — Random seed</li>
+<li>Radius <code class="s s-Float">Float</code> — Radius stored on each point</li>
+<li>Use Rest Position <code class="s s-Boolean">Boolean</code> — Requires enabling 'Rest Position' in the Shape Keys panel</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Points <code class="s s-Geometry">Geometry</code> — Scattered points</li>
+<li>Normal <code class="s s-Vector">Vector</code> — Surface normal at each point</li>
+<li>Rotation <code class="s s-Rotation">Rotation</code> — Rotation aligned to the surface at each point</li>
+</ul>
+<h3 id="a3d_seam-distance">A3D_Seam Distance</h3>
+<p class="sec sec-Description">Description</p>
+<p>Computes each point's distance to the nearest UV seam.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Mesh <code class="s s-Geometry">Geometry</code> — Mesh to measure the seam distance on</li>
+<li>UVMap <code class="s s-String">String</code> — Name of the UV map to read seams from</li>
+<li>Seam Attribute <code class="s s-String">String</code> — Name of the attribute marking seam edges</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Mesh <code class="s s-Geometry">Geometry</code> — Mesh after the seam distance calculation</li>
+<li>Distance <code class="s s-Float">Float</code> — Distance to the nearest UV seam</li>
+</ul>
+<h3 id="a3d_set-position-by-attribute">A3D_Set Position by Attribute</h3>
+<p class="sec sec-Description">Description</p>
+<p>Sets a mesh's point positions directly from a named vector attribute.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Mesh <code class="s s-Geometry">Geometry</code> — Mesh whose point positions are replaced</li>
+<li>Attribute <code class="s s-String">String</code> — Name of the vector attribute to use as positions</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Geometry <code class="s s-Geometry">Geometry</code> — Geometry with positions set from the attribute</li>
+</ul>
+<h3 id="a3d_smooth-curve">A3D_Smooth Curve</h3>
+<p class="sec sec-Description">Description</p>
+<p>Smooths a curve's control points over a number of iterations, with a selectable mode and target segment count/length.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Curve <code class="s s-Geometry">Geometry</code> — Curve to smooth</li>
+<li>Iterations <code class="s s-Integer">Integer</code> — Number of smoothing iterations</li>
+<li>Mode <code class="s s-Menu">Menu</code> — How to specify the amount of samples</li>
+<li>Count <code class="s s-Integer">Integer</code> — Number of segments to resample to</li>
+<li>Length <code class="s s-Float">Float</code> — Segment length to resample to</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Curve <code class="s s-Geometry">Geometry</code> — Smoothed curve</li>
+</ul>
+<h3 id="a3d_solve-xpbd-edge-constraints">A3D_Solve XPBD Edge Constraints</h3>
+<p class="sec sec-Description">Description</p>
+<p>Solves extended position-based dynamics (XPBD) edge/distance constraints for a given stiffness and tension over a maximum iteration count, returning the accumulated position correction.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Max Iterations <code class="s s-Integer">Integer</code> — Maximum number of solver iterations</li>
+<li>Stiffness <code class="s s-Float">Float</code> — Stiffness of the edge constraints</li>
+<li>Tension <code class="s s-Float">Float</code> — Tension in the edges</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Accumulated Correction <code class="s s-Vector">Vector</code> — Sum of the correction vectors for the point</li>
+</ul>
+<h3 id="a3d_sphere-collision">A3D_Sphere Collision</h3>
+<p class="sec sec-Description">Description</p>
+<p>Tests two indexed spheres for collision, returning whether they collided, their overlap amount, and the collision normal.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Index A <code class="s s-Integer">Integer</code> — Index of the first sphere</li>
+<li>Index B <code class="s s-Integer">Integer</code> — Index of the second sphere</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Collided <code class="s s-Boolean">Boolean</code> — True if the spheres collide</li>
+<li>Overlap <code class="s s-Float">Float</code> — Amount the spheres overlap</li>
+<li>Normal <code class="s s-Vector">Vector</code> — Collision normal</li>
+</ul>
+<h3 id="a3d_split-quad">A3D_Split Quad</h3>
+<p class="sec sec-Description">Description</p>
+<p>Splits a quad face into triangles or sub-quads along a chosen direction, by a blend factor.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Mesh <code class="s s-Geometry">Geometry</code> — Mesh containing the quads to split</li>
+<li>Factor <code class="s s-Float">Float</code> — How far along to split the face. 0.5 is the middle of the face</li>
+<li>Direction <code class="s s-Menu">Menu</code> — Relative direction to split the face</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Mesh <code class="s s-Geometry">Geometry</code> — Mesh with the quads split</li>
+</ul>
+<h3 id="a3d_split-to-instances">A3D_Split to Instances</h3>
+<p class="sec sec-Description">Description</p>
+<p>Splits geometry into separate instances by a chosen domain and group ID, with a selectable pivot point.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Pivot Point <code class="s s-Menu">Menu</code> — Pivot point of each instance</li>
+<li>Domain <code class="s s-Menu">Menu</code> — Domain to split</li>
+<li>Geometry <code class="s s-Geometry">Geometry</code> — Geometry to split into instances</li>
+<li>Selection <code class="s s-Boolean">Boolean</code> — Elements to include</li>
+<li>Group ID <code class="s s-Integer">Integer</code> — Elements with the same ID go into the same instance</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Instances <code class="s s-Geometry">Geometry</code> — Generated instances</li>
+<li>Group ID <code class="s s-Integer">Integer</code> — Group ID of each instance</li>
+</ul>
+<h3 id="a3d_split-to-instances_edge">A3D_Split to Instances_Edge</h3>
+<p class="sec sec-Description">Description</p>
+<p>Domain-locked variant of A3D_Split to Instances that splits geometry into separate instances per edge, with a pivot point type and group ID.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Pivot Point Type <code class="s s-Integer">Integer</code> — Type of pivot point of each instance</li>
+<li>Geometry <code class="s s-Geometry">Geometry</code> — Geometry to split into instances</li>
+<li>Selection <code class="s s-Boolean">Boolean</code> — Elements to include</li>
+<li>Group ID <code class="s s-Integer">Integer</code> — Elements with the same ID go into the same instance</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Instances <code class="s s-Geometry">Geometry</code> — Generated instances</li>
+<li>Group ID <code class="s s-Integer">Integer</code> — Group ID of each instance</li>
+</ul>
+<h3 id="a3d_split-to-instances_face">A3D_Split to Instances_Face</h3>
+<p class="sec sec-Description">Description</p>
+<p>Domain-locked variant of A3D_Split to Instances that splits geometry into separate instances per face, with a pivot point type and group ID.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Pivot Point Type <code class="s s-Integer">Integer</code> — Type of pivot point of each instance</li>
+<li>Geometry <code class="s s-Geometry">Geometry</code> — Geometry to split into instances</li>
+<li>Selection <code class="s s-Boolean">Boolean</code> — Elements to include</li>
+<li>Group ID <code class="s s-Integer">Integer</code> — Elements with the same ID go into the same instance</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Instances <code class="s s-Geometry">Geometry</code> — Generated instances</li>
+<li>Group ID <code class="s s-Integer">Integer</code> — Group ID of each instance</li>
+</ul>
+<h3 id="a3d_split-to-instances_instance">A3D_Split to Instances_Instance</h3>
+<p class="sec sec-Description">Description</p>
+<p>Domain-locked variant of A3D_Split to Instances that splits geometry into separate instances per existing instance, with a pivot point type and group ID.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Pivot Point Type <code class="s s-Integer">Integer</code> — Type of pivot point of each instance</li>
+<li>Geometry <code class="s s-Geometry">Geometry</code> — Geometry to split into instances</li>
+<li>Selection <code class="s s-Boolean">Boolean</code> — Elements to include</li>
+<li>Group ID <code class="s s-Integer">Integer</code> — Elements with the same ID go into the same instance</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Instances <code class="s s-Geometry">Geometry</code> — Generated instances</li>
+<li>Group ID <code class="s s-Integer">Integer</code> — Group ID of each instance</li>
+</ul>
+<h3 id="a3d_split-to-instances_point">A3D_Split to Instances_Point</h3>
+<p class="sec sec-Description">Description</p>
+<p>Domain-locked variant of A3D_Split to Instances that splits geometry into separate instances per point, with a pivot point type and group ID.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Pivot Point Type <code class="s s-Integer">Integer</code> — Type of pivot point of each instance</li>
+<li>Geometry <code class="s s-Geometry">Geometry</code> — Geometry to split into instances</li>
+<li>Selection <code class="s s-Boolean">Boolean</code> — Elements to include</li>
+<li>Group ID <code class="s s-Integer">Integer</code> — Elements with the same ID go into the same instance</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Instances <code class="s s-Geometry">Geometry</code> — Generated instances</li>
+<li>Group ID <code class="s s-Integer">Integer</code> — Group ID of each instance</li>
+</ul>
+<h3 id="a3d_split-to-instances_spline">A3D_Split to Instances_Spline</h3>
+<p class="sec sec-Description">Description</p>
+<p>Domain-locked variant of A3D_Split to Instances that splits geometry into separate instances per spline, with a pivot point type and group ID.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Pivot Point Type <code class="s s-Integer">Integer</code> — Type of pivot point of each instance</li>
+<li>Geometry <code class="s s-Geometry">Geometry</code> — Geometry to split into instances</li>
+<li>Selection <code class="s s-Boolean">Boolean</code> — Elements to include</li>
+<li>Group ID <code class="s s-Integer">Integer</code> — Elements with the same ID go into the same instance</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Instances <code class="s s-Geometry">Geometry</code> — Generated instances</li>
+<li>Group ID <code class="s s-Integer">Integer</code> — Group ID of each instance</li>
+</ul>
+<h3 id="a3d_surface-gradient">A3D_Surface Gradient</h3>
+<p class="sec sec-Description">Description</p>
+<p>Derives a tangential flow direction vector across a surface from an input scalar value field.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Value <code class="s s-Float">Float</code> — Scalar field to take the gradient of</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Vector <code class="s s-Vector">Vector</code> — Tangential flow direction across the surface</li>
+</ul>
+<h3 id="a3d_surface-normal">A3D_Surface Normal</h3>
+<p class="sec sec-Description">Description</p>
+<p>Samples the surface normal of a mesh at a given position (optionally scoped by group ID), with a validity flag for out-of-bounds samples.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Mesh <code class="s s-Geometry">Geometry</code> — Mesh to sample</li>
+<li>Group ID <code class="s s-Integer">Integer</code> — Splits the faces of the input mesh into groups which can be sampled individually</li>
+<li>Sample Position <code class="s s-Vector">Vector</code> — Position to sample the normal at</li>
+<li>Sample Group ID <code class="s s-Integer">Integer</code> — Group to sample from</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Normal <code class="s s-Vector">Vector</code> — Surface normal at the sample position</li>
+<li>Is Valid <code class="s s-Boolean">Boolean</code> — Whether the sampling was successful. It can fail when the sampled group is empty</li>
+</ul>
+<h3 id="a3d_sweep-curve">A3D_Sweep Curve</h3>
+<p class="sec sec-Description">Description</p>
+<p>Sweeps a start and end profile curve along a path curve at a given resolution, producing a lofted mesh.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Curve <code class="s s-Geometry">Geometry</code> — Path curve to sweep along</li>
+<li>Sweep Resolution <code class="s s-Integer">Integer</code> — Number of samples along the path</li>
+<li>Start Profile <code class="s s-Geometry">Geometry</code> — Profile curve at the start of the path</li>
+<li>End Profile <code class="s s-Geometry">Geometry</code> — Profile curve at the end of the path</li>
+<li>Profile Resolution <code class="s s-Integer">Integer</code> — Number of points on the profile</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Mesh <code class="s s-Geometry">Geometry</code> — Swept mesh</li>
+</ul>
+<h3 id="a3d_tetrahedron">A3D_Tetrahedron</h3>
+<p class="sec sec-Description">Description</p>
+<p>Generates a regular tetrahedron mesh of a given radius.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Radius <code class="s s-Float">Float</code> — Radius of the tetrahedron</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Mesh <code class="s s-Geometry">Geometry</code> — Generated tetrahedron mesh</li>
+</ul>
+<h3 id="a3d_tetrahedron-volume">A3D_Tetrahedron Volume</h3>
+<p class="sec sec-Description">Description</p>
+<p>Computes the signed volume of a tetrahedron defined by four vertices.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Vertex A <code class="s s-Vector">Vector</code> — First vertex of the tetrahedron</li>
+<li>Vertex B <code class="s s-Vector">Vector</code> — Second vertex of the tetrahedron</li>
+<li>Vertex C <code class="s s-Vector">Vector</code> — Third vertex of the tetrahedron</li>
+<li>Vertex D <code class="s s-Vector">Vector</code> — Fourth vertex of the tetrahedron</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Volume <code class="s s-Float">Float</code> — Signed volume of the tetrahedron</li>
+</ul>
+<h3 id="a3d_univariate-newton-solver">A3D_Univariate Newton Solver</h3>
+<p class="sec sec-Description">Description</p>
+<p>Solves for a root of a single-variable function closure using Newton's method, iterating from an initial guess with a configurable epsilon and step size, and reporting convergence.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Function Closure <code class="s s-Closure">Closure</code> — Function to find the root of</li>
+<li>Iterations <code class="s s-Integer">Integer</code> — Number of Newton iterations</li>
+<li>Initial Guess <code class="s s-Float">Float</code> — Starting value for the search</li>
+<li>Epsilon <code class="s s-Float">Float</code> — Tolerance used to test convergence</li>
+<li>Step Size <code class="s s-Float">Float</code> — Scale of each Newton step</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Root <code class="s s-Float">Float</code> — Root found by the solver</li>
+<li>Converged <code class="s s-Boolean">Boolean</code> — True if the solver converged</li>
+</ul>
+<h3 id="a3d_uv-mapped-strip">A3D_UV Mapped Strip</h3>
+<p class="sec sec-Description">Description</p>
+<p>Generates a UV-mapped ribbon/strip mesh along a curve using a profile curve, with scale, tilt, UV method, channel-swap, camera-facing, and cap-fill controls.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Curve <code class="s s-Geometry">Geometry</code> — Curve the strip follows</li>
+<li>Profile Curve <code class="s s-Geometry">Geometry</code> — Cross-section of the strip</li>
+<li>Scale <code class="s s-Float">Float</code> — Scale of the profile at each point</li>
+<li>Tilt <code class="s s-Float">Float</code> — Rotation of the profile around the curve</li>
+<li>UV Map <code class="s s-String">String</code> — Name of the UV map to store</li>
+<li>UV Method <code class="s s-Menu">Menu</code> — How UV coordinates are generated</li>
+<li>Swap UV Channels <code class="s s-Boolean">Boolean</code> — Swap the U and V channels</li>
+<li>Align To Active Camera <code class="s s-Boolean">Boolean</code> — Turn the strip to face the active camera</li>
+<li>Fill Caps <code class="s s-Boolean">Boolean</code> — If the profile spline is cyclic, fill the ends of the generated mesh with N-gons</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Mesh <code class="s s-Geometry">Geometry</code> — Generated strip mesh</li>
+<li>UVMap <code class="s s-Vector">Vector</code> — Generated UV coordinates</li>
+</ul>
+<h3 id="a3d_uv-unwrap">A3D_UV Unwrap</h3>
+<p class="sec sec-Description">Description</p>
+<p>Unwraps a mesh's selected faces along seam edges using a selectable method, with margin, hole-filling, iteration, and no-flip controls.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Geometry <code class="s s-Geometry">Geometry</code> — Geometry to unwrap</li>
+<li>Selection <code class="s s-Boolean">Boolean</code> — Faces to participate in the unwrap operation</li>
+<li>Seam <code class="s s-Boolean">Boolean</code> — Edges to mark where the mesh is "cut" for the purposes of unwrapping</li>
+<li>Margin <code class="s s-Float">Float</code> — Space between islands</li>
+<li>Fill Holes <code class="s s-Boolean">Boolean</code> — Virtually fill holes in mesh before unwrapping, to better avoid overlaps and preserve symmetry</li>
+<li>Method <code class="s s-Menu">Menu</code> — Unwrapping algorithm</li>
+<li>Iterations <code class="s s-Integer">Integer</code> — Number of iterations to run the SLIM solver for</li>
+<li>No Flip <code class="s s-Boolean">Boolean</code> — Prevents flipping UVs</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Geometry <code class="s s-Geometry">Geometry</code> — Geometry with the unwrapped UVs</li>
+<li>UV <code class="s s-Vector">Vector</code> — UV coordinates between 0 and 1 for each face corner in the selected faces</li>
+</ul>
+<h3 id="a3d_vector-to-angle">A3D_Vector to Angle</h3>
+<p class="sec sec-Description">Description</p>
+<p>Converts a 2D vector into its angle in radians.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Vector <code class="s s-Vector">Vector</code> — 2D vector to convert</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Radians <code class="s s-Float">Float</code> — Angle of the vector in radians</li>
+</ul>
+<h3 id="a3d_velocity-simulation">A3D_Velocity Simulation</h3>
+<p class="sec sec-Description">Description</p>
+<p>Derives and writes a per-point velocity attribute across simulation steps, with damping.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Geometry <code class="s s-Geometry">Geometry</code> — Geometry to simulate velocity on</li>
+<li>Damping <code class="s s-Float">Float</code> — How much to damp the velocity</li>
+<li>Write Attribute <code class="s s-Boolean">Boolean</code> — Store Named Attribute containing Velocity value</li>
+<li>Velocity Attribute <code class="s s-String">String</code> — Name of the attribute to store</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Geometry <code class="s s-Geometry">Geometry</code> — Geometry with the updated velocity</li>
+<li>Velocity <code class="s s-Vector">Vector</code> — Simulated velocity of each element</li>
+</ul>
+<h3 id="a3d_view-transform">A3D_View Transform</h3>
+<p class="sec sec-Description">Description</p>
+<p>Transforms a world-space position through a camera's view into view-space, clip-space (with W), and NDC coordinates.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Source <code class="s s-Menu">Menu</code> — Where the camera comes from</li>
+<li>Camera <code class="s s-Object">Object</code> — Camera object to transform through</li>
+<li>Position <code class="s s-Vector">Vector</code> — Position to transform</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>View Space Position <code class="s s-Vector">Vector</code> — Position transformed to view space</li>
+<li>Clip Space Position <code class="s s-Vector">Vector</code> — Position transformed to clip space</li>
+<li>Clip Space W <code class="s s-Float">Float</code> — Depth of transformed point in clip space</li>
+<li>NDC Position <code class="s s-Vector">Vector</code> — Position transformed to normalized device coordinates</li>
+</ul>
+<h3 id="a3d_volume-of-mesh">A3D_Volume of Mesh</h3>
+<p class="sec sec-Description">Description</p>
+<p>Computes the enclosed volume of a mesh.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Mesh <code class="s s-Geometry">Geometry</code> — Mesh to measure</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Volume <code class="s s-Float">Float</code> — Volume enclosed by the mesh</li>
+</ul>
+<h3 id="a3d_wiggle">A3D_Wiggle</h3>
+<p class="sec sec-Description">Description</p>
+<p>Applies a physics-driven jiggle to a mesh using the motion of the object.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Geometry <code class="s s-Geometry">Geometry</code> — The mesh to apply the wiggle to</li>
+<li>Influence <code class="s s-Float">Float</code> — Per-point strength of the wobble</li>
+<li>Damping <code class="s s-Float">Float</code> — How quickly the oscillation dies out</li>
+<li>Frequency <code class="s s-Float">Float</code> — How fast the mesh oscillates, in Hz</li>
+<li>Gravity <code class="s s-Vector">Vector</code> — Constant acceleration in world space</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Geometry <code class="s s-Geometry">Geometry</code> — The input geometry with the simulated wobble applied to its point positions.</li>
+</ul>
+<h3 id="a3d_xpbd-solver">A3D_XPBD Solver</h3>
+<p class="sec sec-Description">Description</p>
+<p>A full extended position-based dynamics (XPBD) cloth/soft-body solver. Supports fixed points, external force, damping, stretch stiffness, pretension, pressure, friction, and mesh collision, with pre/post-solve closures for custom constraint injection.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Geometry <code class="s s-Geometry">Geometry</code> — Rope geometry to simulate</li>
+<li>Substeps <code class="s s-Integer">Integer</code> — Quality of simulation</li>
+<li>Fixed Points <code class="s s-Boolean">Boolean</code> — Which points are fixed/immobile</li>
+<li>Animated <code class="s s-Boolean">Boolean</code> — Are fixed points animated/updating every frame (use for rigs)</li>
+<li>External Force <code class="s s-Vector">Vector</code> — External force acting on simulation</li>
+<li>Damping <code class="s s-Float">Float</code> — Velocity reduction (recommended &gt;0)</li>
+<li>Stretch Stiffness <code class="s s-Float">Float</code> — How much the rope resists stretching. High values require higher steps</li>
+<li>Pretension <code class="s s-Float">Float</code> — Tension in the rope before simulation. Helps keep ropes stiff</li>
+<li>Pre Solve Closure <code class="s s-Closure">Closure</code> — Closure run before each solve step</li>
+<li>Post Solve Closure <code class="s s-Closure">Closure</code> — Closure run after each solve step</li>
+<li>Pressure <code class="s s-Boolean">Boolean</code> — Enable pressure forces</li>
+<li>Pressure Coefficient <code class="s s-Float">Float</code> — Strength of the pressure force</li>
+<li>Friction <code class="s s-Boolean">Boolean</code> — Enable friction</li>
+<li>Friction Coefficient <code class="s s-Float">Float</code> — Strength of the friction</li>
+<li>Collision <code class="s s-Boolean">Boolean</code> — Enable collision</li>
+<li>Collision Substeps <code class="s s-Integer">Integer</code> — Number of substeps used for collision</li>
+<li>Collision Use Object <code class="s s-Boolean">Boolean</code> — Collide with an object instead of a mesh</li>
+<li>Collision Object <code class="s s-Object">Object</code> — Object to collide with</li>
+<li>Collision Mesh <code class="s s-Geometry">Geometry</code> — Mesh to collide with</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Geometry <code class="s s-Geometry">Geometry</code> — Simulated rope geometry</li>
+</ul>
+<h3 id="a3d_xpbd-solver-step">A3D_XPBD Solver Step</h3>
+<p class="sec sec-Description">Description</p>
+<p>A single time-stepped iteration of the XPBD solver, taking an explicit delta time and previous position and exposing the same stiffness/pressure/friction/collision controls as the full solver.</p>
+<p class="sec sec-Inputs">Inputs</p>
+<ul>
+<li>Delta Time <code class="s s-Float">Float</code> — Time step of the simulation</li>
+<li>Geometry <code class="s s-Geometry">Geometry</code> — Rope geometry to simulate</li>
+<li>Previous Position <code class="s s-Vector">Vector</code> — Positions from the previous step</li>
+<li>Substeps <code class="s s-Integer">Integer</code> — Number of substeps</li>
+<li>Fixed <code class="s s-Boolean">Boolean</code> — Which points are fixed in place</li>
+<li>External Force <code class="s s-Vector">Vector</code> — External force acting on the simulation</li>
+<li>Damping <code class="s s-Float">Float</code> — Velocity reduction applied each step</li>
+<li>Stiffness <code class="s s-Float">Float</code> — How much the rope resists stretching</li>
+<li>Pretension <code class="s s-Float">Float</code> — Tension in the rope before simulation</li>
+<li>Pressure <code class="s s-Boolean">Boolean</code> — Enable pressure forces</li>
+<li>Pressure Coefficient <code class="s s-Float">Float</code> — Strength of the pressure force</li>
+<li>Friction <code class="s s-Boolean">Boolean</code> — Enable friction</li>
+<li>Friction Coefficient <code class="s s-Float">Float</code> — Strength of the friction</li>
+<li>Collision <code class="s s-Boolean">Boolean</code> — Enable collision</li>
+<li>Collision Substeps <code class="s s-Integer">Integer</code> — Number of substeps used for collision</li>
+<li>Collision Mesh <code class="s s-Geometry">Geometry</code> — Mesh to collide with</li>
+</ul>
+<p class="sec sec-Outputs">Outputs</p>
+<ul>
+<li>Geometry <code class="s s-Geometry">Geometry</code> — Simulated rope geometry</li>
+<li>Position <code class="s s-Vector">Vector</code> — Updated positions</li>
+</ul></main></div>
+<script>
+document.getElementById('q').addEventListener('input',e=>{
+const v=e.target.value.toLowerCase();
+document.querySelectorAll('nav a').forEach(a=>a.style.display=a.textContent.toLowerCase().includes(v)?'':'none');
+});
+</script></body></html>
