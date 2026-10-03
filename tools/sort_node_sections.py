@@ -2,16 +2,16 @@
 """
 sort_node_sections.py
 
-Sorts the "### " sub-header sections of a markdown document alphabetically
-by their header text (e.g. each Geometry Nodes entry like "### A3D_Mirror").
+Sorts the "### " node sections of a markdown document alphabetically by their
+header text (e.g. each Geometry Nodes entry like "### A3D_Mirror"), within
+each "## " category heading. Category headings keep their original order.
 
-- Any content before the first "### " header (a preamble) is kept at the top,
-  unchanged, in its original position.
-- Divider lines that only contain "---" and lines like "## New Nodes" are
-  treated as separators between groups, not as content, and are dropped from
-  the output (since sorting merges everything into one alphabetical list).
-- Each "### " section (header + everything up to the next "### " header) is
-  treated as an atomic block and moved as a unit.
+- Any content before the first "## " heading (a preamble) is kept at the top,
+  unchanged.
+- Documents with no "## " headings are treated as one uncategorized group.
+- Each "### " section (header + everything up to the next "### " or "## "
+  header) is treated as an atomic block and moved as a unit.
+- Divider lines that only contain "---" are dropped.
 - Sorting is case-insensitive, using the header text with the leading
   "### " stripped.
 
@@ -26,6 +26,7 @@ import sys
 
 
 HEADER_RE = re.compile(r"^### .+$", re.MULTILINE)
+CATEGORY_RE = re.compile(r"^## .+$", re.MULTILINE)
 
 
 def split_into_sections(text: str):
@@ -54,32 +55,41 @@ def split_into_sections(text: str):
 
 def clean_block(block: str) -> str:
     """
-    Strips out divider-only lines ("---") and standalone "## ..." group
-    headers (e.g. "## New Nodes") that may trail at the end of a block
-    (they show up there because they sit between one section's content
-    and the next "### " header). Also trims trailing whitespace.
+    Strips divider-only lines ("---") and blank lines that trail a block
+    (they sit between one section's content and the next header).
     """
     lines = block.splitlines()
-    # Drop trailing lines that are just "---" or a "## " heading or blank,
-    # working backwards, but stop as soon as we hit real content.
-    while lines and (
-        lines[-1].strip() == ""
-        or lines[-1].strip() == "---"
-        or lines[-1].strip().startswith("## ")
-    ):
+    while lines and lines[-1].strip() in ("", "---"):
         lines.pop()
     return "\n".join(lines).rstrip() + "\n"
 
 
-def sort_sections(text: str) -> str:
+def sort_group(text: str) -> str:
+    """Sort the "### " sections of one category's body."""
     preamble, sections = split_into_sections(text)
 
     cleaned = [(header, clean_block(block)) for header, block in sections]
     cleaned.sort(key=lambda pair: pair[0].lower())
 
     prefix = (preamble.rstrip() + "\n\n") if preamble.strip() else ""
-    body = "\n\n".join(block for _, block in cleaned)
-    return prefix + body + "\n"
+    body = "\n".join(block for _, block in cleaned)
+    return prefix + body
+
+
+def sort_sections(text: str) -> str:
+    matches = list(CATEGORY_RE.finditer(text))
+    if not matches:
+        return sort_group(text) + "\n"
+
+    parts = []
+    preamble = text[: matches[0].start()].rstrip()
+    if preamble:
+        parts.append(preamble)
+    for i, m in enumerate(matches):
+        end = matches[i + 1].start() if i + 1 < len(matches) else len(text)
+        body = sort_group(text[m.end():end])
+        parts.append(m.group(0).rstrip() + "\n\n" + body)
+    return "\n".join(parts) + "\n"
 
 
 def main():

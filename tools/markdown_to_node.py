@@ -2,7 +2,14 @@
 Apply node group and socket descriptions from Node_Reference.md onto the node
 groups in the open .blend file.
 
-Reads, per "### <node group name>" section:
+Reads, per "### <node group name>" section (under a "## <category>" heading):
+  - the "## <category>" heading                -> asset catalog "A3D_Procgen Toolkit/<category>"
+                                                  (the parent must already be your library
+                                                  catalog; subcatalogs are created in
+                                                  blender_assets.cats.txt if missing;
+                                                  the group is marked as an asset
+                                                  unless --no-mark). "## Uncategorized"
+                                                  leaves the catalog untouched.
   - the text under **Description**             -> node_group.description
                                                   (and asset_data.description if the
                                                   group is marked as an asset)
@@ -18,9 +25,14 @@ section followed by explicit Inputs / Outputs headings.
 Run from Blender's Scripting tab, or headless:
   blender -b file.blend --python tools/markdown_to_node.py -- \
       --reference "/path/Node Reference.md" [--exclude "A3D_X"] [--only-empty] \
-      [--dry-run] [--save]
+      [--catalogs "/path/blender_assets.cats.txt"] [--catalog-parent "A3D_Procgen Toolkit"] \
+      [--no-mark] [--dry-run] [--save]
+
+After running, refresh the asset library (or reopen the file) so the Asset
+Browser picks up newly written catalogs.
 """
 import argparse
+import importlib
 import re
 import sys
 from collections import defaultdict
@@ -28,10 +40,35 @@ from pathlib import Path
 
 import bpy
 
+# Folder containing this script and node_reference.py. Only needed when the
+# script is run from a text block inside the .blend (where __file__ is not a
+# real path); set it to e.g. r"T:\...\a3d_procgen_toolkit\tools".
+TOOLS_DIR = ""
+
+
+def _find_tools_dir():
+    candidates = [TOOLS_DIR, str(Path(__file__).resolve().parent)]
+    text = bpy.data.texts.get(Path(__file__).name)  # text block linked to an external file
+    if text is not None and text.filepath:
+        candidates.append(str(Path(bpy.path.abspath(text.filepath)).resolve().parent))
+    for c in candidates:
+        if c and (Path(c) / "node_reference.py").is_file():
+            return Path(c)
+    raise FileNotFoundError(
+        "Can't find node_reference.py. Set TOOLS_DIR at the top of this script to the repo's tools folder."
+    )
+
+
+_TOOLS = _find_tools_dir()
+sys.path.insert(0, str(_TOOLS))
+import node_reference
+importlib.reload(node_reference)  # pick up edits when re-run in the same Blender session
+from node_reference import RE_CATEGORY, UNCATEGORIZED
+
 # ---------------------------------------------------------------------------
 # Defaults (edit these, or override from the command line after "--")
 # ---------------------------------------------------------------------------
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = _TOOLS.parent
 REFERENCE_PATH = str(ROOT / "Node Reference.md")  # "//" = folder of the .blend
 EXCLUDE_NAMES = []     # exact node group names to skip
 ONLY_EMPTY = False     # True = never overwrite a description that already exists
@@ -46,8 +83,8 @@ NAME_ALIASES = {}
 # Separator between a socket's name/type and its description in a bullet.
 SEP = " — "
 
-# Node heading: "## Name", "### Name" or "#### Name".
-RE_NODE = re.compile(r"^#{2,4} (.+?)\s*$")
+# Node heading: "### Name" ("## Name" is a category, see node_reference).
+RE_NODE = re.compile(r"^### (.+?)\s*$")
 
 # Section marker: either "**Description**" style or "### Description" style
 # (colon optional). Group 1 or 2 holds the section name.
@@ -71,6 +108,14 @@ def parse_args():
     p = argparse.ArgumentParser()
     p.add_argument("--reference", default=REFERENCE_PATH)
     p.add_argument("--exclude", nargs="*", default=None, help="Node group names to skip")
+    p.add_argument("--catalogs", default=None,
+                   help="blender_assets.cats.txt to use (default: nearest to the .blend, "
+                        "else a new one beside it)")
+    p.add_argument("--catalog-parent", default=node_reference.CATALOG_PARENT,
+                   help="existing library catalog the categories are nested under "
+                        "('' = top level)")
+    p.add_argument("--no-mark", action="store_true",
+                   help="don't mark node groups as assets; only categorize ones that already are")
     p.add_argument("--only-empty", action="store_true", default=ONLY_EMPTY)
     p.add_argument("--dry-run", action="store_true", default=DRY_RUN)
     p.add_argument("--save", action="store_true", default=SAVE)
@@ -83,12 +128,14 @@ def parse_args():
 
 
 def parse_reference(text):
-    """-> {node: {"description": str|None, "Inputs": {sock: [desc|None]}, "Outputs": {...}}}
+    """-> {node: {"category": str|None, "description": str|None,
+                  "Inputs": {sock: [desc|None]}, "Outputs": {...}}}
 
     Socket descriptions are stored as a list per socket name so that sockets
     sharing a name (e.g. duplicates) can be matched up in order later.
     """
     ref = {}
+    category = None         # current "## " category heading
     node = section = None   # current node heading / current section within it
     desc_lines = []         # accumulates lines of the current Description block
 
@@ -99,11 +146,17 @@ def parse_reference(text):
             ref[node]["description"] = " ".join(" ".join(desc_lines).split()) or None
 
     for line in text.splitlines():
+        if m := RE_CATEGORY.match(line):
+            # Category heading: finish the previous node; nodes below belong to it.
+            flush_desc()
+            category, node, section, desc_lines = m.group(1), None, None, []
+            continue
         if m := RE_NODE.match(line):
             # New node heading: finish the previous node and start a fresh entry.
             flush_desc()
             node, section, desc_lines = m.group(1), None, []
-            ref[node] = {"description": None, "Inputs": defaultdict(list), "Outputs": defaultdict(list)}
+            ref[node] = {"category": category, "description": None,
+                         "Inputs": defaultdict(list), "Outputs": defaultdict(list)}
         elif node is None:
             # Anything before the first node heading is ignored.
             continue
@@ -128,9 +181,35 @@ def parse_reference(text):
     return ref
 
 
-def apply(ref, args, report):
-    """Write the parsed descriptions onto the node groups; returns a stats dict."""
+def set_category(ng, category, catalog_ids, args, stats, report):
+    """Assign the group to the catalog for `category`, marking it as an asset
+    first if needed. Does nothing for Uncategorized / missing categories."""
+    if not category or category == UNCATEGORIZED:
+        return
+    if ng.asset_data is None:
+        if args.no_mark:
+            report["not an asset (category not applied)"].append(ng.name)
+            return
+        if not args.dry_run:
+            ng.asset_mark()
+        stats["marked as assets"] += 1
+    asset = ng.asset_data
+    catalog_id = catalog_ids[category]
+    if asset is not None and asset.catalog_id == catalog_id:
+        stats["category: unchanged"] += 1
+        return
+    if asset is not None and not args.dry_run:
+        asset.catalog_id = catalog_id
+        if asset.catalog_id != catalog_id:
+            report["write did not stick (property ignored the value)"].append(f"category: {ng.name}")
+            return
+    stats["category: set"] += 1
+
+
+def apply(ref, args, report, catalog_ids=None):
+    """Write the parsed categories and descriptions onto the node groups; returns a stats dict."""
     stats = defaultdict(int)
+    catalog_ids = catalog_ids or {}
 
     def set_desc(target, new, kind, label):
         """Set target.description to `new` (node group, asset or socket), honoring
@@ -169,6 +248,12 @@ def apply(ref, args, report):
         if entry is None:
             report["in file, not in reference"].append(name)
             continue
+
+        # Category first, so a freshly marked asset also gets its asset description below.
+        if entry["category"]:
+            set_category(ng, entry["category"], catalog_ids, args, stats, report)
+        else:
+            report["reference entry has no category"].append(name)
 
         # Node group description (plus the asset description if it's an asset).
         if entry["description"]:
@@ -218,7 +303,17 @@ def main():
     with open(path, encoding="utf-8") as f:
         ref = parse_reference(f.read())
 
-    stats = apply(ref, args, report)
+    categories = sorted({e["category"] for e in ref.values()
+                         if e["category"] and e["category"] != UNCATEGORIZED})
+    catalogs_path = (node_reference.find_catalogs_file(bpy.data.filepath, args.catalogs)
+                     or Path(bpy.data.filepath).resolve().parent / node_reference.CATALOGS_FILENAME)
+    print(f"Using catalogs file {catalogs_path}")
+    catalog_ids, created = node_reference.ensure_catalogs(
+        catalogs_path, categories, args.catalog_parent, write=not args.dry_run)
+    if created:
+        print(f"{'Would create' if args.dry_run else 'Created'} catalogs: {', '.join(created)}")
+
+    stats = apply(ref, args, report, catalog_ids)
 
     # Print mismatches/problems found along the way.
     for key, items in report.items():

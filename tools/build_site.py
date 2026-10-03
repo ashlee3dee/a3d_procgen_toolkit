@@ -92,7 +92,7 @@ def decorate(body):
 
 
 IMAGES_SRC = ROOT / "assets" / "node_images"
-H3_RE = re.compile(r'(<h3 id="([^"]+)">.*?</h3>)(.*?)(?=<h3 id=|\Z)', re.S)
+H3_RE = re.compile(r'(<h3 id="([^"]+)">.*?</h3>)(.*?)(?=<h[23] id=|\Z)', re.S)
 
 
 def add_images(body, names):
@@ -139,9 +139,14 @@ nav{{width:260px;height:calc(100vh - 2.9rem);overflow:auto;position:sticky;top:2
 nav input{{background:var(--input-bg);color:var(--input-text);border:1px solid var(--input-border);border-radius:4px;width:100%;padding:.4rem;box-sizing:border-box;margin-bottom:.5rem}}
 nav a{{display:block;padding:.15rem 0;color:var(--nav-link);text-decoration:none;font-size:14px}}
 nav a:hover{{color:var(--nav-link-hover);text-decoration:underline}}
+nav details{{margin:.15rem 0}}
+nav summary{{cursor:pointer;padding:.25rem .4rem;border-radius:4px;background:var(--h3-bg);color:var(--h3-text);font-size:14px;font-weight:600}}
+nav summary:hover{{color:var(--nav-link-hover)}}
+nav summary span{{opacity:.6;font-weight:400;margin-left:.3em}}
+nav details a{{padding-left:1rem}}
 main{{max-width:800px;padding:1rem 2rem;flex:1}}
 h1{{margin:.5rem 0 1rem;padding:.4rem .8rem;background:var(--h1-bg);color:var(--h1-text);border-radius:6px}}
-h2{{padding:.3rem .8rem;background:var(--h2-bg);color:var(--h2-text);border-radius:6px}}
+h2{{margin-top:3rem;padding:.3rem .8rem;background:var(--h2-bg);color:var(--h2-text);border-radius:6px;scroll-margin-top:3.5rem}}
 h3{{margin-top:2.5rem;padding:.35rem .8rem;background:var(--h3-bg);color:var(--h3-text);border-left:6px solid var(--h3-accent);border-radius:4px;scroll-margin-top:3.5rem}}
 h4{{padding:.2rem .7rem;background:var(--h4-bg);border-radius:4px}}
 .sec{{margin:1.2rem 0 .4rem;padding:.15rem .7rem;font-weight:700;border-radius:4px;border-left:4px solid}}
@@ -165,12 +170,58 @@ code.s{{font-size:.85em;font-weight:600;padding:.05em .45em;border-radius:10px}}
 <main><h1>A3D Procgen Toolkit - Node Reference</h1>{body}</main>
 </div>
 <script>
-document.getElementById('q').addEventListener('input',e=>{{
-const v=e.target.value.toLowerCase();
+const q=document.getElementById('q');
+const groups=[...document.querySelectorAll('nav details')];
+let filtering=false;
+q.addEventListener('input',e=>{{
+const v=e.target.value.trim().toLowerCase();
+if(v&&!filtering)groups.forEach(d=>d.dataset.wasOpen=d.open?'1':'');
 document.querySelectorAll('nav a').forEach(a=>a.style.display=a.textContent.toLowerCase().includes(v)?'':'none');
+groups.forEach(d=>{{
+const hit=[...d.querySelectorAll('a')].some(a=>a.style.display!=='none');
+d.style.display=hit?'':'none';
+d.open=v?hit:d.dataset.wasOpen==='1';
 }});
+filtering=!!v;
+}});
+function openCurrent(){{
+const a=document.querySelector('nav a[href="'+decodeURIComponent(location.hash)+'"]');
+const d=a&&a.closest('details');
+if(d)d.open=true;
+}}
+window.addEventListener('hashchange',openCurrent);
+openCurrent();
 </script></body></html>
 """
+
+
+def nav_html(tree):
+    """Sidebar: one dropdown per category listing its nodes."""
+    parts = []
+    for category, nodes in tree:
+        links = "".join(
+            f'<a href="#{html.escape(nid)}">{html.escape(name)}</a>' for nid, name in nodes
+        )
+        if category is None:
+            parts.append(links)
+            continue
+        cid, cname = category
+        parts.append(
+            f'<details><summary>{html.escape(cname)}<span>{len(nodes)}</span></summary>{links}</details>'
+        )
+    return "".join(parts)
+
+
+def nav_tree(toc_tokens):
+    """-> [((id, name) | None, [(node id, node name)])]: h2 categories with
+    their h3 nodes; h3 nodes outside any category go in a leading None group."""
+    loose = [(t["id"], html.unescape(t["name"])) for t in toc_tokens if t["level"] == 3]
+    tree = [(None, loose)] if loose else []
+    for t in toc_tokens:
+        if t["level"] == 2:
+            nodes = [(c["id"], html.unescape(c["name"])) for c in t["children"] if c["level"] == 3]
+            tree.append(((t["id"], html.unescape(t["name"])), nodes))
+    return tree
 
 
 def main():
@@ -178,11 +229,9 @@ def main():
     md = markdown.Markdown(extensions=["toc", "tables", "fenced_code"],
                            extension_configs={"toc": {"toc_depth": "3"}})
     body = decorate(md.convert(text))
-    toc = "".join(
-        f'<a href="#{t["id"]}">{html.escape(t["name"])}</a>'
-        for t in md.toc_tokens if t["level"] == 3
-    )
-    names = {t["id"]: t["name"] for t in md.toc_tokens if t["level"] == 3}
+    tree = nav_tree(md.toc_tokens)
+    toc = nav_html(tree)
+    names = {nid: name for _, nodes in tree for nid, name in nodes}
     body = add_images(body, names)
     OUT.mkdir(exist_ok=True)
     if IMAGES_SRC.is_dir():
