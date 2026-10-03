@@ -82,6 +82,7 @@ Cuts a body mesh using an arbitrary 2D tool mesh as the cutting shape, returning
 - Intersected `Boolean` — True where the tool mesh intersects the body
 - Intersection Position `Vector` — Position of the intersection
 
+
 ### A3D_Active Camera Transform
 
 **Description**
@@ -504,6 +505,7 @@ Deforms a mesh to conform to a target surface using a UV-space transfer map, wit
 - Transfer Surface `Object` — Surface to transfer to
 - Transfer Map `String` — Name of the UV transfer map to use
 - Debug `Boolean` — Show UV Space Geometry
+- To Max `Float`
 
 **Outputs**
 
@@ -805,8 +807,6 @@ Returns the signed winding direction (+1/-1) of the current face, useful for det
 
 **Inputs**
 
-_None — reads directly from the geometry context (e.g. current point/face/edge)._
-
 **Outputs**
 
 - Sign `Float` — Winding direction of the face, +1 or -1
@@ -835,8 +835,6 @@ Generates a set of points arranged in a Fermat (golden-angle) spiral, controlled
 Estimates per-vertex Gaussian curvature via angle defect (the deviation of the sum of incident face angles from 2π), for curvature-driven shading or deformation.
 
 **Inputs**
-
-_None — reads directly from the geometry context (e.g. current point/face/edge)._
 
 **Outputs**
 
@@ -868,8 +866,6 @@ Builds a trailing motion-path mesh from a set of animated points, with configura
 Outputs the constant φ (the golden ratio, ≈1.618) for use in proportion-driven procedural setups.
 
 **Inputs**
-
-_None — reads directly from the geometry context (e.g. current point/face/edge)._
 
 **Outputs**
 
@@ -933,7 +929,6 @@ Computes a discrete Laplacian (second-difference) of a value field across grid-c
 **Inputs**
 
 - Value `Float` — Value field to take the Laplacian of
-- Max Edges `Integer`
 
 **Outputs**
 
@@ -948,10 +943,10 @@ Builds a boolean selection over a rectangular width/height kernel positioned at 
 
 **Inputs**
 
-- Index `Integer` — Index of the grid cell the kernel is positioned at
-- Height `Integer` — Height of the kernel in cells
-- Width `Integer` — Width of the kernel in cells
 - Resolution `Integer` — Resolution of the grid
+- Index `Integer` — Index of the grid cell the kernel is positioned at
+- Width `Integer` — Width of the kernel in cells
+- Height `Integer` — Height of the kernel in cells
 
 **Outputs**
 
@@ -1240,8 +1235,6 @@ Returns the bounding min, max, and origin of the current instance.
 
 **Inputs**
 
-_None — reads directly from the geometry context (e.g. current point/face/edge)._
-
 **Outputs**
 
 - Min `Vector` — Minimum corner of the instance bounds
@@ -1349,8 +1342,6 @@ A generalized Laplacian (connectivity-based blur) operator that works across flo
 Returns a boolean selection marking the largest connected mesh island.
 
 **Inputs**
-
-_None — reads directly from the geometry context (e.g. current point/face/edge)._
 
 **Outputs**
 
@@ -1588,22 +1579,6 @@ Returns a weighted, sortable list of a vertex's connected neighbor vertices and 
 
 - Other Vertex `Integer` — Index of the selected neighboring vertex
 - Total `Integer` — Number of vertices connected to this vertex
-
-
-### A3D_Node Name
-
-**Description**
-
-One or two sentences on what the node does and what it returns.
-
-**Inputs**
-
-- Socket Name `Type` — Short description of the socket
-- Another Socket `Type` — Short description
-
-**Outputs**
-
-- Socket Name `Type` — Short description
 
 
 ### A3D_Noodle
@@ -1874,13 +1849,28 @@ Splits the current position attribute into its X, Y, and Z components.
 
 **Inputs**
 
-_None — reads directly from the geometry context (e.g. current point/face/edge)._
-
 **Outputs**
 
 - X `Float` — X component of the position
 - Y `Float` — Y component of the position
 - Z `Float` — Z component of the position
+
+
+### A3D_Pressure Correction
+
+**Description**
+
+
+
+**Inputs**
+
+- Geometry `Geometry`
+- Delta Time `Float` — Time step of the simulation
+- Pressure Coefficient `Float` — Strength of the pressure force
+
+**Outputs**
+
+- Vector `Vector`
 
 
 ### A3D_Project To Plane
@@ -2067,6 +2057,22 @@ Computes each point's distance to the nearest UV seam.
 
 - Mesh `Geometry` — Mesh after the seam distance calculation
 - Distance `Float` — Distance to the nearest UV seam
+
+
+### A3D_Self Transform
+
+**Description**
+
+Applies the self object's transform matrix to the input geometry, with optional inversion.
+
+**Inputs**
+
+- Geometry `Geometry`
+- Invert `Boolean`
+
+**Outputs**
+
+- Geometry `Geometry`
 
 
 ### A3D_Set Position by Attribute
@@ -2498,9 +2504,9 @@ Computes the enclosed volume of a mesh.
 **Description**
 
 Applies a physics-driven jiggle to a mesh using the motion of the object.
- 
+
 **Inputs**
- 
+
 - Geometry `Geometry` — The mesh to apply the wiggle to
 - Influence `Float` — Per-point strength of the wobble
 - Damping `Float` — How quickly the oscillation dies out
@@ -2574,4 +2580,3 @@ A single time-stepped iteration of the XPBD solver, taking an explicit delta tim
 
 - Geometry `Geometry` — Simulated rope geometry
 - Position `Vector` — Updated positions
-
