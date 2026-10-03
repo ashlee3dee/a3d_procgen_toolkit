@@ -1,6 +1,9 @@
 """Build a static GitHub Pages site (site/index.html) from Node Reference.md."""
 import html
+import json
 import re
+import shutil
+import urllib.parse
 from pathlib import Path
 
 import markdown
@@ -10,7 +13,7 @@ OUT = ROOT / "site"
 
 # Page colors - tweak these. Each key becomes a CSS variable (--key).
 THEME = {
-    "page-bg": "#14121a",
+    "page-bg": "#e8e5f0",
     "text": "#e6e1ec",
     "header-start": "#2a1233",
     "header-end": "#e0457b",
@@ -65,6 +68,38 @@ def decorate(body):
     return SECTION_RE.sub(r'<p class="sec sec-\1">\1</p>', body)
 
 
+IMAGES_SRC = ROOT / "node_images"  # folder of images/gifs
+IMAGES_MAP = ROOT / "node_images.json"  # {"Node Name": "file.gif" | ["a.png", "b.gif"]}
+H3_RE = re.compile(r'(<h3 id="([^"]+)">.*?</h3>)(.*?)(?=<h3 id=|\Z)', re.S)
+
+
+def add_images(body, names):
+    """Insert images above each mapped node's Description."""
+    if not IMAGES_MAP.exists():
+        return body
+    lookup = json.loads(IMAGES_MAP.read_text(encoding="utf-8"))
+
+    def repl(m):
+        head, hid, rest = m.groups()
+        files = lookup.get(names.get(hid, ""), [])
+        if isinstance(files, str):
+            files = [files]
+        files = [f for f in files if (IMAGES_SRC / f).is_file()]
+        if not files:
+            return m.group(0)
+        imgs = '<div class="node-imgs">' + "".join(
+            f'<img src="images/{urllib.parse.quote(f)}" alt="{html.escape(names[hid])}" loading="lazy">'
+            for f in files) + "</div>"
+        marker = '<p class="sec sec-Description">'
+        if marker in rest:
+            rest = rest.replace(marker, imgs + marker, 1)
+        else:
+            rest = imgs + rest
+        return head + rest
+
+    return H3_RE.sub(repl, body)
+
+
 TEMPLATE = """<!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -87,6 +122,8 @@ h4{{padding:.2rem .7rem;background:var(--h4-bg);border-radius:4px}}
 .sec-Description{{background:var(--desc-bg);border-color:var(--desc-accent)}}
 .sec-Inputs{{background:var(--inputs-bg);border-color:var(--inputs-accent)}}
 .sec-Outputs{{background:var(--outputs-bg);border-color:var(--outputs-accent)}}
+.node-imgs{{margin:1rem 0;display:flex;flex-wrap:wrap;gap:.75rem}}
+.node-imgs img{{max-width:100%;border-radius:6px;border:1px solid var(--input-border)}}
 code{{background:var(--code-bg);color:var(--code-text);padding:0 .35em;border-radius:3px}}
 code.s{{font-size:.85em;font-weight:600;padding:.05em .45em;border-radius:10px}}
 {socket_css}@media(max-width:700px){{.wrap{{display:block}}nav{{width:auto;height:auto;position:static}}}}
@@ -114,7 +151,11 @@ def main():
         f'<a href="#{t["id"]}">{html.escape(t["name"])}</a>'
         for t in md.toc_tokens if t["level"] == 3
     )
+    names = {t["id"]: t["name"] for t in md.toc_tokens if t["level"] == 3}
+    body = add_images(body, names)
     OUT.mkdir(exist_ok=True)
+    if IMAGES_SRC.is_dir():
+        shutil.copytree(IMAGES_SRC, OUT / "images", dirs_exist_ok=True)
     (OUT / "index.html").write_text(
         TEMPLATE.format(toc=toc, body=body, theme_css=THEME_CSS, socket_css=SOCKET_CSS), encoding="utf-8")
     (OUT / ".nojekyll").touch()
