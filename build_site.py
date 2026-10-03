@@ -9,7 +9,7 @@ from pathlib import Path
 import markdown
 
 ROOT = Path(__file__).parent
-OUT = ROOT / "site"
+OUT = ROOT / "docs"
 
 # Page colors - tweak these. Each key becomes a CSS variable (--key).
 THEME = {
