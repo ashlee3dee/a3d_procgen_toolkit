@@ -3,3 +3,21 @@
 
 __pycache__/
 *.pyc
+
+# Editors / OS
+.vscode/
+.idea/
+.obsidian/workspace.json
+.DS_Store
+Thumbs.db
+
+# Python
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Blender
+*.blend1
+*.blend2
