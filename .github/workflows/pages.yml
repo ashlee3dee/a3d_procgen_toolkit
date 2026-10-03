@@ -2,7 +2,7 @@ name: Deploy Node Reference site
 on:
   push:
     branches: [main]
-    paths: ["Node Reference.md", "build_site.py", ".github/workflows/pages.yml"]
+    paths: ["site/**", ".github/workflows/pages.yml"]
   workflow_dispatch:
 permissions:
   contents: read
@@ -19,11 +19,6 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.x"
-      - run: pip install markdown
-      - run: python build_site.py
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
