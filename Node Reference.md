@@ -1,36 +1,3 @@
-### A3D_Node Name
-
-**Description**
-
-One or two sentences on what the node does and what it returns.
-
-**Inputs**
-
-- Socket Name `Type` — Short description of the socket
-- Another Socket `Type` — Short description
-
-**Outputs**
-
-- Socket Name `Type` — Short description
-
-### A3D_Wiggle
-
-**Description**
-
-Applies a physics-driven jiggle to a mesh using the motion of the object.
- 
-**Inputs**
- 
-- Geometry `Geometry` — The mesh to apply the wiggle to
-- Influence `Float` — Per-point strength of the wobble
-- Damping `Float` — How quickly the oscillation dies out
-- Frequency `Float` — How fast the mesh oscillates, in Hz
-- Gravity `Vector` — Constant acceleration in world space
-
-**Outputs**
-
-- Geometry `Geometry` — The input geometry with the simulated wobble applied to its point positions.
-
 ### A3D_(A⊙B)ⁿ
 
 **Description**
@@ -47,6 +14,7 @@ Applies a selectable math operation to two values, then raises the result to a g
 **Outputs**
 
 - Value `Float` — Result of the operation raised to the exponent
+
 
 ### A3D_2D Line Cut
 
@@ -67,6 +35,7 @@ Cuts a body mesh against a tool mesh's edges along a shared plane, returning the
 - Mesh `Geometry` — Body mesh with the cut applied
 - Intersected `Boolean` — True where the tool edge intersects the body
 - Position `Vector` — Position of the intersection
+
 
 ### A3D_2D Navier Stokes Solver
 
@@ -93,6 +62,7 @@ A 2D fluid solver operating on a grid, advecting velocity, pressure, density, an
 
 - Geometry `Geometry` — Grid geometry with the updated simulation fields
 
+
 ### A3D_2D Shape Cut
 
 **Description**
@@ -111,6 +81,7 @@ Cuts a body mesh using an arbitrary 2D tool mesh as the cutting shape, returning
 - Mesh `Geometry` — Body mesh with the cut applied
 - Intersected `Boolean` — True where the tool mesh intersects the body
 - Intersection Position `Vector` — Position of the intersection
+
 
 ### A3D_3x3 Polar Decomposition
 
@@ -131,6 +102,7 @@ Decomposes a 3x3 matrix, given as three column vectors, into a rotation and a st
 - Rotation `Rotation` — Rotation component of the decomposition
 - Stretch `Vector` — Stretch component of the decomposition
 
+
 ### A3D_Active Camera Transform
 
 **Description**
@@ -148,6 +120,60 @@ Returns the transform (and separately, location/rotation/scale) of the scene's a
 - Rotation `Rotation` — Rotation of the active camera
 - Scale `Vector` — Scale of the active camera
 
+
+### A3D_Age Cull
+
+**Description**
+
+Deletes Geometry on the selected Domain when `age` is greater than or equal to `max_age`. Used with other Age* nodes.
+
+**Inputs**
+
+- Geometry `Geometry` — Geometry to remove expired elements from
+- Selection `Boolean` — Elements that can be culled
+- Domain `Menu` — Domain to cull on
+
+**Outputs**
+
+- Geometry `Geometry` — Geometry with expired elements removed
+
+
+### A3D_Age Initialize
+
+**Description**
+
+Write the attribute `max_age` on the selected Domain. Used with other Age* nodes.
+
+**Inputs**
+
+- Geometry `Geometry` — Geometry to store the max_age attribute on
+- Selection `Boolean` — Elements to initialize
+- Domain `Menu` — Domain to store max_age on
+- Max Age `Float` — Age at which an element is considered expired
+
+**Outputs**
+
+- Geometry `Geometry` — Geometry with the max_age attribute stored
+
+
+### A3D_Age Update
+
+**Description**
+
+Increments the attribute `age` by input `Delta Time` on the selected Domain. Used with other Age* nodes.
+
+**Inputs**
+
+- Geometry `Geometry` — Geometry to update the age attribute on
+- Selection `Boolean` — Elements to age
+- Delta Time `Float` — Amount of time added to age
+- Domain `Menu` — Domain the age attribute is stored on
+
+**Outputs**
+
+- Geometry `Geometry` — Geometry with the age attribute updated
+
+
 ### A3D_Angle Between Vectors
 
 **Description**
@@ -163,6 +189,7 @@ Computes the angle in radians between two input vectors.
 
 - Radians `Float` — Angle between the vectors in radians
 
+
 ### A3D_Angle to Vector
 
 **Description**
@@ -176,6 +203,7 @@ Converts a 2D angle (radians) into a unit direction vector.
 **Outputs**
 
 - Vector `Vector` — Unit direction vector for the angle
+
 
 ### A3D_Axis Alignment
 
@@ -194,6 +222,7 @@ Determines which world axis (X, Y, or Z) a given vector is most closely aligned 
 - Y `Boolean` — Aligned to Y Axis
 - Z `Boolean` — Aligned to Z Axis
 
+
 ### A3D_Axis Picker
 
 **Description**
@@ -208,6 +237,7 @@ A menu-driven axis picker that outputs a unit vector for the selected X, Y, or Z
 **Outputs**
 
 - Vector `Vector` — Direction unit vector
+
 
 ### A3D_Aⁿ⊙Bⁿ
 
@@ -225,6 +255,7 @@ Raises inputs A and B to a given exponent before combining them with a selectabl
 **Outputs**
 
 - Value `Float` — Result of the operation
+
 
 ### A3D_Ballistic Arc
 
@@ -244,6 +275,7 @@ Computes the position and velocity of a point along a ballistic (projectile) tra
 - Position `Vector` — Position at the given time
 - Velocity `Vector` — Velocity at the given time
 
+
 ### A3D_Bell Curve
 
 **Description**
@@ -259,6 +291,7 @@ Evaluates a Gaussian (normal distribution) bell curve for an input value, given 
 **Outputs**
 
 - Value `Float` — Height of the curve at the input value
+
 
 ### A3D_Boolean Grid Check
 
@@ -278,6 +311,7 @@ Tests a boolean value against a rectangular sub-region (width/height) of a resol
 
 - Boolean `Boolean` — Result of the test over the sub-region
 
+
 ### A3D_Bounce Reflect
 
 **Description**
@@ -294,6 +328,7 @@ Reflects an incoming velocity off a plane defined by a normal, with restitution 
 **Outputs**
 
 - Reflected Velocity `Vector` — Velocity after the bounce
+
 
 ### A3D_Camera Cull
 
@@ -314,6 +349,7 @@ Removes or masks geometry that falls outside a camera's view frustum, with paddi
 
 - Geometry `Geometry` — Geometry with out-of-view elements removed
 
+
 ### A3D_Camera FOV
 
 **Description**
@@ -330,6 +366,7 @@ Returns the horizontal and vertical field of view of a camera, optionally defaul
 - Horizontal FOV `Float` — Horizontal field of view of the camera
 - Vertical FOV `Float` — Vertical field of view of the camera
 
+
 ### A3D_Catenary Curve
 
 **Description**
@@ -345,6 +382,7 @@ Relaxes a curve's selected control points into a catenary (hanging-chain) shape 
 **Outputs**
 
 - Curve `Geometry` — Curve with a catenary shape
+
 
 ### A3D_Cell Fracture
 
@@ -368,6 +406,7 @@ Fractures input geometry into a set of instanced cell pieces using Voronoi-style
 
 - Instances `Geometry` — Fractured pieces as instances
 
+
 ### A3D_Circumcircle Test
 
 **Description**
@@ -386,6 +425,7 @@ Determines whether a test point lies inside, on, or outside the circumcircle def
 
 - Determinant `Float` — Sign shows whether the point is inside, on, or outside the circumcircle
 
+
 ### A3D_Clamp Vector
 
 **Description**
@@ -401,6 +441,7 @@ Clamps each component of a vector independently between corresponding min and ma
 **Outputs**
 
 - Vector `Vector` — Clamped vector
+
 
 ### A3D_Conform To Surface
 
@@ -420,6 +461,7 @@ Snaps or projects a mesh's selected vertices onto a target surface mesh within a
 
 - Mesh `Geometry` — Mesh with vertices snapped to the surface
 
+
 ### A3D_Coordinate of Grid Index
 
 **Description**
@@ -435,6 +477,41 @@ Converts a flat grid index into 2D (X, Y) coordinates for a grid of a given reso
 
 - X `Integer` — X coordinate in the grid
 - Y `Integer` — Y coordinate in the grid
+
+
+### A3D_Cotangent
+
+**Description**
+
+Computes the cotangent of an angle in radians.
+
+**Inputs**
+
+- Value `Float` — Angle in radians
+
+**Outputs**
+
+- Value `Float` — Cotangent of the angle
+
+
+### A3D_Debug Vectors
+
+**Description**
+
+Generates arrow-like geometry that visualizes vectors, for debugging vector data.
+
+**Inputs**
+
+- Geometry `Geometry` — Points to draw the vectors at
+- Vertices `Integer` — The number of vertices on the top and bottom circles
+- Vector `Vector` — Vector to visualize
+- Length `Float` — Length of the arrows
+- Radius `Float` — Radius of the arrows
+
+**Outputs**
+
+- Geometry `Geometry` — Generated debug arrow geometry
+
 
 ### A3D_Deform To UV Surface
 
@@ -452,6 +529,7 @@ Deforms a mesh to conform to a target surface using a UV-space transfer map, wit
 **Outputs**
 
 - Mesh `Geometry` — Mesh deformed onto the target surface
+
 
 ### A3D_Delaunay Triangulation
 
@@ -473,6 +551,7 @@ Builds a Delaunay triangulation over the input geometry's points, with controls 
 
 - Geometry `Geometry` — Triangulated geometry
 
+
 ### A3D_Derivative
 
 **Description**
@@ -490,6 +569,7 @@ Numerically differentiates a function closure at a point X using a finite-differ
 - Slope `Float` — Slope of the tangent line at X
 - Y Intercept `Float` — Y intercept of the tangent line
 
+
 ### A3D_Derive Velocity
 
 **Description**
@@ -506,6 +586,7 @@ Derives a per-point velocity vector from the difference between a previous and c
 
 - Vector `Vector` — Derived velocity
 
+
 ### A3D_Direction On Surface
 
 **Description**
@@ -520,6 +601,7 @@ Projects an arbitrary direction vector onto a surface's tangent plane defined by
 **Outputs**
 
 - Vector `Vector` — Direction projected onto the surface tangent plane
+
 
 ### A3D_Distance From Axis
 
@@ -536,6 +618,7 @@ Computes the perpendicular distance from a position to an infinite axis defined 
 **Outputs**
 
 - Distance `Float` — Perpendicular distance from the position to the axis
+
 
 ### A3D_Distance From Plane
 
@@ -554,6 +637,7 @@ Computes the signed distance from a position to a plane defined by an origin and
 
 - Distance `Float` — Signed distance from the position to the plane
 
+
 ### A3D_Distance to Boundary
 
 **Description**
@@ -567,6 +651,7 @@ Computes each element's distance to the nearest open/mesh boundary edge.
 **Outputs**
 
 - Distance `Float` — Number of topology steps to the nearest edge
+
 
 ### A3D_Dodecahedron
 
@@ -582,6 +667,7 @@ Generates a regular dodecahedron mesh of a given radius, built from a convex hul
 
 - Mesh `Geometry` — Generated dodecahedron mesh
 
+
 ### A3D_Domain Index
 
 **Description**
@@ -595,6 +681,7 @@ Returns the index of the current element for a selectable geometry domain (point
 **Outputs**
 
 - Index `Integer` — Index of the selected Domain type.
+
 
 ### A3D_Edge Array
 
@@ -623,6 +710,7 @@ Distributes instanced or inset geometry along selected edges at a controllable s
 
 - Mesh `Geometry` — Result of joining generated geometries from each iteration
 
+
 ### A3D_Edge Info
 
 **Description**
@@ -639,6 +727,7 @@ Reports whether an edge is horizontal or vertical, its direction vector, and its
 - Vertical `Boolean` — True if the edge is vertical
 - Direction `Vector` — Direction vector of the edge
 - Length `Float` — Length of the edge
+
 
 ### A3D_Expand Selection
 
@@ -658,6 +747,7 @@ Grows or shrinks a boolean selection outward across a chosen domain by a number 
 **Outputs**
 
 - Result `Boolean` — Expanded selection
+
 
 ### A3D_Extended Camera Info
 
@@ -690,6 +780,7 @@ A comprehensive camera data node. combines transform, projection matrix, focal l
 - Horizontal FOV `Float` — Horizontal field of view of the camera
 - Vertical FOV `Float` — Vertical field of view of the camera
 
+
 ### A3D_Extended Vertex Neighbors
 
 **Description**
@@ -708,6 +799,7 @@ Returns a sortable pair of neighboring vertex indices around a given vertex, alo
 - Vertex Count `Integer` — The number of vertices connected to this vertex with an edge, equal to the number of connected edges
 - Face Count `Integer` — Number of faces that contain the vertex
 
+
 ### A3D_Face Corner Info
 
 **Description**
@@ -725,6 +817,7 @@ Returns the position and corner index of a specific corner of a given face, offs
 - Position `Vector` — Position of the resulting corner
 - Corner Index `Integer` — A corner of the face, chosen by the sort index
 
+
 ### A3D_Face Winding Direction
 
 **Description**
@@ -738,6 +831,7 @@ _None — reads directly from the geometry context (e.g. current point/face/edge
 **Outputs**
 
 - Sign `Float` — Winding direction of the face, +1 or -1
+
 
 ### A3D_Fermat Spiral
 
@@ -754,6 +848,7 @@ Generates a set of points arranged in a Fermat (golden-angle) spiral, controlled
 
 - Points `Geometry` — Generated spiral points
 
+
 ### A3D_Gaussian Curvature
 
 **Description**
@@ -767,6 +862,7 @@ _None — reads directly from the geometry context (e.g. current point/face/edge
 **Outputs**
 
 - Curvature `Float` — Gaussian curvature at each vertex
+
 
 ### A3D_Geometry Motion Path
 
@@ -785,6 +881,7 @@ Builds a trailing motion-path mesh from a set of animated points, with configura
 
 - Geometry `Geometry` — Generated motion path geometry
 
+
 ### A3D_Golden Ratio
 
 **Description**
@@ -798,6 +895,7 @@ _None — reads directly from the geometry context (e.g. current point/face/edge
 **Outputs**
 
 - φ `Float` — The golden ratio, approximately 1.618
+
 
 ### A3D_Grid Float Neighbors 2D
 
@@ -822,6 +920,7 @@ Samples a 3×3 neighborhood of float values around a given index in a resolution
 - Row 2 `Float` — Neighbor at row 2 of column 3
 - Row 3 `Float` — Neighbor at row 3 of column 3
 
+
 ### A3D_Grid Integer Neighbors 2D
 
 **Description**
@@ -845,6 +944,7 @@ Samples a 3×3 neighborhood of integer values around a given index in a resoluti
 - Row 2 `Integer` — Neighbor at row 2 of column 3
 - Row 3 `Integer` — Neighbor at row 3 of column 3
 
+
 ### A3D_Grid Laplacian 2D
 
 **Description**
@@ -859,6 +959,7 @@ Computes a discrete Laplacian (second-difference) of a value field across grid-c
 **Outputs**
 
 - Value `Float` — Laplacian of the value field
+
 
 ### A3D_Grid Selection Kernel 2D
 
@@ -876,6 +977,7 @@ Builds a boolean selection over a rectangular width/height kernel positioned at 
 **Outputs**
 
 - Boolean `Boolean` — True for cells inside the kernel
+
 
 ### A3D_Grid Vector Neighbors 2D
 
@@ -900,6 +1002,7 @@ Samples a 3×3 neighborhood of vector values around a given index in a resolutio
 - Row 2 `Vector` — Neighbor at row 2 of column 3
 - Row 3 `Vector` — Neighbor at row 3 of column 3
 
+
 ### A3D_Ground Impact Solve
 
 **Description**
@@ -920,6 +1023,7 @@ Analytically solves for where and when a ballistic trajectory (defined by an ini
 - Impact Position `Vector` — Position where the trajectory reaches the plane
 - Impact Velocity `Vector` — Velocity at the moment of impact
 
+
 ### A3D_Grow on Surface
 
 **Description**
@@ -939,6 +1043,27 @@ Grows a path of points across a surface from a starting direction, stepping and 
 
 - Geometry `Geometry` — Grown path geometry
 
+
+### A3D_Harmonic Field
+
+**Description**
+
+Propagates a starting scalar value across a mesh from source points toward sink points over a number of iterations, returning both the updated mesh and its gradient field.
+
+**Inputs**
+
+- Mesh `Geometry` — Mesh to propagate the value across
+- Starting Value `Float` — Value assigned at the sources
+- Iterations `Integer` — Number of propagation iterations
+- Sinks `Boolean` — Points the value flows toward
+- Sources `Boolean` — Points the value flows from
+
+**Outputs**
+
+- Mesh `Geometry` — Mesh with the propagated value
+- Gradient `Float` — Gradient of the propagated field
+
+
 ### A3D_Helix
 
 **Description**
@@ -956,6 +1081,7 @@ Displaces curve points into a helical pattern around the curve's path, driven by
 **Outputs**
 
 - Curves `Geometry` — Curves displaced into a helix
+
 
 ### A3D_IK Solver
 
@@ -975,6 +1101,7 @@ Solves inverse kinematics for a chain of geometry between a start and end point 
 
 - Geometry `Geometry` — Solved chain
 
+
 ### A3D_Index of Grid Coordinate
 
 **Description**
@@ -991,6 +1118,7 @@ Converts 2D (X, Y) grid coordinates into a flat index for a grid of a given reso
 
 - Index `Integer` — Flat index of the coordinate
 - In Bounds `Boolean` — True if the coordinate is inside the grid
+
 
 ### A3D_Inset Faces
 
@@ -1014,6 +1142,7 @@ Face inset operation supporting individual or grouped insets, independent thickn
 - Inner `Boolean` — Faces created by the inset
 - Outer `Boolean` — Faces surrounding the inset faces
 
+
 ### A3D_Inside BBox
 
 **Description**
@@ -1028,6 +1157,7 @@ Tests whether a position lies inside the bounding box of the input geometry.
 **Outputs**
 
 - Inside `Boolean` — True if the position is inside the bounding box
+
 
 ### A3D_Inside Frustum
 
@@ -1046,6 +1176,7 @@ Tests whether a position lies inside a camera's view frustum, with configurable 
 **Outputs**
 
 - In Frustum `Boolean` — Returns true if the position is inside the frustum
+
 
 ### A3D_Inside Frustum (Legacy)
 
@@ -1068,6 +1199,7 @@ An earlier frustum-containment test driven by explicit render resolution, paddin
 
 - Inside Frustum `Boolean` — True if the position is inside the frustum
 
+
 ### A3D_Inside Prism
 
 **Description**
@@ -1086,6 +1218,7 @@ Tests whether a position lies inside a prism volume defined by four reference po
 
 - Boolean `Boolean` — True if the position is inside the prism
 
+
 ### A3D_Inside Quad Face
 
 **Description**
@@ -1100,6 +1233,7 @@ Tests whether a position lies inside the bounds of a specific quad face.
 **Outputs**
 
 - Inside `Boolean` — True if the position is inside the face
+
 
 ### A3D_Inside Rectangle
 
@@ -1118,6 +1252,7 @@ Tests whether a position lies inside a rectangle defined by three of its corner 
 
 - Boolean `Boolean` — True if the position is inside the rectangle
 
+
 ### A3D_Instance Info
 
 **Description**
@@ -1134,6 +1269,7 @@ _None — reads directly from the geometry context (e.g. current point/face/edge
 - Max `Vector` — Maximum corner of the instance bounds
 - Origin `Vector` — Origin of the instance
 
+
 ### A3D_Instance Info (Legacy)
 
 **Description**
@@ -1149,6 +1285,7 @@ An earlier version of Instance Info that takes an explicit instances input rathe
 - Min `Vector` — Minimum corner of the instance bounds
 - Max `Vector` — Maximum corner of the instance bounds
 - Origin `Vector` — Origin of the instance
+
 
 ### A3D_Instance Matrix
 
@@ -1169,6 +1306,7 @@ Builds an instance transform matrix from a mesh and instance geometry, with dept
 
 - Instances `Geometry` — Generated instances
 
+
 ### A3D_Instance on Faces
 
 **Description**
@@ -1187,6 +1325,7 @@ Instances geometry onto selected faces of a mesh, with pick-instance and instanc
 
 - Instances `Geometry` — Generated instances
 
+
 ### A3D_Integer Clamp
 
 **Description**
@@ -1202,6 +1341,7 @@ Clamps an integer value between a minimum and maximum.
 **Outputs**
 
 - Value `Integer` — Clamped value
+
 
 ### A3D_Laplacian
 
@@ -1222,6 +1362,7 @@ A generalized Laplacian (connectivity-based blur) operator that works across flo
 - Integer `Integer` — Blurred integer value
 - Vector `Vector` — Blurred vector value
 
+
 ### A3D_Largest Island
 
 **Description**
@@ -1235,6 +1376,7 @@ _None — reads directly from the geometry context (e.g. current point/face/edge
 **Outputs**
 
 - Boolean `Boolean` — Is the largest mesh island
+
 
 ### A3D_Line Intersect
 
@@ -1253,6 +1395,7 @@ Tests whether two line segments (each defined by two endpoints) intersect.
 
 - Intersect `Boolean` — True if the two segments intersect
 
+
 ### A3D_Line Intersect Point
 
 **Description**
@@ -1269,6 +1412,7 @@ Computes the intersection point of two line segments (each defined by two endpoi
 **Outputs**
 
 - Intersection Point `Vector` — Point where the two segments intersect
+
 
 ### A3D_Line-Line Intersection
 
@@ -1288,6 +1432,7 @@ Combines intersection testing and position calculation for two line segments int
 - Intersects `Boolean` — True if the two segments intersect
 - Intersection Position `Vector` — Point where the two segments intersect
 
+
 ### A3D_Looping Coordinates
 
 **Description**
@@ -1303,6 +1448,7 @@ Generates cyclically looping XYZ and W coordinates over a given loop duration, f
 - XYZ `Vector` — Looping XYZ coordinates
 - W `Float` — Looping W coordinate
 
+
 ### A3D_Make Curve Acyclic
 
 **Description**
@@ -1316,6 +1462,7 @@ Converts a cyclic (closed) curve into an acyclic (open) curve while preserving i
 **Outputs**
 
 - Curve `Geometry` — Curve with cyclic splines made acyclic
+
 
 ### A3D_Merge by Distance
 
@@ -1335,6 +1482,7 @@ Merges mesh elements within a given distance of each other, with options to limi
 
 - Mesh `Geometry` — Mesh with nearby elements merged
 
+
 ### A3D_Mesh to Lattice
 
 **Description**
@@ -1353,6 +1501,7 @@ Converts a mesh into a lattice-cell structure using a selectable cell type and o
 
 - Mesh `Geometry` — Lattice generated from the mesh
 
+
 ### A3D_Midpoint Range to Min Max
 
 **Description**
@@ -1368,6 +1517,7 @@ An alternate/duplicate implementation of Midpoint Range, converting a midpoint-a
 
 - Min `Float` — Lower bound of the range
 - Max `Float` — Upper bound of the range
+
 
 ### A3D_Mirror
 
@@ -1388,6 +1538,7 @@ Mirrors a mesh across chosen X/Y/Z axes, either about the origin or about a sepa
 
 - Mesh `Geometry` — Mirrored mesh
 
+
 ### A3D_Multivariate Newton Solver
 
 **Description**
@@ -1405,6 +1556,7 @@ Solves a system of equations for a root using multivariate Newton's method, iter
 
 - Root `Vector` — Root found by the solver
 
+
 ### A3D_N Nearest Neighbors
 
 **Description**
@@ -1419,6 +1571,7 @@ Finds the N nearest neighboring points to each input point.
 **Outputs**
 
 - Points `Geometry` — Points with neighbor connections
+
 
 ### A3D_Nearest Point Info
 
@@ -1439,6 +1592,7 @@ Returns the index, radius, distance, direction, and offset of the nearest point 
 - Direction `Vector` — Normalized direction towards Nearest
 - Offset `Vector` — Offset between current and Nearest
 
+
 ### A3D_Neighbors of Vertex
 
 **Description**
@@ -1455,6 +1609,23 @@ Returns a weighted, sortable list of a vertex's connected neighbor vertices and 
 
 - Other Vertex `Integer` — Index of the selected neighboring vertex
 - Total `Integer` — Number of vertices connected to this vertex
+
+
+### A3D_Node Name
+
+**Description**
+
+One or two sentences on what the node does and what it returns.
+
+**Inputs**
+
+- Socket Name `Type` — Short description of the socket
+- Another Socket `Type` — Short description
+
+**Outputs**
+
+- Socket Name `Type` — Short description
+
 
 ### A3D_Noodle
 
@@ -1473,6 +1644,7 @@ Generates a tube ('noodle') mesh along a curve, with adjustable scale and profil
 
 - Mesh `Geometry` — Generated tube mesh
 
+
 ### A3D_Normalize Field
 
 **Description**
@@ -1487,6 +1659,7 @@ Remaps a per-element float attribute to the 0–1 range based on the minimum and
 **Outputs**
 
 - Normalized Value `Float` — Value remapped to the 0-1 range
+
 
 ### A3D_Object Motion Path
 
@@ -1504,6 +1677,7 @@ Builds a trailing motion-path mesh tracking an object's movement over time, with
 
 - Geometry `Geometry` — Generated motion path geometry
 
+
 ### A3D_Octree
 
 **Description**
@@ -1520,6 +1694,24 @@ Builds an octree spatial subdivision of a point cloud between a min and max boun
 **Outputs**
 
 - Geometry `Geometry` — Generated octree geometry
+
+
+### A3D_Opposite Corner of Triangle Adjacent to Edge
+
+**Description**
+
+Returns the vertex opposite an edge in a triangle attached to that edge, with weights and a sort index to choose between the attached corners.
+
+**Inputs**
+
+- Edge Index `Integer` — The edge to retrieve data from. Defaults to the edge from the context
+- Weights `Float` — Values that sort the corners attached to the edge
+- Sort Index `Integer` — Which of the sorted corners to output. Negative indexing is supported
+
+**Outputs**
+
+- Vertex Index `Integer` — The vertex the corner is attached to
+
 
 ### A3D_Pack Curves
 
@@ -1542,6 +1734,7 @@ Packs curve geometry onto a target panel/surface using a cost-based path-growth 
 **Outputs**
 
 - Curve `Geometry` — Packed curves
+
 
 ### A3D_Particle Tracking
 
@@ -1569,6 +1762,7 @@ Emits and tracks particles toward a target position with per-particle emission/t
 - Age `Float` — Current age of each particle
 - Start Age `Float` — Age at which each particle starts
 
+
 ### A3D_Patch Mesh
 
 **Description**
@@ -1582,6 +1776,7 @@ Fills or patches holes in a mesh's topology.
 **Outputs**
 
 - Mesh `Geometry` — Mesh with holes filled
+
 
 ### A3D_PBD Solver Repeat
 
@@ -1608,6 +1803,7 @@ Runs a position-based dynamics (PBD) solve over multiple outer iterations and su
 
 - Geometry `Geometry` — Simulated rope geometry
 
+
 ### A3D_Plane Normal
 
 **Description**
@@ -1624,6 +1820,7 @@ Computes the normal vector of the plane defined by three points.
 
 - Vector `Vector` — Normal vector of the plane
 
+
 ### A3D_Plexus
 
 **Description**
@@ -1638,6 +1835,7 @@ Builds a connective 'plexus' mesh linking nearby points based on a connectivity 
 **Outputs**
 
 - Mesh `Geometry` — Generated network of connections
+
 
 ### A3D_Point Slope Line
 
@@ -1657,6 +1855,7 @@ Constructs a line segment of a given length from a point-slope definition (X, Y,
 - Start Point `Vector` — Start of the line segment
 - End Point `Vector` — End of the line segment
 
+
 ### A3D_Poke Faces
 
 **Description**
@@ -1670,6 +1869,7 @@ Pokes (fan-triangulates from a center point) all faces in the input geometry.
 **Outputs**
 
 - Geometry `Geometry` — Geometry with faces poked
+
 
 ### A3D_Poke Triangle
 
@@ -1685,6 +1885,7 @@ Pokes a single face at a given position, splitting it into a triangle fan from t
 **Outputs**
 
 - Mesh `Geometry` — Mesh with the face poked
+
 
 ### A3D_Position Components
 
@@ -1702,6 +1903,7 @@ _None — reads directly from the geometry context (e.g. current point/face/edge
 - Y `Float` — Y component of the position
 - Z `Float` — Z component of the position
 
+
 ### A3D_Project To Plane
 
 **Description**
@@ -1717,6 +1919,7 @@ Projects a position onto a plane defined by an origin and normal.
 **Outputs**
 
 - Vector `Vector` — Position projected onto the plane
+
 
 ### A3D_Quad Corners
 
@@ -1736,6 +1939,7 @@ Returns the four corner positions (A–D) of a quad face at a given offset.
 - Corner C `Vector` — Position of the third corner
 - Corner D `Vector` — Position of the fourth corner
 
+
 ### A3D_Quad Sphere
 
 **Description**
@@ -1752,6 +1956,7 @@ Generates a quad-topology sphere (cube-projected) of a given radius and subdivis
 - Mesh `Geometry` — Generated sphere mesh
 - UV Map `Vector` — UV coordinates of the sphere
 
+
 ### A3D_Quad Tangent
 
 **Description**
@@ -1765,6 +1970,7 @@ Computes the tangent vector of a quad face.
 **Outputs**
 
 - Tangent `Vector` — Vector pointing along the longest axis of the face
+
 
 ### A3D_Random Point In Shell
 
@@ -1783,6 +1989,7 @@ Generates a seeded random point within a spherical shell between a minimum and m
 
 - Position `Vector` — Random position within the shell
 
+
 ### A3D_Random Triangulate
 
 **Description**
@@ -1798,6 +2005,7 @@ Randomly triangulates a subset of the mesh's faces based on a seeded probability
 **Outputs**
 
 - Mesh `Geometry` — Mesh with some faces triangulated
+
 
 ### A3D_Random XY+Z
 
@@ -1818,6 +2026,7 @@ Generates a seeded random vector with independently ranged XY (planar) and Z (ve
 
 - Vector `Vector` — Random vector
 
+
 ### A3D_Roll Curve
 
 **Description**
@@ -1836,6 +2045,7 @@ Rolls (twists) a curve's cross-section around its tangent by a factor and tightn
 **Outputs**
 
 - Curve `Geometry` — Rolled curve
+
 
 ### A3D_Scatter Points
 
@@ -1861,6 +2071,7 @@ Scatters points across a mesh surface using a selectable distribution mode, mini
 - Normal `Vector` — Surface normal at each point
 - Rotation `Rotation` — Rotation aligned to the surface at each point
 
+
 ### A3D_Seam Distance
 
 **Description**
@@ -1878,6 +2089,7 @@ Computes each point's distance to the nearest UV seam.
 - Mesh `Geometry` — Mesh after the seam distance calculation
 - Distance `Float` — Distance to the nearest UV seam
 
+
 ### A3D_Set Position by Attribute
 
 **Description**
@@ -1892,6 +2104,7 @@ Sets a mesh's point positions directly from a named vector attribute.
 **Outputs**
 
 - Geometry `Geometry` — Geometry with positions set from the attribute
+
 
 ### A3D_Smooth Curve
 
@@ -1911,6 +2124,7 @@ Smooths a curve's control points over a number of iterations, with a selectable 
 
 - Curve `Geometry` — Smoothed curve
 
+
 ### A3D_Solve XPBD Edge Constraints
 
 **Description**
@@ -1926,6 +2140,7 @@ Solves extended position-based dynamics (XPBD) edge/distance constraints for a g
 **Outputs**
 
 - Accumulated Correction `Vector` — Sum of the correction vectors for the point
+
 
 ### A3D_Sphere Collision
 
@@ -1944,6 +2159,7 @@ Tests two indexed spheres for collision, returning whether they collided, their 
 - Overlap `Float` — Amount the spheres overlap
 - Normal `Vector` — Collision normal
 
+
 ### A3D_Split Quad
 
 **Description**
@@ -1959,6 +2175,7 @@ Splits a quad face into triangles or sub-quads along a chosen direction, by a bl
 **Outputs**
 
 - Mesh `Geometry` — Mesh with the quads split
+
 
 ### A3D_Split to Instances
 
@@ -1979,6 +2196,7 @@ Splits geometry into separate instances by a chosen domain and group ID, with a 
 - Instances `Geometry` — Generated instances
 - Group ID `Integer` — Group ID of each instance
 
+
 ### A3D_Split to Instances_Edge
 
 **Description**
@@ -1996,6 +2214,7 @@ Domain-locked variant of A3D_Split to Instances that splits geometry into separa
 
 - Instances `Geometry` — Generated instances
 - Group ID `Integer` — Group ID of each instance
+
 
 ### A3D_Split to Instances_Face
 
@@ -2015,6 +2234,7 @@ Domain-locked variant of A3D_Split to Instances that splits geometry into separa
 - Instances `Geometry` — Generated instances
 - Group ID `Integer` — Group ID of each instance
 
+
 ### A3D_Split to Instances_Instance
 
 **Description**
@@ -2032,6 +2252,7 @@ Domain-locked variant of A3D_Split to Instances that splits geometry into separa
 
 - Instances `Geometry` — Generated instances
 - Group ID `Integer` — Group ID of each instance
+
 
 ### A3D_Split to Instances_Point
 
@@ -2051,6 +2272,7 @@ Domain-locked variant of A3D_Split to Instances that splits geometry into separa
 - Instances `Geometry` — Generated instances
 - Group ID `Integer` — Group ID of each instance
 
+
 ### A3D_Split to Instances_Spline
 
 **Description**
@@ -2069,6 +2291,7 @@ Domain-locked variant of A3D_Split to Instances that splits geometry into separa
 - Instances `Geometry` — Generated instances
 - Group ID `Integer` — Group ID of each instance
 
+
 ### A3D_Surface Gradient
 
 **Description**
@@ -2083,24 +2306,6 @@ Derives a tangential flow direction vector across a surface from an input scalar
 
 - Vector `Vector` — Tangential flow direction across the surface
 
-### A3D_Harmonic Field
-
-**Description**
-
-Propagates a starting scalar value across a mesh from source points toward sink points over a number of iterations, returning both the updated mesh and its gradient field.
-
-**Inputs**
-
-- Mesh `Geometry` — Mesh to propagate the value across
-- Starting Value `Float` — Value assigned at the sources
-- Iterations `Integer` — Number of propagation iterations
-- Sinks `Boolean` — Points the value flows toward
-- Sources `Boolean` — Points the value flows from
-
-**Outputs**
-
-- Mesh `Geometry` — Mesh with the propagated value
-- Gradient `Float` — Gradient of the propagated field
 
 ### A3D_Surface Normal
 
@@ -2120,6 +2325,7 @@ Samples the surface normal of a mesh at a given position (optionally scoped by g
 - Normal `Vector` — Surface normal at the sample position
 - Is Valid `Boolean` — Whether the sampling was successful. It can fail when the sampled group is empty
 
+
 ### A3D_Sweep Curve
 
 **Description**
@@ -2138,6 +2344,7 @@ Sweeps a start and end profile curve along a path curve at a given resolution, p
 
 - Mesh `Geometry` — Swept mesh
 
+
 ### A3D_Tetrahedron
 
 **Description**
@@ -2151,6 +2358,7 @@ Generates a regular tetrahedron mesh of a given radius.
 **Outputs**
 
 - Mesh `Geometry` — Generated tetrahedron mesh
+
 
 ### A3D_Tetrahedron Volume
 
@@ -2168,6 +2376,7 @@ Computes the signed volume of a tetrahedron defined by four vertices.
 **Outputs**
 
 - Volume `Float` — Signed volume of the tetrahedron
+
 
 ### A3D_Univariate Newton Solver
 
@@ -2187,6 +2396,7 @@ Solves for a root of a single-variable function closure using Newton's method, i
 
 - Root `Float` — Root found by the solver
 - Converged `Boolean` — True if the solver converged
+
 
 ### A3D_UV Mapped Strip
 
@@ -2211,6 +2421,7 @@ Generates a UV-mapped ribbon/strip mesh along a curve using a profile curve, wit
 - Mesh `Geometry` — Generated strip mesh
 - UVMap `Vector` — Generated UV coordinates
 
+
 ### A3D_UV Unwrap
 
 **Description**
@@ -2233,6 +2444,7 @@ Unwraps a mesh's selected faces along seam edges using a selectable method, with
 - Geometry `Geometry` — Geometry with the unwrapped UVs
 - UV `Vector` — UV coordinates between 0 and 1 for each face corner in the selected faces
 
+
 ### A3D_Vector to Angle
 
 **Description**
@@ -2246,6 +2458,7 @@ Converts a 2D vector into its angle in radians.
 **Outputs**
 
 - Radians `Float` — Angle of the vector in radians
+
 
 ### A3D_Velocity Simulation
 
@@ -2265,103 +2478,6 @@ Derives and writes a per-point velocity attribute across simulation steps, with 
 - Geometry `Geometry` — Geometry with the updated velocity
 - Velocity `Vector` — Simulated velocity of each element
 
-### A3D_Age Initialize
-
-**Description**
-
-Write the attribute `max_age` on the selected Domain. Used with other Age* nodes.
-
-**Inputs**
-
-- Geometry `Geometry` — Geometry to store the max_age attribute on
-- Selection `Boolean` — Elements to initialize
-- Domain `Menu` — Domain to store max_age on
-- Max Age `Float` — Age at which an element is considered expired
-
-**Outputs**
-
-- Geometry `Geometry` — Geometry with the max_age attribute stored
-
-### A3D_Age Update
-
-**Description**
-
-Increments the attribute `age` by input `Delta Time` on the selected Domain. Used with other Age* nodes.
-
-**Inputs**
-
-- Geometry `Geometry` — Geometry to update the age attribute on
-- Selection `Boolean` — Elements to age
-- Delta Time `Float` — Amount of time added to age
-- Domain `Menu` — Domain the age attribute is stored on
-
-**Outputs**
-
-- Geometry `Geometry` — Geometry with the age attribute updated
-
-### A3D_Age Cull
-
-**Description**
-
-Deletes Geometry on the selected Domain when `age` is greater than or equal to `max_age`. Used with other Age* nodes.
-
-**Inputs**
-
-- Geometry `Geometry` — Geometry to remove expired elements from
-- Selection `Boolean` — Elements that can be culled
-- Domain `Menu` — Domain to cull on
-
-**Outputs**
-
-- Geometry `Geometry` — Geometry with expired elements removed
-
-### A3D_Cotangent
-
-**Description**
-
-Computes the cotangent of an angle in radians.
-
-**Inputs**
-
-- Value `Float` — Angle in radians
-
-**Outputs**
-
-- Value `Float` — Cotangent of the angle
-
-### A3D_Debug Vectors
-
-**Description**
-
-Generates arrow-like geometry that visualizes vectors, for debugging vector data.
-
-**Inputs**
-
-- Geometry `Geometry` — Points to draw the vectors at
-- Vertices `Integer` — The number of vertices on the top and bottom circles
-- Vector `Vector` — Vector to visualize
-- Length `Float` — Length of the arrows
-- Radius `Float` — Radius of the arrows
-
-**Outputs**
-
-- Geometry `Geometry` — Generated debug arrow geometry
-
-### A3D_Opposite Corner of Triangle Adjacent to Edge
-
-**Description**
-
-Returns the vertex opposite an edge in a triangle attached to that edge, with weights and a sort index to choose between the attached corners.
-
-**Inputs**
-
-- Edge Index `Integer` — The edge to retrieve data from. Defaults to the edge from the context
-- Weights `Float` — Values that sort the corners attached to the edge
-- Sort Index `Integer` — Which of the sorted corners to output. Negative indexing is supported
-
-**Outputs**
-
-- Vertex Index `Integer` — The vertex the corner is attached to
 
 ### A3D_View Transform
 
@@ -2382,6 +2498,7 @@ Transforms a world-space position through a camera's view into view-space, clip-
 - Clip Space W `Float` — Depth of transformed point in clip space
 - NDC Position `Vector` — Position transformed to normalized device coordinates
 
+
 ### A3D_Volume of Mesh
 
 **Description**
@@ -2395,6 +2512,26 @@ Computes the enclosed volume of a mesh.
 **Outputs**
 
 - Volume `Float` — Volume enclosed by the mesh
+
+
+### A3D_Wiggle
+
+**Description**
+
+Applies a physics-driven jiggle to a mesh using the motion of the object.
+ 
+**Inputs**
+ 
+- Geometry `Geometry` — The mesh to apply the wiggle to
+- Influence `Float` — Per-point strength of the wobble
+- Damping `Float` — How quickly the oscillation dies out
+- Frequency `Float` — How fast the mesh oscillates, in Hz
+- Gravity `Vector` — Constant acceleration in world space
+
+**Outputs**
+
+- Geometry `Geometry` — The input geometry with the simulated wobble applied to its point positions.
+
 
 ### A3D_XPBD Solver
 
@@ -2428,6 +2565,7 @@ A full extended position-based dynamics (XPBD) cloth/soft-body solver. Supports 
 
 - Geometry `Geometry` — Simulated rope geometry
 
+
 ### A3D_XPBD Solver Step
 
 **Description**
@@ -2457,3 +2595,4 @@ A single time-stepped iteration of the XPBD solver, taking an explicit delta tim
 
 - Geometry `Geometry` — Simulated rope geometry
 - Position `Vector` — Updated positions
+
