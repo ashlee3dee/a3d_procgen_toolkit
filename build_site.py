@@ -1,4 +1,4 @@
-"""Build a static GitHub Pages site (site/index.html) from Node Reference.md."""
+"""Build a static GitHub Pages site (docs/index.html) from Node Reference.md."""
 import html
 import json
 import re
