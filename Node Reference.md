@@ -2,7 +2,7 @@
 
 **Description**
 
-POOP Applies a selectable math operation to two values, then raises the result to a given exponent.
+Applies a selectable math operation to two values, then raises the result to a given exponent.
 
 **Inputs**
 
