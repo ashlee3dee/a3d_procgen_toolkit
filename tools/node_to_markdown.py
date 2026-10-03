@@ -5,7 +5,7 @@ Per node group it writes the group description plus every input/output socket
 (name, type, description), in the same format apply_descriptions.py reads.
 
 Run from Blender's Scripting tab, or headless:
-  blender -b file.blend --python node_to_markdown.py -- \
+  blender -b file.blend --python tools/node_to_markdown.py -- \
       [--output "/path/Node Reference.md"] [--prefix A3D_] [--exclude "A3D_X"]
 """
 import argparse
@@ -14,7 +14,8 @@ from pathlib import Path
 
 import bpy
 
-OUTPUT_PATH = r"T:\Art\Blender Projects\Gumroad Products\a3d_procgen_toolkit\Node Reference.md"
+ROOT = Path(__file__).resolve().parents[1]
+OUTPUT_PATH = str(ROOT / "Node Reference.md")
 PREFIX = "A3D_"       # only node groups whose name starts with this ("" = all)
 EXCLUDE_NAMES = []    # exact node group names to skip
 

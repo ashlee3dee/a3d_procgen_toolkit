@@ -16,7 +16,7 @@ The markdown is assumed to be well-formed: every node has a Description
 section followed by explicit Inputs / Outputs headings.
 
 Run from Blender's Scripting tab, or headless:
-  blender -b file.blend --python apply_descriptions.py -- \
+  blender -b file.blend --python tools/markdown_to_node.py -- \
       --reference "/path/Node Reference.md" [--exclude "A3D_X"] [--only-empty] \
       [--dry-run] [--save]
 """
@@ -24,13 +24,15 @@ import argparse
 import re
 import sys
 from collections import defaultdict
+from pathlib import Path
 
 import bpy
 
 # ---------------------------------------------------------------------------
 # Defaults (edit these, or override from the command line after "--")
 # ---------------------------------------------------------------------------
-REFERENCE_PATH = r"T:\Art\Blender Projects\Gumroad Products\a3d_procgen_toolkit\Node Reference.md"  # "//" = folder of the .blend
+ROOT = Path(__file__).resolve().parents[1]
+REFERENCE_PATH = str(ROOT / "Node Reference.md")  # "//" = folder of the .blend
 EXCLUDE_NAMES = []     # exact node group names to skip
 ONLY_EMPTY = False     # True = never overwrite a description that already exists
 DRY_RUN = False        # True = report only, change nothing

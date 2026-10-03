@@ -1,13 +1,13 @@
-"""Compress every GIF in node_images/ in place, keeping full resolution and frame rate.
+"""Compress every GIF in assets/node_images/ in place, keeping full resolution and frame rate.
 
 Uses gifsicle: unchanged pixels between frames are stored as transparency and
 each frame is cropped to the region that changed. Optional --lossy adds
 palette-friendly dithering noise that shrinks files further.
 
-Originals are kept in node_images_originals/ (re-runs always compress from the
+Originals are kept in assets/node_images_originals/ (re-runs always compress from the
 original, so changing settings never compounds quality loss).
 
-Usage: python compress_gifs.py [--lossy 0-200] [--colors 2-256]
+Usage: python tools/compress_gifs.py [--lossy 0-200] [--colors 2-256]
 Requires gifsicle on PATH (scoop install gifsicle / brew install gifsicle).
 """
 import argparse
@@ -16,9 +16,9 @@ import subprocess
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).parent
-SRC = ROOT / "node_images"
-BACKUP = ROOT / "node_images_originals"
+ROOT = Path(__file__).resolve().parents[1]
+SRC = ROOT / "assets" / "node_images"
+BACKUP = ROOT / "assets" / "node_images_originals"
 
 
 def main():

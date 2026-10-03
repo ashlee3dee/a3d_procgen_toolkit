@@ -1315,6 +1315,24 @@ Clamps an integer value between a minimum and maximum.
 - Value `Integer` — Clamped value
 
 
+### A3D_Iterate Over Edges
+
+**Description**
+
+
+
+**Inputs**
+
+- Geometry `Geometry` — Geometry to process. Must contain edges.
+- Data `Bundle` — Bundle of variables that persist between edge iterations.
+- Closure `Closure` — Closure to execute
+
+**Outputs**
+
+- Geometry `Geometry` — Geometry to process. Must contain edges.
+- Data `Bundle` — Bundle of variables that persist between edge iterations.
+
+
 ### A3D_Laplacian
 
 **Description**

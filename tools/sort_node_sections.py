@@ -16,8 +16,8 @@ by their header text (e.g. each Geometry Nodes entry like "### A3D_Mirror").
   "### " stripped.
 
 Usage:
-    python sort_node_sections.py input.md -o output.md
-    python sort_node_sections.py input.md            # prints to stdout
+    python tools/sort_node_sections.py input.md -o output.md
+    python tools/sort_node_sections.py input.md       # prints to stdout
 """
 
 import argparse

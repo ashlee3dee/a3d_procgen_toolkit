@@ -1,6 +1,5 @@
 """Build a static GitHub Pages site (docs/index.html) from Node Reference.md."""
 import html
-import json
 import re
 import shutil
 import urllib.parse
@@ -8,7 +7,7 @@ from pathlib import Path
 
 import markdown
 
-ROOT = Path(__file__).parent
+ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "docs"
 
 # Page colors - tweak these. Each key becomes a CSS variable (--key).
@@ -92,28 +91,31 @@ def decorate(body):
     )
 
 
-IMAGES_SRC = ROOT / "node_images"  # folder of images/gifs
-IMAGES_MAP = ROOT / "node_images.json"  # {"Node Name": "file.gif" | ["a.png", "b.gif"]}
+IMAGES_SRC = ROOT / "assets" / "node_images"
 H3_RE = re.compile(r'(<h3 id="([^"]+)">.*?</h3>)(.*?)(?=<h3 id=|\Z)', re.S)
 
 
 def add_images(body, names):
-    """Insert images above each mapped node's Description."""
-    if not IMAGES_MAP.exists():
+    """Insert matching node images above each node's Description."""
+    if not IMAGES_SRC.is_dir():
         return body
-    lookup = json.loads(IMAGES_MAP.read_text(encoding="utf-8"))
+    media_by_name = {}
+    for path in IMAGES_SRC.iterdir():
+        if path.is_file():
+            media_by_name.setdefault(path.stem.casefold(), []).append(path)
+    for paths in media_by_name.values():
+        paths.sort(key=lambda path: path.name.casefold())
 
     def repl(m):
         head, hid, rest = m.groups()
-        files = lookup.get(names.get(hid, ""), [])
-        if isinstance(files, str):
-            files = [files]
-        files = [f for f in files if (IMAGES_SRC / f).is_file()]
+        node_name = names.get(hid, "")
+        files = media_by_name.get(node_name.casefold(), [])
         if not files:
             return m.group(0)
         imgs = '<div class="node-imgs">' + "".join(
-            f'<img src="images/{urllib.parse.quote(f)}" alt="{html.escape(names[hid])}" loading="lazy">'
-            for f in files) + "</div>"
+            f'<img src="images/{urllib.parse.quote(path.name)}" '
+            f'alt="{html.escape(node_name, quote=True)}" loading="lazy">'
+            for path in files) + "</div>"
         marker = '<p class="sec sec-Description">'
         if marker in rest:
             rest = rest.replace(marker, imgs + marker, 1)
