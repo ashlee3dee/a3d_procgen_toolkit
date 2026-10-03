@@ -13,7 +13,7 @@ OUT = ROOT / "site"
 
 # Page colors - tweak these. Each key becomes a CSS variable (--key).
 THEME = {
-    "page-bg": "#e8e5f0",
+    "page-bg": "#14121a",
     "text": "#e6e1ec",
     "header-start": "#2a1233",
     "header-end": "#e0457b",
