@@ -77,12 +77,12 @@ code.s-Menu{background:#4a4a4a;color:#fff;border:1px solid var(--socket-border)}
 <li>Position <code class="s s-Vector">Vector</code> — Position of the intersection</li>
 </ul>
 <h3 id="a3d_2d-navier-stokes-solver">A3D_2D Navier Stokes Solver</h3>
-<p class="sec sec-Description">Description</p>
+<div class="node-imgs"><img src="images/A3D_2D%20Navier%20Stokes%20Solver.gif" alt="A3D_2D Navier Stokes Solver" loading="lazy"></div><p class="sec sec-Description">Description</p>
 <p>A 2D fluid solver operating on a grid, advecting velocity, pressure, density, and color fields with configurable damping and external force/collision input, for smoke and liquid style simulations.</p>
 <p class="sec sec-Inputs">Inputs</p>
 <ul>
-<li>Geometry <code class="s s-Geometry">Geometry</code> — Grid geometry the simulation runs on</li>
 <li>Resolution <code class="s s-Integer">Integer</code> — Number of vertices in the X direction</li>
+<li>Iterations <code class="s s-Integer">Integer</code> — Number of pressure solve iterations per-frame. Higher values produce more realistic results.</li>
 <li>Scale <code class="s s-Float">Float</code> — Scale of the simulation grid</li>
 <li>Damping <code class="s s-Float">Float</code> — Amount the velocity is damped each step</li>
 <li>Velocity <code class="s s-Vector">Vector</code> — Velocity field of the fluid</li>

@@ -45,8 +45,8 @@ A 2D fluid solver operating on a grid, advecting velocity, pressure, density, an
 
 **Inputs**
 
-- Geometry `Geometry` — Grid geometry the simulation runs on
 - Resolution `Integer` — Number of vertices in the X direction
+- Iterations `Integer` — Number of pressure solve iterations per-frame. Higher values produce more realistic results.
 - Scale `Float` — Scale of the simulation grid
 - Damping `Float` — Amount the velocity is damped each step
 - Velocity `Vector` — Velocity field of the fluid
