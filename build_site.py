@@ -8,6 +8,39 @@ import markdown
 ROOT = Path(__file__).parent
 OUT = ROOT / "site"
 
+# Page colors - tweak these. Each key becomes a CSS variable (--key).
+THEME = {
+    "page-bg": "#14121a",
+    "text": "#e6e1ec",
+    "header-start": "#2a1233",
+    "header-end": "#e0457b",
+    "header-text": "#ffffff",
+    "header-shadow": "rgba(0,0,0,.6)",
+    "nav-bg": "#1b1824",
+    "nav-link": "#f0a6c4",
+    "nav-link-hover": "#ff79b0",
+    "input-bg": "#26222f",
+    "input-text": "#e6e1ec",
+    "input-border": "#4a3a55",
+    "h1-bg": "#3a1530",
+    "h1-text": "#ffd1e3",
+    "h2-bg": "#c2185b",
+    "h2-text": "#ffffff",
+    "h3-bg": "#2b2236",
+    "h3-text": "#ff8fbd",
+    "h3-accent": "#ff4d94",
+    "h4-bg": "#231d2c",
+    "desc-bg": "#201c29",
+    "desc-accent": "#9a8fab",
+    "inputs-bg": "#1d2a2a",
+    "inputs-accent": "#3fc49a",
+    "outputs-bg": "#2d2230",
+    "outputs-accent": "#ff6fa8",
+    "code-bg": "#2f2a3a",
+    "code-text": "#ffc2da",
+    "socket-border": "rgba(255,255,255,.25)",
+}
+THEME_CSS = ":root{" + ";".join(f"--{k}:{v}" for k, v in THEME.items()) + "}"
 # Blender socket colors: type -> (background, text color)
 SOCKETS = {
     "Float": ("#a1a1a1", "#111"), "Integer": ("#598c5c", "#fff"),
@@ -20,7 +53,7 @@ SOCKETS = {
     "Closure": ("#7a7a38", "#fff"), "Menu": ("#4a4a4a", "#fff"),
 }
 SOCKET_CSS = "".join(
-    f"code.s-{k}{{background:{bg};color:{fg};border:1px solid rgba(0,0,0,.25)}}\n"
+    f"code.s-{k}{{background:{bg};color:{fg};border:1px solid var(--socket-border)}}\n"
     for k, (bg, fg) in SOCKETS.items()
 )
 SOCKET_RE = re.compile(r"(<li>[^<]*?)<code>(%s)</code>" % "|".join(SOCKETS))
@@ -37,23 +70,24 @@ TEMPLATE = """<!DOCTYPE html>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>A3D Procgen Toolkit - Node Reference</title>
 <style>
-body{{margin:0;font:16px/1.6 system-ui,sans-serif;color:#222}}
-header{{position:sticky;top:0;z-index:10;height:2.9rem;box-sizing:border-box;background:linear-gradient(90deg,#1f3a5f,#3b6ea5);color:#fff;padding:.5rem 1.5rem;font-size:1.25rem;font-weight:600;box-shadow:0 2px 6px rgba(0,0,0,.3)}}
+{theme_css}
+body{{margin:0;font:16px/1.6 system-ui,sans-serif;color:var(--text);background:var(--page-bg)}}
+header{{position:sticky;top:0;z-index:10;height:2.9rem;box-sizing:border-box;background:linear-gradient(90deg,var(--header-start),var(--header-end));color:var(--header-text);padding:.5rem 1.5rem;font-size:1.25rem;font-weight:600;box-shadow:0 2px 6px var(--header-shadow)}}
 .wrap{{display:flex}}
-nav{{width:260px;height:calc(100vh - 2.9rem);overflow:auto;position:sticky;top:2.9rem;padding:1rem;background:#eaf0f8;box-sizing:border-box;flex:none}}
-nav input{{width:100%;padding:.4rem;box-sizing:border-box;margin-bottom:.5rem}}
-nav a{{display:block;padding:.15rem 0;color:#14304f;text-decoration:none;font-size:14px}}
-nav a:hover{{text-decoration:underline}}
+nav{{width:260px;height:calc(100vh - 2.9rem);overflow:auto;position:sticky;top:2.9rem;padding:1rem;background:var(--nav-bg);box-sizing:border-box;flex:none}}
+nav input{{background:var(--input-bg);color:var(--input-text);border:1px solid var(--input-border);border-radius:4px;width:100%;padding:.4rem;box-sizing:border-box;margin-bottom:.5rem}}
+nav a{{display:block;padding:.15rem 0;color:var(--nav-link);text-decoration:none;font-size:14px}}
+nav a:hover{{color:var(--nav-link-hover);text-decoration:underline}}
 main{{max-width:800px;padding:1rem 2rem;flex:1}}
-h1{{margin:.5rem 0 1rem;padding:.4rem .8rem;background:#1f3a5f;color:#fff;border-radius:6px}}
-h2{{padding:.3rem .8rem;background:#3b6ea5;color:#fff;border-radius:6px}}
-h3{{margin-top:2.5rem;padding:.35rem .8rem;background:#d6e4f5;color:#14304f;border-left:6px solid #3b6ea5;border-radius:4px;scroll-margin-top:3.5rem}}
-h4{{padding:.2rem .7rem;background:#e8f0fa;border-radius:4px}}
+h1{{margin:.5rem 0 1rem;padding:.4rem .8rem;background:var(--h1-bg);color:var(--h1-text);border-radius:6px}}
+h2{{padding:.3rem .8rem;background:var(--h2-bg);color:var(--h2-text);border-radius:6px}}
+h3{{margin-top:2.5rem;padding:.35rem .8rem;background:var(--h3-bg);color:var(--h3-text);border-left:6px solid var(--h3-accent);border-radius:4px;scroll-margin-top:3.5rem}}
+h4{{padding:.2rem .7rem;background:var(--h4-bg);border-radius:4px}}
 .sec{{margin:1.2rem 0 .4rem;padding:.15rem .7rem;font-weight:700;border-radius:4px;border-left:4px solid}}
-.sec-Description{{background:#eef0f3;border-color:#8a94a3}}
-.sec-Inputs{{background:#e3f1e6;border-color:#4a9a5b}}
-.sec-Outputs{{background:#fbebd9;border-color:#e08a2e}}
-code{{background:#eee;padding:0 .35em;border-radius:3px}}
+.sec-Description{{background:var(--desc-bg);border-color:var(--desc-accent)}}
+.sec-Inputs{{background:var(--inputs-bg);border-color:var(--inputs-accent)}}
+.sec-Outputs{{background:var(--outputs-bg);border-color:var(--outputs-accent)}}
+code{{background:var(--code-bg);color:var(--code-text);padding:0 .35em;border-radius:3px}}
 code.s{{font-size:.85em;font-weight:600;padding:.05em .45em;border-radius:10px}}
 {socket_css}@media(max-width:700px){{.wrap{{display:block}}nav{{width:auto;height:auto;position:static}}}}
 </style></head><body>
@@ -82,7 +116,7 @@ def main():
     )
     OUT.mkdir(exist_ok=True)
     (OUT / "index.html").write_text(
-        TEMPLATE.format(toc=toc, body=body, socket_css=SOCKET_CSS), encoding="utf-8")
+        TEMPLATE.format(toc=toc, body=body, theme_css=THEME_CSS, socket_css=SOCKET_CSS), encoding="utf-8")
     (OUT / ".nojekyll").touch()
     print(f"Wrote {OUT / 'index.html'}")
 

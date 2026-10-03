@@ -82,27 +82,6 @@ Cuts a body mesh using an arbitrary 2D tool mesh as the cutting shape, returning
 - Intersected `Boolean` — True where the tool mesh intersects the body
 - Intersection Position `Vector` — Position of the intersection
 
-
-### A3D_3x3 Polar Decomposition
-
-**Description**
-
-Decomposes a 3x3 matrix, given as three column vectors, into a rotation and a stretch component using iterative refinement.
-
-**Inputs**
-
-- Column 1 `Vector` — First column of the 3x3 matrix
-- Column 2 `Vector` — Second column of the 3x3 matrix
-- Column 3 `Vector` — Third column of the 3x3 matrix
-- Initial Guess `Rotation` — Starting rotation estimate for the iteration
-- Iterations `Integer` — Number of refinement iterations
-
-**Outputs**
-
-- Rotation `Rotation` — Rotation component of the decomposition
-- Stretch `Vector` — Stretch component of the decomposition
-
-
 ### A3D_Active Camera Transform
 
 **Description**
