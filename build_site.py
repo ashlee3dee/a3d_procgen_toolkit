@@ -61,11 +61,35 @@ SOCKET_CSS = "".join(
 )
 SOCKET_RE = re.compile(r"(<li>[^<]*?)<code>(%s)</code>" % "|".join(SOCKETS))
 SECTION_RE = re.compile(r"<p><strong>(Description|Inputs|Outputs)</strong></p>")
+SOCKET_ROW_RE = re.compile(
+    r'<li>([^<]*?)<code class="s s-([^"]+)">([^<]*)</code>(.*?)</li>'
+)
+SOCKET_LIST_RE = re.compile(
+    r'(<p class="sec sec-(?:Inputs|Outputs)">(?:Inputs|Outputs)</p>\s*)<ul>'
+)
 
 
 def decorate(body):
     body = SOCKET_RE.sub(r'\1<code class="s s-\2">\2</code>', body)
-    return SECTION_RE.sub(r'<p class="sec sec-\1">\1</p>', body)
+    body = SECTION_RE.sub(r'<p class="sec sec-\1">\1</p>', body)
+
+    def socket_row(match):
+        name, socket_type, data_type, description = match.groups()
+        description = re.sub(r"^\s*—\s*", "", description).strip()
+        return (
+            '<li class="socket-row">'
+            f'<span class="socket-name">{name.strip()}</span>'
+            f'<code class="s s-{socket_type}">{data_type}</code>'
+            f'<span class="socket-description">{description}</span>'
+            "</li>"
+        )
+
+    body = SOCKET_ROW_RE.sub(socket_row, body)
+    return SOCKET_LIST_RE.sub(
+        r'\1<ul class="socket-list"><li class="socket-header">'
+        r"<span>Name</span><span>Type</span><span>Description</span></li>",
+        body,
+    )
 
 
 IMAGES_SRC = ROOT / "node_images"  # folder of images/gifs
@@ -122,6 +146,11 @@ h4{{padding:.2rem .7rem;background:var(--h4-bg);border-radius:4px}}
 .sec-Description{{background:var(--desc-bg);border-color:var(--desc-accent)}}
 .sec-Inputs{{background:var(--inputs-bg);border-color:var(--inputs-accent)}}
 .sec-Outputs{{background:var(--outputs-bg);border-color:var(--outputs-accent)}}
+.socket-list{{list-style:none;padding:0;margin:.35rem 0 1rem}}
+.socket-row,.socket-header{{display:grid;grid-template-columns:minmax(8rem,1.2fr) minmax(6.5rem,auto) minmax(0,3fr);column-gap:.75rem;align-items:start}}
+.socket-row{{padding:.35rem .7rem;border-bottom:1px solid var(--socket-border)}}
+.socket-header{{padding:.2rem .7rem;color:var(--desc-accent);font-size:.8em;font-weight:700}}
+.socket-name,.socket-description{{overflow-wrap:anywhere}}
 .node-imgs{{margin:1rem 0;display:flex;flex-wrap:wrap;gap:.75rem}}
 .node-imgs img{{max-width:100%;border-radius:6px;border:1px solid var(--input-border)}}
 code{{background:var(--code-bg);color:var(--code-text);padding:0 .35em;border-radius:3px}}
@@ -164,4 +193,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
