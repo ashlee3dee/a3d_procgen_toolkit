@@ -1,22 +1,19 @@
 """
-Shared helpers for the Node Reference.md <-> Blender round trip.
+Blender asset catalog helpers for the Node Reference.md <-> Blender round trip.
 
-Reference layout:
+The markdown format itself lives in reference.py. Layout:
   ## Category name          -> Blender asset catalog "<CATALOG_PARENT>/<Category name>"
   ### A3D_Node Name         -> node group
 
 No bpy import here, so this can be used (and tested) outside Blender.
 """
-import re
+import sys
 import uuid
 from pathlib import Path
 
 CATALOGS_FILENAME = "blender_assets.cats.txt"
 CATALOG_PARENT = "A3D_Procgen Toolkit"   # existing library catalog the categories nest under
 UNCATEGORIZED = "Uncategorized"   # heading for node groups with no catalog
-
-RE_CATEGORY = re.compile(r"^## (.+?)\s*$")
-RE_NODE = re.compile(r"^### (.+?)\s*$")
 
 _CATALOGS_HEADER = """\
 # This is an Asset Catalog Definition file for Blender.
@@ -27,20 +24,6 @@ _CATALOGS_HEADER = """\
 
 VERSION 1
 """
-
-
-def parse_categories(text):
-    """-> ({node heading: category or None}, [categories in document order])"""
-    node_category, order = {}, []
-    category = None
-    for line in text.splitlines():
-        if m := RE_CATEGORY.match(line):
-            category = m.group(1)
-            if category not in order:
-                order.append(category)
-        elif m := RE_NODE.match(line):
-            node_category[m.group(1)] = category
-    return node_category, order
 
 
 def find_catalogs_file(blend_filepath, override=None):
@@ -117,3 +100,15 @@ def ensure_catalogs(path, categories, parent=CATALOG_PARENT, write=True):
     ids = {c: existing.get(catalog_path(c, parent)) or new_ids[catalog_path(c, parent)]
            for c in categories}
     return ids, created
+
+
+def script_args():
+    """Arguments after "--" on a `blender ... --python script.py -- args` command line."""
+    return sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else []
+
+
+def add_catalog_args(parser):
+    parser.add_argument("--catalogs", default=None,
+                        help="blender_assets.cats.txt to use (default: nearest to the .blend)")
+    parser.add_argument("--catalog-parent", default=CATALOG_PARENT,
+                        help="existing library catalog the categories are nested under ('' = top level)")

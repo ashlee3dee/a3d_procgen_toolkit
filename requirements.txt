@@ -1,0 +1,2 @@
+# No Python packages are required (standard library only).
+# External tools: Blender (pull/push) and gifsicle (gifs).

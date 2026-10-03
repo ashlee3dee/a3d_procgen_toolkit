@@ -1,0 +1,99 @@
+{
+  "theme": {
+    "page-bg": "#14121a",
+    "text": "#e6e1ec",
+    "header-start": "#2a1233",
+    "header-end": "#e0457b",
+    "header-text": "#ffffff",
+    "header-shadow": "rgba(0,0,0,.6)",
+    "nav-bg": "#1b1824",
+    "nav-link": "#f0a6c4",
+    "nav-link-hover": "#ff79b0",
+    "input-bg": "#26222f",
+    "input-text": "#e6e1ec",
+    "input-border": "#4a3a55",
+    "h1-bg": "#3a1530",
+    "h1-text": "#ffd1e3",
+    "h2-bg": "#c2185b",
+    "h2-text": "#ffffff",
+    "h3-bg": "#2b2236",
+    "h3-text": "#ff8fbd",
+    "h3-accent": "#ff4d94",
+    "h4-bg": "#231d2c",
+    "desc-bg": "#201c29",
+    "desc-accent": "#9a8fab",
+    "inputs-bg": "#1d2a2a",
+    "inputs-accent": "#3fc49a",
+    "outputs-bg": "#2d2230",
+    "outputs-accent": "#ff6fa8",
+    "code-bg": "#2f2a3a",
+    "code-text": "#ffc2da",
+    "socket-border": "rgba(255,255,255,.25)"
+  },
+  "sockets": {
+    "Float": [
+      "#a1a1a1",
+      "#111"
+    ],
+    "Integer": [
+      "#598c5c",
+      "#fff"
+    ],
+    "Boolean": [
+      "#cca6d6",
+      "#111"
+    ],
+    "Vector": [
+      "#6363c7",
+      "#fff"
+    ],
+    "Color": [
+      "#c7c729",
+      "#111"
+    ],
+    "Rotation": [
+      "#a663c7",
+      "#fff"
+    ],
+    "Matrix": [
+      "#c4207f",
+      "#fff"
+    ],
+    "String": [
+      "#70b2ff",
+      "#111"
+    ],
+    "Object": [
+      "#ed9e5c",
+      "#111"
+    ],
+    "Geometry": [
+      "#00d6a3",
+      "#111"
+    ],
+    "Collection": [
+      "#ffffff",
+      "#111"
+    ],
+    "Image": [
+      "#5c3d5c",
+      "#fff"
+    ],
+    "Material": [
+      "#f27585",
+      "#111"
+    ],
+    "Bundle": [
+      "#3d6b6b",
+      "#fff"
+    ],
+    "Closure": [
+      "#7a7a38",
+      "#fff"
+    ],
+    "Menu": [
+      "#4a4a4a",
+      "#fff"
+    ]
+  }
+}

@@ -23,29 +23,15 @@ from pathlib import Path
 
 import bpy
 
-# Folder containing this script and node_reference.py. Only needed when the
-# script is run from a text block inside the .blend (where __file__ is not a
-# real path); set it to e.g. r"T:\...\a3d_procgen_toolkit\tools".
-TOOLS_DIR = ""
-
-
-def _find_tools_dir():
-    candidates = [TOOLS_DIR, str(Path(__file__).resolve().parent)]
-    text = bpy.data.texts.get(Path(__file__).name)  # text block linked to an external file
-    if text is not None and text.filepath:
-        candidates.append(str(Path(bpy.path.abspath(text.filepath)).resolve().parent))
-    for c in candidates:
-        if c and (Path(c) / "node_reference.py").is_file():
-            return Path(c)
-    raise FileNotFoundError(
-        "Can't find node_reference.py. Set TOOLS_DIR at the top of this script to the repo's tools folder."
-    )
-
-
-_TOOLS = _find_tools_dir()
+# Folder with this script and node_reference.py. Blender's text editor doesn't give
+# a real __file__ for text blocks inside the .blend; set this path in that case.
+TOOLS_DIR = r"T:\Art\Blender Projects\Gumroad Products\a3d_procgen_toolkit\tools"
+_TOOLS = Path(TOOLS_DIR or Path(__file__).resolve().parent)
 sys.path.insert(0, str(_TOOLS))
+import reference
 import node_reference
-importlib.reload(node_reference)  # pick up edits when re-run in the same Blender session
+importlib.reload(reference)  # pick up edits when re-run in the same Blender session
+importlib.reload(node_reference)
 from node_reference import UNCATEGORIZED
 
 ROOT = _TOOLS.parent
@@ -65,28 +51,17 @@ def type_name(socket_type):
     return socket_type.removeprefix("NodeSocket")
 
 
-def one_line(text):
-    return " ".join((text or "").split())
+def sockets(group, in_out):
+    return [
+        reference.Socket(item.name, type_name(item.socket_type), item.description or "")
+        for item in group.interface.items_tree
+        if item.item_type == "SOCKET" and item.in_out == in_out
+    ]
 
 
-def socket_lines(group, in_out):
-    lines = []
-    for item in group.interface.items_tree:
-        if item.item_type != "SOCKET" or item.in_out != in_out:
-            continue
-        desc = one_line(item.description)
-        line = f"- {item.name} `{type_name(item.socket_type)}`"
-        lines.append(f"{line} — {desc}" if desc else line)
-    return lines
-
-
-def node_section(group):
-    parts = [f"### {group.name}", "", "**Description**", "", one_line(group.description), ""]
-    for title, in_out in (("Inputs", "INPUT"), ("Outputs", "OUTPUT")):
-        parts += [f"**{title}**", ""]
-        lines = socket_lines(group, in_out)
-        parts += lines + [""] if lines else []
-    return "\n".join(parts).rstrip("\n") + "\n"
+def to_node(group):
+    return reference.Node(group.name, group.description or "",
+                          sockets(group, "INPUT"), sockets(group, "OUTPUT"))
 
 
 def build(prefix, exclude, catalogs, previous_text, parent=node_reference.CATALOG_PARENT):
@@ -97,7 +72,9 @@ def build(prefix, exclude, catalogs, previous_text, parent=node_reference.CATALO
         and g.name.startswith(prefix)
         and g.name not in exclude
     ]
-    previous, order = node_reference.parse_categories(previous_text)
+    previous_ref = reference.parse(previous_text)
+    previous = {n.name: c.name for c in previous_ref.categories for n in c.nodes}
+    order = list(dict.fromkeys(c.name for c in previous_ref.categories if c.name))
 
     notes = []
     by_category = defaultdict(list)
@@ -116,24 +93,20 @@ def build(prefix, exclude, catalogs, previous_text, parent=node_reference.CATALO
     new = sorted((c for c in by_category if c not in known and c != UNCATEGORIZED), key=str.casefold)
     ordered = known + new + ([UNCATEGORIZED] if UNCATEGORIZED in by_category else [])
 
-    chunks = []
-    for category in ordered:
-        members = sorted(by_category[category], key=lambda g: g.name.lower())
-        chunks.append(f"## {category}\n\n" + "\n".join(node_section(g) for g in members))
-    return "\n".join(chunks), len(groups), notes
+    ref = reference.Reference([
+        reference.Category(c, [to_node(g) for g in sorted(by_category[c], key=lambda g: g.name.lower())])
+        for c in ordered
+    ])
+    return reference.render(ref), len(groups), notes
 
 
 def main():
-    argv = sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else []
     ap = argparse.ArgumentParser()
     ap.add_argument("--output", default=OUTPUT_PATH)
     ap.add_argument("--prefix", default=PREFIX)
     ap.add_argument("--exclude", action="append", default=list(EXCLUDE_NAMES))
-    ap.add_argument("--catalogs", default=None,
-                    help="blender_assets.cats.txt (default: nearest to the .blend)")
-    ap.add_argument("--catalog-parent", default=node_reference.CATALOG_PARENT,
-                    help="library catalog the categories are nested under ('' = top level)")
-    args = ap.parse_args(argv)
+    node_reference.add_catalog_args(ap)
+    args = ap.parse_args(node_reference.script_args())
 
     out = Path(bpy.path.abspath(args.output))
     previous_text = out.read_text(encoding="utf-8") if out.is_file() else ""
