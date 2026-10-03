@@ -1,0 +1,227 @@
+{
+  "main": {
+    "id": "fbb8e5d8607e5489",
+    "type": "split",
+    "children": [
+      {
+        "id": "fef5feed17eea166",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "ee4accba527ea229",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Node Reference.md",
+                "mode": "source",
+                "source": true
+              },
+              "icon": "lucide-file",
+              "title": "Node Reference"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "c18e5e33758d376f",
+    "type": "split",
+    "children": [
+      {
+        "id": "4948bac4a1965bb2",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "30a0239d44141986",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "96c5397575994763",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "3ec0ba8efbb95063",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 200
+  },
+  "right": {
+    "id": "6585ef1ef95cd835",
+    "type": "split",
+    "children": [
+      {
+        "id": "e7221fcfeca23c40",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "d6639061b1822055",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "Node Reference.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks"
+            }
+          },
+          {
+            "id": "afaa61103fe8fa41",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "Node Reference.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links"
+            }
+          },
+          {
+            "id": "5c7b3a57cdd4e237",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "b6a3204f8d179241",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "All properties"
+            }
+          },
+          {
+            "id": "8888167350c66ca4",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "Node Reference.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "bases:Create new base": false
+    }
+  },
+  "active": "ee4accba527ea229",
+  "lastOpenFiles": [
+    "Node Reference.md",
+    "apply_descriptions.py",
+    "propagate_socket_descriptions.py",
+    "Unconfirmed 814024.crdownload",
+    "A3D_Procgen Toolkit_node_data.txt",
+    "write_node_data.py",
+    "Node Reference V2.md",
+    "Sorted Node Reference V2.md",
+    "Untitled",
+    "dump/A3D_(A⊙B)ⁿ.md",
+    "dump/A3D_Aⁿ⊙Bⁿ.md",
+    "dump/A3D_Plexus.md",
+    "dump/A3D_Project To Plane.md",
+    "dump/A3D_Position Components.md",
+    "dump/A3D_2D Shape Cut.md",
+    "dump/A3D_2D Navier Stokes Solver.md",
+    "dump/A3D_2D Line Cut.md",
+    "dump/A3D_Gaussian Curvature.md",
+    "dump/A3D_Tetrahedron Volume.md",
+    "dump/A3D_Tetrahedron.md",
+    "dump/A3D_Quad Sphere.md",
+    "dump/A3D_Dodecahedron.md",
+    "dump/A3D_Cell Fracture.md",
+    "dump/A3D_XPBD Solver Step.md",
+    "dump/A3D_XPBD Solver.md",
+    "dump/A3D_Velocity Simulation.md",
+    "dump/A3D_Sphere Collision.md",
+    "dump/A3D_Solve XPBD Edge Constraints.md",
+    "dump/A3D_Ripple Simulation.md",
+    "dump/A3D_PBD Solver Repeat.md",
+    "dump/A3D_Particle Tracking.md",
+    "dump",
+    "Unconfirmed 21406.crdownload"
+  ]
+}

@@ -1,0 +1,2852 @@
+Name: 'A3D_(A⊙B)ⁿ'
+  Type: GEOMETRY
+  Description: 'Applies a selectable math operation to two values, then raises the result to a given exponent.'
+  Users: 3
+  Fake user: True
+  Nodes: 10
+  Inputs:
+    - 'Operation': NodeSocketMenu
+        Description: 'Type of operation to perform'
+    - 'A': NodeSocketFloat
+        Description: 'First operand'
+    - 'B': NodeSocketFloat
+        Description: 'Second operand'
+    - 'Exponent': NodeSocketFloat
+        Description: 'Power the result is raised to'
+  Outputs:
+    - 'Value': NodeSocketFloat
+        Description: 'Result of the operation raised to the exponent'
+
+Name: 'A3D_2D Line Cut'
+  Type: GEOMETRY
+  Description: "Cuts a body mesh against a tool mesh's edges along a shared plane, returning the resulting mesh along with intersection status and position for each intersected element."
+  Users: 3
+  Fake user: True
+  Nodes: 37
+  Inputs:
+    - 'Body Mesh': NodeSocketGeometry
+        Description: 'Geometry to split'
+    - 'Tool Mesh': NodeSocketGeometry
+        Description: 'Geometry that will perform the cut'
+    - 'Selection': NodeSocketBool
+        Description: 'Which edges in body geometry to cut'
+    - 'Cut Body': NodeSocketBool
+        Description: 'Insert new edge (cut)'
+    - 'Tool Index': NodeSocketInt
+        Description: 'Index of edge in tool body to be used'
+  Outputs:
+    - 'Mesh': NodeSocketGeometry
+        Description: 'Body mesh with the cut applied'
+    - 'Intersected': NodeSocketBool
+        Description: 'True where the tool edge intersects the body'
+    - 'Position': NodeSocketVector
+        Description: 'Position of the intersection'
+
+Name: 'A3D_2D Navier Stokes Solver'
+  Type: GEOMETRY
+  Description: 'A 2D fluid solver operating on a grid, advecting velocity, pressure, density, and color fields with configurable damping and external force/collision input, for smoke and liquid style simulations.'
+  Users: 2
+  Fake user: True
+  Nodes: 136
+  Inputs:
+    - 'Geometry': NodeSocketGeometry
+        Description: 'Grid geometry the simulation runs on'
+    - 'Resolution': NodeSocketInt
+        Description: 'Number of vertices in the X direction'
+    - 'Scale': NodeSocketFloat
+        Description: 'Scale of the simulation grid'
+    - 'Damping': NodeSocketFloat
+        Description: 'Amount the velocity is damped each step'
+    - 'Velocity': NodeSocketVector
+        Description: 'Velocity field of the fluid'
+    - 'Pressure': NodeSocketFloat
+        Description: 'Pressure field of the fluid'
+    - 'Density': NodeSocketFloat
+        Description: 'Density field of the fluid'
+    - 'Color': NodeSocketColor
+        Description: 'Color field carried along by the fluid'
+    - 'External': NodeSocketBool
+        Description: 'Enable interaction with an external object'
+    - 'External Object': NodeSocketObject
+        Description: 'Object that interacts with the fluid'
+    - 'External Dampening': NodeSocketFloat
+        Description: 'How much to damp the velocity'
+    - 'External Collision Proximity': NodeSocketFloat
+        Description: 'Distance within which the external object affects the fluid'
+  Outputs:
+    - 'Geometry': NodeSocketGeometry
+        Description: 'Grid geometry with the updated simulation fields'
+
+Name: 'A3D_2D Shape Cut'
+  Type: GEOMETRY
+  Description: 'Cuts a body mesh using an arbitrary 2D tool mesh as the cutting shape, returning the cut mesh, intersection status, and intersection positions.'
+  Users: 2
+  Fake user: True
+  Nodes: 16
+  Inputs:
+    - 'Cut Body': NodeSocketBool
+        Description: 'Insert vertex (cut) geometry'
+    - 'Body Mesh': NodeSocketGeometry
+        Description: 'Geometry to be cut'
+    - 'Body Selection': NodeSocketBool
+        Description: 'Limit affected edges'
+    - 'Tool Mesh': NodeSocketGeometry
+        Description: 'Cutting geometry'
+  Outputs:
+    - 'Mesh': NodeSocketGeometry
+        Description: 'Body mesh with the cut applied'
+    - 'Intersected': NodeSocketBool
+        Description: 'True where the tool mesh intersects the body'
+    - 'Intersection Position': NodeSocketVector
+        Description: 'Position of the intersection'
+
+Name: 'A3D_3x3 Polar Decomposition'
+  Type: GEOMETRY
+  Description: 'Decomposes a 3x3 matrix, given as three column vectors, into a rotation and a stretch component using iterative refinement.'
+  Users: 1
+  Fake user: True
+  Nodes: 55
+  Inputs:
+    - 'Column 1': NodeSocketVector
+        Description: 'First column of the 3x3 matrix'
+    - 'Column 2': NodeSocketVector
+        Description: 'Second column of the 3x3 matrix'
+    - 'Column 3': NodeSocketVector
+        Description: 'Third column of the 3x3 matrix'
+    - 'Initial Guess': NodeSocketRotation
+        Description: 'Starting rotation estimate for the iteration'
+    - 'Iterations': NodeSocketInt
+        Description: 'Number of refinement iterations'
+  Outputs:
+    - 'Rotation': NodeSocketRotation
+        Description: 'Rotation component of the decomposition'
+    - 'Stretch': NodeSocketVector
+        Description: 'Stretch component of the decomposition'
+
+Name: 'A3D_Active Camera Transform'
+  Type: GEOMETRY
+  Description: "Returns the transform (and separately, location/rotation/scale) of the scene's active camera, with a mode switch for which representation to output."
+  Users: 4
+  Fake user: True
+  Nodes: 10
+  Inputs:
+    - 'Mode': NodeSocketMenu
+        Description: 'Which representation of the transform to output'
+  Outputs:
+    - 'Transform': NodeSocketMatrix
+        Description: 'Transformation matrix containing the location, rotation and scale of the camera'
+    - 'Location': NodeSocketVector
+        Description: 'Location of the active camera'
+    - 'Rotation': NodeSocketRotation
+        Description: 'Rotation of the active camera'
+    - 'Scale': NodeSocketVector
+        Description: 'Scale of the active camera'
+
+Name: 'A3D_Age Cull'
+  Type: GEOMETRY
+  Description: 'Deletes Geometry on the selected Domain when `age` is greater than or equal to `max_age`. Used with other Age* nodes.'
+  Users: 2
+  Fake user: True
+  Nodes: 14
+  Inputs:
+    - 'Geometry': NodeSocketGeometry
+        Description: 'Geometry to remove expired elements from'
+    - 'Selection': NodeSocketBool
+        Description: 'Elements that can be culled'
+    - 'Domain': NodeSocketMenu
+        Description: 'Domain to cull on'
+  Outputs:
+    - 'Geometry': NodeSocketGeometry
+        Description: 'Geometry with expired elements removed'
+
+Name: 'A3D_Age Initialize'
+  Type: GEOMETRY
+  Description: 'Write the attribute `max_age` on the selected Domain. Used with other Age* nodes.'
+  Users: 2
+  Fake user: True
+  Nodes: 9
+  Inputs:
+    - 'Geometry': NodeSocketGeometry
+        Description: 'Geometry to store the max_age attribute on'
+    - 'Selection': NodeSocketBool
+        Description: 'Elements to initialize'
+    - 'Domain': NodeSocketMenu
+        Description: 'Domain to store max_age on'
+    - 'Max Age': NodeSocketFloat
+        Description: 'Age at which an element is considered expired'
+  Outputs:
+    - 'Geometry': NodeSocketGeometry
+        Description: 'Geometry with the max_age attribute stored'
+
+Name: 'A3D_Age Update'
+  Type: GEOMETRY
+  Description: 'Increments the attribute `age` by input `Delta Time` on the selected Domain. Used with other Age* nodes.'
+  Users: 2
+  Fake user: True
+  Nodes: 15
+  Inputs:
+    - 'Geometry': NodeSocketGeometry
+        Description: 'Geometry to update the age attribute on'
+    - 'Selection': NodeSocketBool
+        Description: 'Elements to age'
+    - 'Delta Time': NodeSocketFloat
+        Description: 'Amount of time added to age'
+    - 'Domain': NodeSocketMenu
+        Description: 'Domain the age attribute is stored on'
+  Outputs:
+    - 'Geometry': NodeSocketGeometry
+        Description: 'Geometry with the age attribute updated'
+
+Name: 'A3D_Angle Between Vectors'
+  Type: GEOMETRY
+  Description: 'Computes the angle in radians between two input vectors.'
+  Users: 3
+  Fake user: True
+  Nodes: 9
+  Inputs:
+    - 'Vector A': NodeSocketVector
+        Description: 'First vector'
+    - 'Vector B': NodeSocketVector
+        Description: 'Second vector'
+  Outputs:
+    - 'Radians': NodeSocketFloat
+        Description: 'Angle between the vectors in radians'
+
+Name: 'A3D_Angle to Vector'
+  Type: GEOMETRY
+  Description: 'Converts a 2D angle (radians) into a unit direction vector.'
+  Users: 2
+  Fake user: True
+  Nodes: 7
+  Inputs:
+    - 'Angle': NodeSocketFloat
+        Description: 'Angle in radians'
+  Outputs:
+    - 'Vector': NodeSocketVector
+        Description: 'Unit direction vector for the angle'
+
+Name: 'A3D_Axis Alignment'
+  Type: GEOMETRY
+  Description: 'Determines which world axis (X, Y, or Z) a given vector is most closely aligned to, within an epsilon tolerance, and outputs boolean results per axis.'
+  Users: 2
+  Fake user: True
+  Nodes: 16
+  Inputs:
+    - 'Vector': NodeSocketVector
+        Description: 'Direction Vector'
+    - 'Epsilon': NodeSocketFloat
+        Description: 'Comparison threshold'
+  Outputs:
+    - 'X': NodeSocketBool
+        Description: 'Aligned to X Axis'
+    - 'Y': NodeSocketBool
+        Description: 'Aligned to Y Axis'
+    - 'Z': NodeSocketBool
+        Description: 'Aligned to Z Axis'
+
+Name: 'A3D_Axis Picker'
+  Type: GEOMETRY
+  Description: 'A menu-driven axis picker that outputs a unit vector for the selected X, Y, or Z axis, with an invert option.'
+  Users: 3
+  Fake user: True
+  Nodes: 8
+  Inputs:
+    - 'Axis': NodeSocketMenu
+        Description: 'Direction to Return'
+    - 'Invert': NodeSocketBool
+        Description: 'Flip the direction of the returned axis'
+  Outputs:
+    - 'Vector': NodeSocketVector
+        Description: 'Direction unit vector'
+
+Name: 'A3D_Aⁿ⊙Bⁿ'
+  Type: GEOMETRY
+  Description: 'Raises inputs A and B to a given exponent before combining them with a selectable math operation.'
+  Users: 7
+  Fake user: True
+  Nodes: 10
+  Inputs:
+    - 'Operation': NodeSocketMenu
+        Description: 'Type of operation to perform'
+    - 'A': NodeSocketFloat
+        Description: 'First operand, raised to the exponent'
+    - 'B': NodeSocketFloat
+        Description: 'Second operand, raised to the exponent'
+    - 'Exponent': NodeSocketFloat
+        Description: 'Power A and B are raised to'
+  Outputs:
+    - 'Value': NodeSocketFloat
+        Description: 'Result of the operation'
+
+Name: 'A3D_Ballistic Arc'
+  Type: GEOMETRY
+  Description: 'Computes the position and velocity of a point along a ballistic (projectile) trajectory at a given time, from an initial position, initial velocity, and gravity vector.'
+  Users: 3
+  Fake user: True
+  Nodes: 20
+  Inputs:
+    - 'Initial Position': NodeSocketVector
+        Description: 'Position at launch'
+    - 'Initial Velocity': NodeSocketVector
+        Description: 'Velocity at launch'
+    - 'Gravity': NodeSocketVector
+        Description: 'Gravity acceleration vector'
+    - 'Time': NodeSocketFloat
+        Description: 'Time elapsed since launch'
+  Outputs:
+    - 'Position': NodeSocketVector
+        Description: 'Position at the given time'
+    - 'Velocity': NodeSocketVector
+        Description: 'Velocity at the given time'
+
+Name: 'A3D_Bell Curve'
+  Type: GEOMETRY
+  Description: 'Evaluates a Gaussian (normal distribution) bell curve for an input value, given a mean and standard deviation.'
+  Users: 2
+  Fake user: True
+  Nodes: 9
+  Inputs:
+    - 'Value': NodeSocketFloat
+        Description: 'Value to evaluate the curve at'
+    - 'Mean': NodeSocketFloat
+        Description: 'Center (peak) of the curve'
+    - 'Standard Deviation': NodeSocketFloat
+        Description: 'Width of the curve'
+  Outputs:
+    - 'Value': NodeSocketFloat
+        Description: 'Height of the curve at the input value'
+
+Name: 'A3D_Boolean Grid Check'
+  Type: GEOMETRY
+  Description: 'Tests a boolean value against a rectangular sub-region (width/height) of a resolution-addressed grid at a given index.'
+  Users: 1
+  Fake user: True
+  Nodes: 18
+  Inputs:
+    - 'Index': NodeSocketInt
+        Description: 'Index of the grid cell the sub-region is positioned at'
+    - 'Width': NodeSocketInt
+        Description: 'Width of the sub-region in grid cells'
+    - 'Height': NodeSocketInt
+        Description: 'Height of the sub-region in grid cells'
+    - 'Boolean': NodeSocketBool
+        Description: 'Boolean value to test'
+    - 'Resolution': NodeSocketInt
+        Description: 'Resolution of the grid'
+  Outputs:
+    - 'Boolean': NodeSocketBool
+        Description: 'Result of the test over the sub-region'
+
+Name: 'A3D_Bounce Reflect'
+  Type: GEOMETRY
+  Description: 'Reflects an incoming velocity off a plane defined by a normal, with restitution controlling bounce energy retention and friction damping the tangential component.'
+  Users: 2
+  Fake user: True
+  Nodes: 17
+  Inputs:
+    - 'Incoming Velocity': NodeSocketVector
+        Description: 'Velocity before the bounce'
+    - 'Plane Normal': NodeSocketVector
+        Description: 'Normal of the surface being bounced off'
+    - 'Restitution': NodeSocketFloat
+        Description: 'Fraction of energy kept after the bounce'
+    - 'Friction': NodeSocketFloat
+        Description: 'Damping applied to the tangential component'
+  Outputs:
+    - 'Reflected Velocity': NodeSocketVector
+        Description: 'Velocity after the bounce'
+
+Name: 'A3D_Camera Cull'
+  Type: GEOMETRY
+  Description: "Removes or masks geometry that falls outside a camera's view frustum, with padding and a minimum-distance cutoff, useful for render-time optimization."
+  Users: 2
+  Fake user: True
+  Nodes: 29
+  Inputs:
+    - 'Geometry': NodeSocketGeometry
+        Description: 'Geometry to cull'
+    - 'Source': NodeSocketMenu
+        Description: 'Where the camera comes from'
+    - 'Camera': NodeSocketObject
+        Description: 'Camera object to cull against'
+    - 'Domain': NodeSocketMenu
+        Description: 'Which type of element to Cull'
+    - 'Padding': NodeSocketFloat
+        Description: 'Extend bounds of frustum beyond edge of screen'
+    - 'Min Distance': NodeSocketFloat
+        Description: 'Minimum distance after which to begin culling'
+  Outputs:
+    - 'Geometry': NodeSocketGeometry
+        Description: 'Geometry with out-of-view elements removed'
+
+Name: 'A3D_Camera FOV'
+  Type: GEOMETRY
+  Description: 'Returns the horizontal and vertical field of view of a camera, optionally defaulting to the active scene camera.'
+  Users: 3
+  Fake user: True
+  Nodes: 16
+  Inputs:
+    - 'Use Active': NodeSocketBool
+        Description: 'Use the active scene camera'
+    - 'Camera': NodeSocketObject
+        Description: 'Camera object to read the field of view from'
+  Outputs:
+    - 'Horizontal FOV': NodeSocketFloat
+        Description: 'Horizontal field of view of the camera'
+    - 'Vertical FOV': NodeSocketFloat
+        Description: 'Vertical field of view of the camera'
+
+Name: 'A3D_Catenary Curve'
+  Type: GEOMETRY
+  Description: "Relaxes a curve's selected control points into a catenary (hanging-chain) shape based on a stiffness parameter. Useful for cables, ropes, and chains."
+  Users: 2
+  Fake user: True
+  Nodes: 26
+  Inputs:
+    - 'Curve': NodeSocketGeometry
+        Description: 'Curve to relax into a catenary shape'
+    - 'Selection': NodeSocketBool
+        Description: 'Control points to affect'
+    - 'Stiffness': NodeSocketFloat
+        Description: 'How rigid the hanging shape is'
+  Outputs:
+    - 'Curve': NodeSocketGeometry
+        Description: 'Curve with a catenary shape'
+
+Name: 'A3D_Cell Fracture'
+  Type: GEOMETRY
+  Description: 'Fractures input geometry into a set of instanced cell pieces using Voronoi-style cell partitioning, with controls for fracture scale/detail/gap, remeshing, and edge-wear seeding.'
+  Users: 1
+  Fake user: True
+  Nodes: 25
+  Inputs:
+    - 'Geometry': NodeSocketGeometry
+        Description: 'Geometry to fracture'
+    - 'Fracture Scale': NodeSocketFloat
+        Description: 'Scale of Voronoi noise'
+    - 'Fracture Detail': NodeSocketFloat
+        Description: 'The scale of a Voronoi layer relative to that of the previous layer'
+    - 'Fracture Gap': NodeSocketFloat
+        Description: 'Spacing between cells'
+    - 'Seed': NodeSocketInt
+        Description: 'Random seed for the fracture pattern'
+    - 'Remesh Mode': NodeSocketMenu
+        Description: 'How the geometry is remeshed before fracturing'
+    - 'Remesh Voxel Size': NodeSocketFloat
+        Description: 'Size of the voxels used when remeshing'
+    - 'Remesh Accuracy': NodeSocketInt
+        Description: 'Accuracy of the remesh'
+    - 'Edge Wear Seed': NodeSocketInt
+        Description: 'Random seed for the edge wear pattern'
+  Outputs:
+    - 'Instances': NodeSocketGeometry
+        Description: 'Fractured pieces as instances'
+
+Name: 'A3D_Circumcircle Test'
+  Type: GEOMETRY
+  Description: 'Determines whether a test point lies inside, on, or outside the circumcircle defined by three points.'
+  Users: 2
+  Fake user: True
+  Nodes: 21
+  Inputs:
+    - 'Test Against': NodeSocketMenu
+        Description: 'Field method for circle origins'
+    - 'Position': NodeSocketVector
+        Description: 'Point to test'
+    - 'Point A': NodeSocketVector
+        Description: 'First triangle point'
+    - 'Point B': NodeSocketVector
+        Description: 'Second triangle point'
+    - 'Point C': NodeSocketVector
+        Description: 'Third triangle point'
+  Outputs:
+    - 'Determinant': NodeSocketFloat
+        Description: 'Sign shows whether the point is inside, on, or outside the circumcircle'
+
+Name: 'A3D_Clamp Vector'
+  Type: GEOMETRY
+  Description: 'Clamps each component of a vector independently between corresponding min and max vectors.'
+  Users: 2
+  Fake user: True
+  Nodes: 9
+  Inputs:
+    - 'Vector': NodeSocketVector
+        Description: 'Vector to clamp'
+    - 'Min': NodeSocketVector
+        Description: 'Per-component minimum'
+    - 'Max': NodeSocketVector
+        Description: 'Per-component maximum'
+  Outputs:
+    - 'Vector': NodeSocketVector
+        Description: 'Clamped vector'
+
+Name: 'A3D_Conform To Surface'
+  Type: GEOMETRY
+  Description: "Snaps or projects a mesh's selected vertices onto a target surface mesh within a snapping distance, with an additional surface offset."
+  Users: 2
+  Fake user: True
+  Nodes: 18
+  Inputs:
+    - 'Mesh': NodeSocketGeometry
+        Description: 'Mesh to snap'
+    - 'Selection': NodeSocketBool
+        Description: 'Vertices to snap'
+    - 'Surface Mesh': NodeSocketGeometry
+        Description: 'Surface to snap to'
+    - 'Snapping Distance': NodeSocketFloat
+        Description: 'Maximum distance to search for the surface'
+    - 'Surface Offset': NodeSocketFloat
+        Description: 'Offset from the surface after snapping'
+  Outputs:
+    - 'Mesh': NodeSocketGeometry
+        Description: 'Mesh with vertices snapped to the surface'
+
+Name: 'A3D_Coordinate of Grid Index'
+  Type: GEOMETRY
+  Description: 'Converts a flat grid index into 2D (X, Y) coordinates for a grid of a given resolution. The inverse of Index of Grid Coordinate.'
+  Users: 8
+  Fake user: True
+  Nodes: 4
+  Inputs:
+    - 'Resolution': NodeSocketInt
+        Description: 'Resolution of the grid'
+    - 'Index': NodeSocketInt
+        Description: 'Flat index into the grid'
+  Outputs:
+    - 'X': NodeSocketInt
+        Description: 'X coordinate in the grid'
+    - 'Y': NodeSocketInt
+        Description: 'Y coordinate in the grid'
+
+Name: 'A3D_Cotangent'
+  Type: GEOMETRY
+  Description: 'Computes the cotangent of an angle in radians.'
+  Users: 2
+  Fake user: True
+  Nodes: 5
+  Inputs:
+    - 'Value': NodeSocketFloat
+        Description: 'Angle in radians'
+  Outputs:
+    - 'Value': NodeSocketFloat
+        Description: 'Cotangent of the angle'
+
+Name: 'A3D_Debug Vectors'
+  Type: GEOMETRY
+  Description: 'Generates arrow-like geometry that visualizes vectors, for debugging vector data.'
+  Users: 2
+  Fake user: True
+  Nodes: 39
+  Inputs:
+    - 'Geometry': NodeSocketGeometry
+        Description: 'Points to draw the vectors at'
+    - 'Vertices': NodeSocketInt
+        Description: 'The number of vertices on the top and bottom circles'
+    - 'Vector': NodeSocketVector
+        Description: 'Vector to visualize'
+    - 'Length': NodeSocketFloat
+        Description: 'Length of the arrows'
+    - 'Radius': NodeSocketFloat
+        Description: 'Radius of the arrows'
+  Outputs:
+    - 'Geometry': NodeSocketGeometry
+        Description: 'Generated debug arrow geometry'
+
+Name: 'A3D_Deform To UV Surface'
+  Type: GEOMETRY
+  Description: 'Deforms a mesh to conform to a target surface using a UV-space transfer map, with an optional debug output for visualizing the mapping. Input Mesh be placed within a +1 unit bounding box on the XY plane.'
+  Users: 2
+  Fake user: True
+  Nodes: 33
+  Inputs:
+    - 'Mesh': NodeSocketGeometry
+        Description: 'Surface to deform'
+    - 'Transfer Surface': NodeSocketObject
+        Description: 'Surface to transfer to'
+    - 'Transfer Map': NodeSocketString
+        Description: 'Name of the UV transfer map to use'
+    - 'Debug': NodeSocketBool
+        Description: 'Show UV Space Geometry'
+    - 'To Max': NodeSocketFloat
+        Description: (none)
+  Outputs:
+    - 'Mesh': NodeSocketGeometry
+        Description: 'Mesh deformed onto the target surface'
+
+Name: 'A3D_Delaunay Triangulation'
+  Type: GEOMETRY
+  Description: "Builds a Delaunay triangulation over the input geometry's points, with controls for minimum spacing, density falloff, boundary preservation, and inset."
+  Users: 2
+  Fake user: True
+  Nodes: 30
+  Inputs:
+    - 'Geometry': NodeSocketGeometry
+        Description: 'Points to triangulate'
+    - 'Distance Min': NodeSocketFloat
+        Description: 'Minimum spacing between points'
+    - 'Density Max': NodeSocketFloat
+        Description: 'Maximum point density'
+    - 'Density Factor': NodeSocketFloat
+        Description: 'How quickly density falls off'
+    - 'Seed': NodeSocketInt
+        Description: 'Random seed'
+    - 'Keep Boundaries': NodeSocketBool
+        Description: 'Preserve the boundary of the input'
+    - 'Inset': NodeSocketFloat
+        Description: 'Distance to inset from the boundary'
+  Outputs:
+    - 'Geometry': NodeSocketGeometry
+        Description: 'Triangulated geometry'
+
+Name: 'A3D_Derivative'
+  Type: GEOMETRY
+  Description: 'Numerically differentiates a function closure at a point X using a finite-difference delta, returning the local slope and Y-intercept of the tangent line.'
+  Users: 3
+  Fake user: True
+  Nodes: 11
+  Inputs:
+    - 'Function Closure': NodeSocketClosure
+        Description: 'Function to differentiate'
+    - 'X': NodeSocketFloat
+        Description: 'Point to evaluate the slope at'
+    - 'Delta': NodeSocketFloat
+        Description: 'Step size for the finite difference'
+  Outputs:
+    - 'Slope': NodeSocketFloat
+        Description: 'Slope of the tangent line at X'
+    - 'Y Intercept': NodeSocketFloat
+        Description: 'Y intercept of the tangent line'
+
+Name: 'A3D_Derive Velocity'
+  Type: GEOMETRY
+  Description: 'Derives a per-point velocity vector from the difference between a previous and current position, with damping applied.'
+  Users: 4
+  Fake user: True
+  Nodes: 7
+  Inputs:
+    - 'Previous Position': NodeSocketVector
+        Description: 'Position on the previous step'
+    - 'Position': NodeSocketVector
+        Description: 'Current position'
+    - 'Damping': NodeSocketFloat
+        Description: 'Damping applied to the velocity'
+  Outputs:
+    - 'Vector': NodeSocketVector
+        Description: 'Derived velocity'
+
+Name: 'A3D_Direction On Surface'
+  Type: GEOMETRY
+  Description: "Projects an arbitrary direction vector onto a surface's tangent plane defined by a normal, keeping the result tangent to the surface."
+  Users: 4
+  Fake user: True
+  Nodes: 10
+  Inputs:
+    - 'Direction': NodeSocketVector
+        Description: 'Direction to project'
+    - 'Normal': NodeSocketVector
+        Description: 'Surface normal'
+  Outputs:
+    - 'Vector': NodeSocketVector
+        Description: 'Direction projected onto the surface tangent plane'
+
+Name: 'A3D_Distance From Axis'
+  Type: GEOMETRY
+  Description: 'Computes the perpendicular distance from a position to an infinite axis defined by an origin and direction.'
+  Users: 2
+  Fake user: True
+  Nodes: 10
+  Inputs:
+    - 'Position': NodeSocketVector
+        Description: 'Position to measure from'
+    - 'Origin': NodeSocketVector
+        Description: 'Point on the axis'
+    - 'Axis': NodeSocketVector
+        Description: 'Direction of the axis'
+  Outputs:
+    - 'Distance': NodeSocketFloat
+        Description: 'Perpendicular distance from the position to the axis'
+
+Name: 'A3D_Distance From Plane'
+  Type: GEOMETRY
+  Description: 'Computes the signed distance from a position to a plane defined by an origin and two in-plane axis vectors.'
+  Users: 2
+  Fake user: True
+  Nodes: 9
+  Inputs:
+    - 'Position': NodeSocketVector
+        Description: 'Position to measure from'
+    - 'Origin': NodeSocketVector
+        Description: 'Origin of the plane'
+    - 'U Axis': NodeSocketVector
+        Description: 'First in-plane axis'
+    - 'V Axis': NodeSocketVector
+        Description: 'Second in-plane axis'
+  Outputs:
+    - 'Distance': NodeSocketFloat
+        Description: 'Signed distance from the position to the plane'
+
+Name: 'A3D_Distance to Boundary'
+  Type: GEOMETRY
+  Description: "Computes each element's distance to the nearest open/mesh boundary edge."
+  Users: 2
+  Fake user: True
+  Nodes: 14
+  Inputs:
+    - 'Geometry': NodeSocketGeometry
+        Description: 'Geometry to measure boundary distance on'
+  Outputs:
+    - 'Distance': NodeSocketFloat
+        Description: 'Number of topology steps to the nearest edge'
+
+Name: 'A3D_Dodecahedron'
+  Type: GEOMETRY
+  Description: 'Generates a regular dodecahedron mesh of a given radius, built from a convex hull of instanced pentagonal faces.'
+  Users: 2
+  Fake user: True
+  Nodes: 16
+  Inputs:
+    - 'Radius': NodeSocketFloat
+        Description: 'Radius of the dodecahedron'
+  Outputs:
+    - 'Mesh': NodeSocketGeometry
+        Description: 'Generated dodecahedron mesh'
+
+Name: 'A3D_Domain Index'
+  Type: GEOMETRY
+  Description: "Returns the index of the current element for a selectable geometry domain (point, edge, face, etc.), abstracting over Blender's per-domain index nodes."
+  Users: 2
+  Fake user: True
+  Nodes: 11
+  Inputs:
+    - 'Domain': NodeSocketMenu
+        Description: 'Domain to evaluate Index Field on'
+  Outputs:
+    - 'Index': NodeSocketInt
+        Description: 'Index of the selected Domain type.'
+
+Name: 'A3D_Edge Array'
+  Type: GEOMETRY
+  Description: 'Distributes instanced or inset geometry along selected edges at a controllable spacing/count, with per-instance scale, alignment, rotation, and randomized selection.'
+  Users: 2
+  Fake user: True
+  Nodes: 36
+  Inputs:
+    - 'Mesh': NodeSocketGeometry
+        Description: 'Geometry whose elements are iterated over'
+    - 'Selection': NodeSocketBool
+        Description: 'Selection on the iteration domain'
+    - 'Inset': NodeSocketFloat
+        Description: 'Inset applied to the generated geometry'
+    - 'Radius': NodeSocketFloat
+        Description: 'The radius of the cylinder'
+    - 'Depth': NodeSocketFloat
+        Description: 'The height of the cylinder'
+    - 'Vertices': NodeSocketInt
+        Description: 'The number of vertices on the top and bottom circles'
+    - 'Length': NodeSocketFloat
+        Description: 'Length of each array element along the edge'
+    - 'Probability': NodeSocketFloat
+        Description: 'Chance that each element is generated'
+    - 'Seed': NodeSocketInt
+        Description: 'Random seed for the selection'
+    - 'Instance': NodeSocketGeometry
+        Description: 'Geometry that is instanced on the points'
+    - 'Pick Instance': NodeSocketBool
+        Description: 'Choose instances from the "Instance" input at each point instead of instancing the entire geometry'
+    - 'Scale': NodeSocketVector
+        Description: 'Scale of the instances'
+    - 'Align': NodeSocketBool
+        Description: 'Align instances to the edge direction'
+    - 'Rotation': NodeSocketRotation
+        Description: 'Rotation applied to each instance'
+  Outputs:
+    - 'Mesh': NodeSocketGeometry
+        Description: 'Result of joining generated geometries from each iteration'
+
+Name: 'A3D_Edge Info'
+  Type: GEOMETRY
+  Description: 'Reports whether an edge is horizontal or vertical, its direction vector, and its length, for a given edge index.'
+  Users: 3
+  Fake user: True
+  Nodes: 22
+  Inputs:
+    - 'Edge Index': NodeSocketInt
+        Description: 'Index of the edge to read'
+  Outputs:
+    - 'Horizontal': NodeSocketBool
+        Description: 'True if the edge is horizontal'
+    - 'Vertical': NodeSocketBool
+        Description: 'True if the edge is vertical'
+    - 'Direction': NodeSocketVector
+        Description: 'Direction vector of the edge'
+    - 'Length': NodeSocketFloat
+        Description: 'Length of the edge'
+
+Name: 'A3D_Expand Selection'
+  Type: GEOMETRY
+  Description: 'Grows or shrinks a boolean selection outward across a chosen domain by a number of steps, with probabilistic falloff and seeded randomness.'
+  Users: 2
+  Fake user: True
+  Nodes: 44
+  Inputs:
+    - 'Selection': NodeSocketBool
+        Description: 'Selection to expand'
+    - 'Steps': NodeSocketInt
+        Description: 'Number of steps to grow the selection'
+    - 'Domain': NodeSocketMenu
+        Description: 'Domain to expand across'
+    - 'Mode': NodeSocketMenu
+        Description: 'Whether the selection grows or shrinks'
+    - 'Probability': NodeSocketFloat
+        Description: 'Chance that each neighbor is included per step'
+    - 'Seed': NodeSocketInt
+        Description: 'Random seed'
+  Outputs:
+    - 'Result': NodeSocketBool
+        Description: 'Expanded selection'
+
+Name: 'A3D_Extended Camera Info'
+  Type: GEOMETRY
+  Description: 'A comprehensive camera data node. combines transform, projection matrix, focal length, sensor size, shift, clipping planes, focus distance, orthographic state/scale, and both view distance/direction and field-of-view in one lookup.'
+  Users: 2
+  Fake user: True
+  Nodes: 24
+  Inputs:
+    - 'Source': NodeSocketMenu
+        Description: 'Where the camera comes from'
+    - 'Camera': NodeSocketObject
+        Description: 'Camera object to read'
+  Outputs:
+    - 'Transform': NodeSocketMatrix
+        Description: 'Transformation matrix containing the location, rotation and scale of the camera'
+    - 'Location': NodeSocketVector
+        Description: 'Location of the camera'
+    - 'Rotation': NodeSocketRotation
+        Description: 'Rotation of the camera'
+    - 'Scale': NodeSocketVector
+        Description: 'Scale of the camera'
+    - 'Projection Matrix': NodeSocketMatrix
+        Description: 'Camera projection matrix'
+    - 'Focal Length': NodeSocketFloat
+        Description: 'Perspective camera focal length'
+    - 'Sensor': NodeSocketVector
+        Description: 'Size of the camera sensor'
+    - 'Shift': NodeSocketVector
+        Description: 'Camera shift'
+    - 'Clip Start': NodeSocketFloat
+        Description: 'Camera near clipping distance'
+    - 'Clip End': NodeSocketFloat
+        Description: 'Camera far clipping distance'
+    - 'Focus Distance': NodeSocketFloat
+        Description: 'Distance to the focus point for depth of field'
+    - 'Is Orthographic': NodeSocketBool
+        Description: 'Whether the camera is using orthographic projection'
+    - 'Orthographic Scale': NodeSocketFloat
+        Description: 'Orthographic camera scale (similar to zoom)'
+    - 'Distance': NodeSocketFloat
+        Description: 'Distance from the camera to the evaluated position'
+    - 'Direction': NodeSocketVector
+        Description: 'Direction from the camera to the evaluated position'
+    - 'Horizontal FOV': NodeSocketFloat
+        Description: 'Horizontal field of view of the camera'
+    - 'Vertical FOV': NodeSocketFloat
+        Description: 'Vertical field of view of the camera'
+
+Name: 'A3D_Extended Vertex Neighbors'
+  Type: GEOMETRY
+  Description: 'Returns a sortable pair of neighboring vertex indices around a given vertex, along with the total connected vertex and face counts.'
+  Users: 2
+  Fake user: True
+  Nodes: 15
+  Inputs:
+    - 'Vertex Index': NodeSocketInt
+        Description: 'The vertex to retrieve data from. Defaults to the vertex from the context'
+    - 'Sort Index': NodeSocketInt
+        Description: 'Which of the sorted edges to output'
+  Outputs:
+    - 'Vertex Index 1': NodeSocketInt
+        Description: 'Index of the first sorted neighboring vertex'
+    - 'Vertex Index 2': NodeSocketInt
+        Description: 'Index of the second sorted neighboring vertex'
+    - 'Vertex Count': NodeSocketInt
+        Description: 'The number of vertices connected to this vertex with an edge, equal to the number of connected edges'
+    - 'Face Count': NodeSocketInt
+        Description: 'Number of faces that contain the vertex'
+
+Name: 'A3D_Face Corner Info'
+  Type: GEOMETRY
+  Description: 'Returns the position and corner index of a specific corner of a given face, offset from a weighted reference corner.'
+  Users: 6
+  Fake user: True
+  Nodes: 5
+  Inputs:
+    - 'Face Index': NodeSocketInt
+        Description: 'The face to retrieve data from. Defaults to the face from the context'
+    - 'Weights': NodeSocketFloat
+        Description: "Values used to sort the face's corners. Uses indices by default"
+    - 'Offset': NodeSocketInt
+        Description: 'The number of corners to move around the face before finding the result, circling around the start of the face if necessary'
+  Outputs:
+    - 'Position': NodeSocketVector
+        Description: 'Position of the resulting corner'
+    - 'Corner Index': NodeSocketInt
+        Description: 'A corner of the face, chosen by the sort index'
+
+Name: 'A3D_Face Winding Direction'
+  Type: GEOMETRY
+  Description: 'Returns the signed winding direction (+1/-1) of the current face, useful for detecting flipped normals or inconsistent topology.'
+  Users: 2
+  Fake user: True
+  Nodes: 21
+  Inputs:
+  Outputs:
+    - 'Sign': NodeSocketFloat
+        Description: 'Winding direction of the face, +1 or -1'
+
+Name: 'A3D_Fermat Spiral'
+  Type: GEOMETRY
+  Description: 'Generates a set of points arranged in a Fermat (golden-angle) spiral, controlled by point count and a scaling factor. Commonly used for even radial packing.'
+  Users: 2
+  Fake user: True
+  Nodes: 20
+  Inputs:
+    - 'Count': NodeSocketInt
+        Description: 'The number of points to create'
+    - 'Scaling Factor': NodeSocketFloat
+        Description: 'Scales the spread of the spiral'
+  Outputs:
+    - 'Points': NodeSocketGeometry
+        Description: 'Generated spiral points'
+
+Name: 'A3D_Gaussian Curvature'
+  Type: GEOMETRY
+  Description: 'Estimates per-vertex Gaussian curvature via angle defect (the deviation of the sum of incident face angles from 2π), for curvature-driven shading or deformation.'
+  Users: 2
+  Fake user: True
+  Nodes: 46
+  Inputs:
+  Outputs:
+    - 'Curvature': NodeSocketFloat
+        Description: 'Gaussian curvature at each vertex'
+
+Name: 'A3D_Geometry Motion Path'
+  Type: GEOMETRY
+  Description: 'Builds a trailing motion-path mesh from a set of animated points, with configurable substeps and a maximum trail age.'
+  Users: 2
+  Fake user: True
+  Nodes: 43
+  Inputs:
+    - 'Points': NodeSocketGeometry
+        Description: 'Animated points to trace'
+    - 'Selection': NodeSocketBool
+        Description: 'Points to include'
+    - 'Substeps': NodeSocketInt
+        Description: 'Quality of inbetween motion estimation'
+    - 'Max Trail Age': NodeSocketFloat
+        Description: 'Maximum age of the trail before it is removed'
+  Outputs:
+    - 'Geometry': NodeSocketGeometry
+        Description: 'Generated motion path geometry'
+
+Name: 'A3D_Golden Ratio'
+  Type: GEOMETRY
+  Description: 'Outputs the constant φ (the golden ratio, ≈1.618) for use in proportion-driven procedural setups.'
+  Users: 2
+  Fake user: True
+  Nodes: 5
+  Inputs:
+  Outputs:
+    - 'φ': NodeSocketFloat
+        Description: 'The golden ratio, approximately 1.618'
+
+Name: 'A3D_Grid Float Neighbors 2D'
+  Type: GEOMETRY
+  Description: 'Samples a 3×3 neighborhood of float values around a given index in a resolution-addressed grid, returning each row of neighboring values.'
+  Users: 5
+  Fake user: True
+  Nodes: 33
+  Inputs:
+    - 'Resolution': NodeSocketInt
+        Description: 'Number of vertices in the X direction'
+    - 'Value': NodeSocketFloat
+        Description: 'Float value to sample the neighbors of'
+    - 'Index': NodeSocketInt
+        Description: 'Index of the center cell'
+  Outputs:
+    - 'Row 1': NodeSocketFloat
+        Description: 'Neighbor at row 1 of column 1'
+    - 'Row 2': NodeSocketFloat
+        Description: 'Neighbor at row 2 of column 1'
+    - 'Row 3': NodeSocketFloat
+        Description: 'Neighbor at row 3 of column 1'
+    - 'Row 1': NodeSocketFloat
+        Description: 'Neighbor at row 1 of column 2'
+    - 'Row 3': NodeSocketFloat
+        Description: 'Neighbor at row 3 of column 2'
+    - 'Row 1': NodeSocketFloat
+        Description: 'Neighbor at row 1 of column 3'
+    - 'Row 2': NodeSocketFloat
+        Description: 'Neighbor at row 2 of column 3'
+    - 'Row 3': NodeSocketFloat
+        Description: 'Neighbor at row 3 of column 3'
+
+Name: 'A3D_Grid Integer Neighbors 2D'
+  Type: GEOMETRY
+  Description: 'Samples a 3×3 neighborhood of integer values around a given index in a resolution-addressed grid, returning each row of neighboring values.'
+  Users: 2
+  Fake user: True
+  Nodes: 33
+  Inputs:
+    - 'Resolution': NodeSocketInt
+        Description: 'Number of vertices in the X direction'
+    - 'Value': NodeSocketInt
+        Description: 'Integer value to sample the neighbors of'
+    - 'Index': NodeSocketInt
+        Description: 'Index of the center cell'
+  Outputs:
+    - 'Row 1': NodeSocketInt
+        Description: 'Neighbor at row 1 of column 1'
+    - 'Row 2': NodeSocketInt
+        Description: 'Neighbor at row 2 of column 1'
+    - 'Row 3': NodeSocketInt
+        Description: 'Neighbor at row 3 of column 1'
+    - 'Row 1': NodeSocketInt
+        Description: 'Neighbor at row 1 of column 2'
+    - 'Row 3': NodeSocketInt
+        Description: 'Neighbor at row 3 of column 2'
+    - 'Row 1': NodeSocketInt
+        Description: 'Neighbor at row 1 of column 3'
+    - 'Row 2': NodeSocketInt
+        Description: 'Neighbor at row 2 of column 3'
+    - 'Row 3': NodeSocketInt
+        Description: 'Neighbor at row 3 of column 3'
+
+Name: 'A3D_Grid Laplacian 2D'
+  Type: GEOMETRY
+  Description: 'Computes a discrete Laplacian (second-difference) of a value field across grid-connected edges, up to a maximum edge count.'
+  Users: 2
+  Fake user: True
+  Nodes: 23
+  Inputs:
+    - 'Value': NodeSocketFloat
+        Description: 'Value field to take the Laplacian of'
+  Outputs:
+    - 'Value': NodeSocketFloat
+        Description: 'Laplacian of the value field'
+
+Name: 'A3D_Grid Selection Kernel 2D'
+  Type: GEOMETRY
+  Description: 'Builds a boolean selection over a rectangular width/height kernel positioned at an index within a resolution-addressed grid.'
+  Users: 2
+  Fake user: True
+  Nodes: 13
+  Inputs:
+    - 'Resolution': NodeSocketInt
+        Description: 'Resolution of the grid'
+    - 'Index': NodeSocketInt
+        Description: 'Index of the grid cell the kernel is positioned at'
+    - 'Width': NodeSocketInt
+        Description: 'Width of the kernel in cells'
+    - 'Height': NodeSocketInt
+        Description: 'Height of the kernel in cells'
+  Outputs:
+    - 'Boolean': NodeSocketBool
+        Description: 'True for cells inside the kernel'
+
+Name: 'A3D_Grid Vector Neighbors 2D'
+  Type: GEOMETRY
+  Description: 'Samples a 3×3 neighborhood of vector values around a given index in a resolution-addressed grid, returning each row of neighboring values.'
+  Users: 4
+  Fake user: True
+  Nodes: 41
+  Inputs:
+    - 'Resolution': NodeSocketInt
+        Description: 'Number of vertices in the X direction'
+    - 'Value': NodeSocketVector
+        Description: 'Vector value to sample the neighbors of'
+    - 'Index': NodeSocketInt
+        Description: 'Index of the center cell'
+  Outputs:
+    - 'Row 1': NodeSocketVector
+        Description: 'Neighbor at row 1 of column 1'
+    - 'Row 2': NodeSocketVector
+        Description: 'Neighbor at row 2 of column 1'
+    - 'Row 3': NodeSocketVector
+        Description: 'Neighbor at row 3 of column 1'
+    - 'Row 1': NodeSocketVector
+        Description: 'Neighbor at row 1 of column 2'
+    - 'Row 3': NodeSocketVector
+        Description: 'Neighbor at row 3 of column 2'
+    - 'Row 1': NodeSocketVector
+        Description: 'Neighbor at row 1 of column 3'
+    - 'Row 2': NodeSocketVector
+        Description: 'Neighbor at row 2 of column 3'
+    - 'Row 3': NodeSocketVector
+        Description: 'Neighbor at row 3 of column 3'
+
+Name: 'A3D_Ground Impact Solve'
+  Type: GEOMETRY
+  Description: 'Analytically solves for where and when a ballistic trajectory (defined by an initial position, velocity, and gravity) intersects a plane, returning the impact time, position, and velocity.'
+  Users: 2
+  Fake user: True
+  Nodes: 46
+  Inputs:
+    - 'Initial Position': NodeSocketVector
+        Description: 'Position at launch'
+    - 'Initial Velocity': NodeSocketVector
+        Description: 'Velocity at launch'
+    - 'Gravity': NodeSocketVector
+        Description: 'Gravity acceleration vector'
+    - 'Plane Point': NodeSocketVector
+        Description: 'Point on the plane'
+    - 'Plane Normal': NodeSocketVector
+        Description: 'Normal of the plane'
+  Outputs:
+    - 'Impact Time': NodeSocketFloat
+        Description: 'Time until the trajectory reaches the plane'
+    - 'Impact Position': NodeSocketVector
+        Description: 'Position where the trajectory reaches the plane'
+    - 'Impact Velocity': NodeSocketVector
+        Description: 'Velocity at the moment of impact'
+
+Name: 'A3D_Grow on Surface'
+  Type: GEOMETRY
+  Description: 'Grows a path of points across a surface from a starting direction, stepping and rotating with each iteration and staying offset from the surface .'
+  Users: 2
+  Fake user: True
+  Nodes: 32
+  Inputs:
+    - 'Points': NodeSocketGeometry
+        Description: 'Starting points of the paths'
+    - 'Geometry': NodeSocketGeometry
+        Description: 'Surface to grow across'
+    - 'Start Direction': NodeSocketVector
+        Description: 'Initial direction of the particles'
+    - 'Rotation Angle': NodeSocketFloat
+        Description: 'How much the particle can turn each step'
+    - 'Step Size': NodeSocketFloat
+        Description: 'Distance particle travels in one frame'
+    - 'Surface Offset': NodeSocketFloat
+        Description: 'Offset to keep particle from clipping through surface'
+  Outputs:
+    - 'Geometry': NodeSocketGeometry
+        Description: 'Grown path geometry'
+
+Name: 'A3D_Harmonic Field'
+  Type: GEOMETRY
+  Description: 'Propagates a starting scalar value across a mesh from source points toward sink points over a number of iterations, returning both the updated mesh and its gradient field.'
+  Users: 2
+  Fake user: True
+  Nodes: 14
+  Inputs:
+    - 'Mesh': NodeSocketGeometry
+        Description: 'Mesh to propagate the value across'
+    - 'Starting Value': NodeSocketFloat
+        Description: 'Value assigned at the sources'
+    - 'Iterations': NodeSocketInt
+        Description: 'Number of propagation iterations'
+    - 'Sinks': NodeSocketBool
+        Description: 'Points the value flows toward'
+    - 'Sources': NodeSocketBool
+        Description: 'Points the value flows from'
+  Outputs:
+    - 'Mesh': NodeSocketGeometry
+        Description: 'Mesh with the propagated value'
+    - 'Gradient': NodeSocketFloat
+        Description: 'Gradient of the propagated field'
+
+Name: 'A3D_Helix'
+  Type: GEOMETRY
+  Description: "Displaces curve points into a helical pattern around the curve's path, driven by frequency, amplitude, and phase."
+  Users: 2
+  Fake user: True
+  Nodes: 25
+  Inputs:
+    - 'Curves': NodeSocketGeometry
+        Description: 'Curves to displace'
+    - 'Source': NodeSocketMenu
+        Description: 'Source used to orient the helix'
+    - 'Frequency': NodeSocketFloat
+        Description: 'Tightness of the spiral'
+    - 'Amplitude': NodeSocketFloat
+        Description: 'Radius of the spiral'
+    - 'Phase': NodeSocketFloat
+        Description: 'Offset of the spiral'
+  Outputs:
+    - 'Curves': NodeSocketGeometry
+        Description: 'Curves displaced into a helix'
+
+Name: 'A3D_IK Solver'
+  Type: GEOMETRY
+  Description: 'Solves inverse kinematics for a chain of geometry between a start and end point (with an optional pole target), iterating to convergence.'
+  Users: 2
+  Fake user: True
+  Nodes: 78
+  Inputs:
+    - 'Geometry': NodeSocketGeometry
+        Description: 'Chain to solve'
+    - 'Iterations': NodeSocketInt
+        Description: 'Number of solver iterations'
+    - 'Start': NodeSocketVector
+        Description: 'Position of the chain root'
+    - 'End': NodeSocketVector
+        Description: 'Target position for the end of the chain'
+    - 'Pole': NodeSocketVector
+        Description: 'Pole target controlling the bend direction'
+  Outputs:
+    - 'Geometry': NodeSocketGeometry
+        Description: 'Solved chain'
+
+Name: 'A3D_Index of Grid Coordinate'
+  Type: GEOMETRY
+  Description: 'Converts 2D (X, Y) grid coordinates into a flat index for a grid of a given resolution, with an in-bounds check.'
+  Users: 27
+  Fake user: True
+  Nodes: 16
+  Inputs:
+    - 'Resolution': NodeSocketInt
+        Description: 'Resolution of the grid'
+    - 'X': NodeSocketInt
+        Description: 'X coordinate in the grid'
+    - 'Y': NodeSocketInt
+        Description: 'Y coordinate in the grid'
+  Outputs:
+    - 'Index': NodeSocketInt
+        Description: 'Flat index of the coordinate'
+    - 'In Bounds': NodeSocketBool
+        Description: 'True if the coordinate is inside the grid'
+
+Name: 'A3D_Inset Faces'
+  Type: GEOMETRY
+  Description: 'Face inset operation supporting individual or grouped insets, independent thickness/depth control, and even-distance/even-depth modes, returning the inset mesh split into inner and outer face groups.'
+  Users: 4
+  Fake user: True
+  Nodes: 235
+  Inputs:
+    - 'Mesh': NodeSocketGeometry
+        Description: 'Mesh to inset faces on'
+    - 'Selection': NodeSocketBool
+        Description: 'Faces to inset'
+    - 'Individual': NodeSocketBool
+        Description: 'Inset each face separately'
+    - 'Thickness': NodeSocketFloat
+        Description: 'Amount to inset by'
+    - 'Depth': NodeSocketFloat
+        Description: 'Offset of the inset faces along their normal'
+    - 'Even Distance': NodeSocketBool
+        Description: 'Keep the inset distance even around corners'
+    - 'Even Depth': NodeSocketBool
+        Description: 'Keep the depth even across angled faces'
+  Outputs:
+    - 'Mesh': NodeSocketGeometry
+        Description: 'Mesh with the faces inset'
+    - 'Inner': NodeSocketBool
+        Description: 'Faces created by the inset'
+    - 'Outer': NodeSocketBool
+        Description: 'Faces surrounding the inset faces'
+
+Name: 'A3D_Inside BBox'
+  Type: GEOMETRY
+  Description: 'Tests whether a position lies inside the bounding box of the input geometry.'
+  Users: 2
+  Fake user: True
+  Nodes: 17
+  Inputs:
+    - 'Geometry': NodeSocketGeometry
+        Description: 'Geometry whose bounding box is tested'
+    - 'Position': NodeSocketVector
+        Description: 'Position to test'
+  Outputs:
+    - 'Inside': NodeSocketBool
+        Description: 'True if the position is inside the bounding box'
+
+Name: 'A3D_Inside Frustum'
+  Type: GEOMETRY
+  Description: "Tests whether a position lies inside a camera's view frustum, with configurable padding."
+  Users: 4
+  Fake user: True
+  Nodes: 16
+  Inputs:
+    - 'Source': NodeSocketMenu
+        Description: 'Where the camera comes from'
+    - 'Camera': NodeSocketObject
+        Description: 'Camera object whose frustum is tested'
+    - 'Position': NodeSocketVector
+        Description: 'Position to sample (Default Position)'
+    - 'Horizontal Padding': NodeSocketFloat
+        Description: "Amount to extend the frustum horizontally, along the camera's X axis"
+    - 'Vertical Padding': NodeSocketFloat
+        Description: "Amount to extend the frustum vertically, along the camera's Y axis"
+  Outputs:
+    - 'In Frustum': NodeSocketBool
+        Description: 'Returns true if the position is inside the frustum'
+
+Name: 'A3D_Inside Frustum (Legacy)'
+  Type: GEOMETRY
+  Description: 'An earlier frustum-containment test driven by explicit render resolution, padding, and camera FOV rather than direct camera data.'
+  Users: 2
+  Fake user: True
+  Nodes: 57
+  Inputs:
+    - 'Use Active Camera': NodeSocketBool
+        Description: 'Use the active scene camera'
+    - 'Culling Camera': NodeSocketObject
+        Description: 'Camera object to test against'
+    - 'Horizontal Resolution': NodeSocketInt
+        Description: 'Horizontal render resolution'
+    - 'Vertical Resolution': NodeSocketInt
+        Description: 'Vertical render resolution'
+    - 'Horizontal Padding': NodeSocketFloat
+        Description: 'Amount to extend the frustum horizontally'
+    - 'Vertical Padding': NodeSocketFloat
+        Description: 'Amount to extend the frustum vertically'
+    - 'Camera FOV': NodeSocketFloat
+        Description: 'Field of view of the camera'
+    - 'Position': NodeSocketVector
+        Description: 'Position to test'
+  Outputs:
+    - 'Inside Frustum': NodeSocketBool
+        Description: 'True if the position is inside the frustum'
+
+Name: 'A3D_Inside Prism'
+  Type: GEOMETRY
+  Description: 'Tests whether a position lies inside a prism volume defined by four reference points.'
+  Users: 3
+  Fake user: True
+  Nodes: 23
+  Inputs:
+    - 'Position': NodeSocketVector
+        Description: 'Position to test'
+    - 'A': NodeSocketVector
+        Description: 'First reference point of the prism'
+    - 'B': NodeSocketVector
+        Description: 'Second reference point of the prism'
+    - 'C': NodeSocketVector
+        Description: 'Third reference point of the prism'
+    - 'D': NodeSocketVector
+        Description: 'Fourth reference point of the prism'
+  Outputs:
+    - 'Boolean': NodeSocketBool
+        Description: 'True if the position is inside the prism'
+
+Name: 'A3D_Inside Quad Face'
+  Type: GEOMETRY
+  Description: 'Tests whether a position lies inside the bounds of a specific quad face.'
+  Users: 2
+  Fake user: True
+  Nodes: 14
+  Inputs:
+    - 'Position': NodeSocketVector
+        Description: 'Position to test'
+    - 'Face Index': NodeSocketInt
+        Description: 'Index of the quad face'
+  Outputs:
+    - 'Inside': NodeSocketBool
+        Description: 'True if the position is inside the face'
+
+Name: 'A3D_Inside Rectangle'
+  Type: GEOMETRY
+  Description: 'Tests whether a position lies inside a rectangle defined by three of its corner vertices.'
+  Users: 3
+  Fake user: True
+  Nodes: 17
+  Inputs:
+    - 'Position': NodeSocketVector
+        Description: 'Position to test'
+    - 'Vertex A': NodeSocketVector
+        Description: 'First corner of the rectangle'
+    - 'Vertex B': NodeSocketVector
+        Description: 'Second corner of the rectangle'
+    - 'Vertex C': NodeSocketVector
+        Description: 'Third corner of the rectangle'
+  Outputs:
+    - 'Boolean': NodeSocketBool
+        Description: 'True if the position is inside the rectangle'
+
+Name: 'A3D_Instance Info'
+  Type: GEOMETRY
+  Description: 'Returns the bounding min, max, and origin of the current instance.'
+  Users: 2
+  Fake user: True
+  Nodes: 8
+  Inputs:
+  Outputs:
+    - 'Min': NodeSocketVector
+        Description: 'Minimum corner of the instance bounds'
+    - 'Max': NodeSocketVector
+        Description: 'Maximum corner of the instance bounds'
+    - 'Origin': NodeSocketVector
+        Description: 'Origin of the instance'
+
+Name: 'A3D_Instance Info (Legacy)'
+  Type: GEOMETRY
+  Description: 'An earlier version of Instance Info that takes an explicit instances input rather than reading the current instance context.'
+  Users: 2
+  Fake user: True
+  Nodes: 16
+  Inputs:
+    - 'Instances': NodeSocketGeometry
+        Description: 'Instances to read the bounds from'
+  Outputs:
+    - 'Min': NodeSocketVector
+        Description: 'Minimum corner of the instance bounds'
+    - 'Max': NodeSocketVector
+        Description: 'Maximum corner of the instance bounds'
+    - 'Origin': NodeSocketVector
+        Description: 'Origin of the instance'
+
+Name: 'A3D_Instance Matrix'
+  Type: GEOMETRY
+  Description: 'Builds an instance transform matrix from a mesh and instance geometry, with depth, selection, and instance-index/pick-instance controls.'
+  Users: 2
+  Fake user: True
+  Nodes: 26
+  Inputs:
+    - 'Mesh': NodeSocketGeometry
+        Description: 'Mesh the instances are placed on'
+    - 'Instance': NodeSocketGeometry
+        Description: 'Geometry to instance'
+    - 'Depth': NodeSocketFloat
+        Description: 'Depth of the instances'
+    - 'Selection': NodeSocketBool
+        Description: 'Elements to place instances on'
+    - 'Instance Index': NodeSocketInt
+        Description: 'Index of the instance used for each point. This is only used when Pick Instances is on. By default the point index is used'
+    - 'Pick Instance': NodeSocketBool
+        Description: 'Choose instances from the "Instance" input at each point instead of instancing the entire geometry'
+  Outputs:
+    - 'Instances': NodeSocketGeometry
+        Description: 'Generated instances'
+
+Name: 'A3D_Instance on Faces'
+  Type: GEOMETRY
+  Description: 'Instances geometry onto selected faces of a mesh, with pick-instance and instance-index controls for choosing which instance goes where.'
+  Users: 2
+  Fake user: True
+  Nodes: 63
+  Inputs:
+    - 'Mesh': NodeSocketGeometry
+        Description: 'Mesh whose faces receive instances'
+    - 'Selection': NodeSocketBool
+        Description: 'Faces to place instances on'
+    - 'Instance': NodeSocketGeometry
+        Description: 'Geometry that is instanced on the faces'
+    - 'Pick Instance': NodeSocketBool
+        Description: 'Choose instances from the "Instance" input at each face instead of instancing the entire geometry'
+    - 'Instance Index': NodeSocketInt
+        Description: 'Index of the instance used for each face. This is only used when Pick Instance is on. By default the face index is used'
+  Outputs:
+    - 'Instances': NodeSocketGeometry
+        Description: 'Generated instances'
+
+Name: 'A3D_Integer Clamp'
+  Type: GEOMETRY
+  Description: 'Clamps an integer value between a minimum and maximum.'
+  Users: 2
+  Fake user: True
+  Nodes: 5
+  Inputs:
+    - 'Value': NodeSocketInt
+        Description: 'Value to clamp'
+    - 'Min': NodeSocketInt
+        Description: 'Minimum allowed value'
+    - 'Max': NodeSocketInt
+        Description: 'Maximum allowed value'
+  Outputs:
+    - 'Value': NodeSocketInt
+        Description: 'Clamped value'
+
+Name: 'A3D_Laplacian'
+  Type: GEOMETRY
+  Description: 'A generalized Laplacian (connectivity-based blur) operator that works across float, integer, and vector value types over a given number of iterations.'
+  Users: 2
+  Fake user: True
+  Nodes: 13
+  Inputs:
+    - 'Value': NodeSocketFloat
+        Description: 'Float value to blur'
+    - 'Integer': NodeSocketInt
+        Description: 'Integer value to blur'
+    - 'Vector': NodeSocketVector
+        Description: 'Vector value to blur'
+    - 'Iterations': NodeSocketInt
+        Description: 'How many times to blur the values for all elements'
+  Outputs:
+    - 'Value': NodeSocketFloat
+        Description: 'Blurred float value'
+    - 'Integer': NodeSocketInt
+        Description: 'Blurred integer value'
+    - 'Vector': NodeSocketVector
+        Description: 'Blurred vector value'
+
+Name: 'A3D_Largest Island'
+  Type: GEOMETRY
+  Description: 'Returns a boolean selection marking the largest connected mesh island.'
+  Users: 2
+  Fake user: True
+  Nodes: 8
+  Inputs:
+  Outputs:
+    - 'Boolean': NodeSocketBool
+        Description: 'Is the largest mesh island'
+
+Name: 'A3D_Line Intersect'
+  Type: GEOMETRY
+  Description: 'Tests whether two line segments (each defined by two endpoints) intersect.'
+  Users: 3
+  Fake user: True
+  Nodes: 40
+  Inputs:
+    - 'Edge A Position 1': NodeSocketVector
+        Description: 'First endpoint of edge A'
+    - 'Edge A Position 2': NodeSocketVector
+        Description: 'Second endpoint of edge A'
+    - 'Edge B Position 1': NodeSocketVector
+        Description: 'First endpoint of edge B'
+    - 'Edge B Position 2': NodeSocketVector
+        Description: 'Second endpoint of edge B'
+  Outputs:
+    - 'Intersect': NodeSocketBool
+        Description: 'True if the two segments intersect'
+
+Name: 'A3D_Line Intersect Point'
+  Type: GEOMETRY
+  Description: 'Computes the intersection point of two line segments (each defined by two endpoints), assuming they intersect.'
+  Users: 3
+  Fake user: True
+  Nodes: 18
+  Inputs:
+    - 'Edge A Position 1': NodeSocketVector
+        Description: 'First endpoint of edge A'
+    - 'Edge A Position 2': NodeSocketVector
+        Description: 'Second endpoint of edge A'
+    - 'Edge B Position 1': NodeSocketVector
+        Description: 'First endpoint of edge B'
+    - 'Edge B Position 2': NodeSocketVector
+        Description: 'Second endpoint of edge B'
+  Outputs:
+    - 'Intersection Point': NodeSocketVector
+        Description: 'Point where the two segments intersect'
+
+Name: 'A3D_Line-Line Intersection'
+  Type: GEOMETRY
+  Description: 'Combines intersection testing and position calculation for two line segments into a single node, returning both whether they intersect and where.'
+  Users: 3
+  Fake user: True
+  Nodes: 7
+  Inputs:
+    - 'Edge A Position 1': NodeSocketVector
+        Description: 'First endpoint of edge A'
+    - 'Edge A Position 2': NodeSocketVector
+        Description: 'Second endpoint of edge A'
+    - 'Edge B Position 1': NodeSocketVector
+        Description: 'First endpoint of edge B'
+    - 'Edge B Position 2': NodeSocketVector
+        Description: 'Second endpoint of edge B'
+  Outputs:
+    - 'Intersects': NodeSocketBool
+        Description: 'True if the two segments intersect'
+    - 'Intersection Position': NodeSocketVector
+        Description: 'Point where the two segments intersect'
+
+Name: 'A3D_Looping Coordinates'
+  Type: GEOMETRY
+  Description: 'Generates cyclically looping XYZ and W coordinates over a given loop duration, for seamless periodic animation or tiling.'
+  Users: 2
+  Fake user: True
+  Nodes: 13
+  Inputs:
+    - 'Loop Duration': NodeSocketInt
+        Description: 'Number of frames in one loop'
+  Outputs:
+    - 'XYZ': NodeSocketVector
+        Description: 'Looping XYZ coordinates'
+    - 'W': NodeSocketFloat
+        Description: 'Looping W coordinate'
+
+Name: 'A3D_Make Curve Acyclic'
+  Type: GEOMETRY
+  Description: 'Converts a cyclic (closed) curve into an acyclic (open) curve while preserving its shape.'
+  Users: 2
+  Fake user: True
+  Nodes: 22
+  Inputs:
+    - 'Curve': NodeSocketGeometry
+        Description: 'Curve to open'
+  Outputs:
+    - 'Curve': NodeSocketGeometry
+        Description: 'Curve with cyclic splines made acyclic'
+
+Name: 'A3D_Merge by Distance'
+  Type: GEOMETRY
+  Description: 'Merges mesh elements within a given distance of each other, with options to limit merging to islands and to merge by group ID.'
+  Users: 2
+  Fake user: True
+  Nodes: 9
+  Inputs:
+    - 'Mesh': NodeSocketGeometry
+        Description: 'Point cloud or mesh to merge points of'
+    - 'Limit Islands': NodeSocketBool
+        Description: 'Only merge elements within the same island'
+    - 'Group ID': NodeSocketInt
+        Description: 'Only merge elements with the same group ID'
+    - 'Position': NodeSocketVector
+        Description: 'Position used to measure distances'
+    - 'Distance': NodeSocketFloat
+        Description: 'Maximum distance between elements to merge'
+  Outputs:
+    - 'Mesh': NodeSocketGeometry
+        Description: 'Mesh with nearby elements merged'
+
+Name: 'A3D_Mesh to Lattice'
+  Type: GEOMETRY
+  Description: 'Converts a mesh into a lattice-cell structure using a selectable cell type and object, with a configurable cell size and interior band width.'
+  Users: 2
+  Fake user: True
+  Nodes: 39
+  Inputs:
+    - 'Mesh': NodeSocketGeometry
+        Description: 'Mesh to convert'
+    - 'Cell Type': NodeSocketMenu
+        Description: 'Type of cell to use for each lattice element'
+    - 'Cell Object': NodeSocketObject
+        Description: 'Object used as the lattice cell, must be exactly 1m³'
+    - 'Cell Size': NodeSocketFloat
+        Description: 'Size of each lattice cell'
+    - 'Interior Band Width': NodeSocketFloat
+        Description: 'Width of the gradient inside of the mesh'
+  Outputs:
+    - 'Mesh': NodeSocketGeometry
+        Description: 'Lattice generated from the mesh'
+
+Name: 'A3D_Midpoint Range to Min Max'
+  Type: GEOMETRY
+  Description: 'An alternate/duplicate implementation of Midpoint Range, converting a midpoint-and-range pair into explicit min/max bounds.'
+  Users: 3
+  Fake user: True
+  Nodes: 4
+  Inputs:
+    - 'Midpoint': NodeSocketFloat
+        Description: 'Center of the range'
+    - 'Range': NodeSocketFloat
+        Description: 'Total width of the range'
+  Outputs:
+    - 'Min': NodeSocketFloat
+        Description: 'Lower bound of the range'
+    - 'Max': NodeSocketFloat
+        Description: 'Upper bound of the range'
+
+Name: 'A3D_Mirror'
+  Type: GEOMETRY
+  Description: 'Mirrors a mesh across chosen X/Y/Z axes, either about the origin or about a separate mirror object.'
+  Users: 2
+  Fake user: True
+  Nodes: 46
+  Inputs:
+    - 'Mesh': NodeSocketGeometry
+        Description: 'Mesh to mirror'
+    - 'X': NodeSocketBool
+        Description: 'Mirror across the X axis'
+    - 'Y': NodeSocketBool
+        Description: 'Mirror across the Y axis'
+    - 'Z': NodeSocketBool
+        Description: 'Mirror across the Z axis'
+    - 'Use Object': NodeSocketBool
+        Description: 'Mirror about an object instead of the origin'
+    - 'Mirror Object': NodeSocketObject
+        Description: 'Object to mirror about'
+  Outputs:
+    - 'Mesh': NodeSocketGeometry
+        Description: 'Mirrored mesh'
+
+Name: 'A3D_Multivariate Newton Solver'
+  Type: GEOMETRY
+  Description: "Solves a system of equations for a root using multivariate Newton's method, iterating from an initial guess with a configurable step size and function closure."
+  Users: 2
+  Fake user: True
+  Nodes: 41
+  Inputs:
+    - 'Function Closure': NodeSocketClosure
+        Description: 'Function to find the root of'
+    - 'Iterations': NodeSocketInt
+        Description: 'Number of Newton iterations'
+    - 'Initial Guess': NodeSocketVector
+        Description: 'Starting point for the search'
+    - 'Step Size': NodeSocketFloat
+        Description: 'Step size used for the numerical derivative'
+  Outputs:
+    - 'Root': NodeSocketVector
+        Description: 'Root found by the solver'
+
+Name: 'A3D_N Nearest Neighbors'
+  Type: GEOMETRY
+  Description: 'Finds the N nearest neighboring points to each input point.'
+  Users: 2
+  Fake user: True
+  Nodes: 46
+  Inputs:
+    - 'Points': NodeSocketGeometry
+        Description: 'Points to find neighbors for'
+    - 'Neighbors': NodeSocketInt
+        Description: 'Number of nearest neighbors to find'
+  Outputs:
+    - 'Points': NodeSocketGeometry
+        Description: 'Points with neighbor connections'
+
+Name: 'A3D_Nearest Point Info'
+  Type: GEOMETRY
+  Description: 'Returns the index, radius, distance, direction, and offset of the nearest point (optionally within a group ID) to a given position.'
+  Users: 2
+  Fake user: True
+  Nodes: 16
+  Inputs:
+    - 'Position': NodeSocketVector
+        Description: 'Position to sample from'
+    - 'Group ID': NodeSocketInt
+        Description: 'Splits the geometry into groups which can be sampled individually'
+  Outputs:
+    - 'Index': NodeSocketInt
+        Description: 'Index of Nearest'
+    - 'Radius': NodeSocketFloat
+        Description: "'radius' attribute of Nearest"
+    - 'Distance': NodeSocketFloat
+        Description: 'Distance to Nearest'
+    - 'Direction': NodeSocketVector
+        Description: 'Normalized direction towards Nearest'
+    - 'Offset': NodeSocketVector
+        Description: 'Offset between current and Nearest'
+
+Name: 'A3D_Neighbors of Vertex'
+  Type: GEOMETRY
+  Description: "Returns a weighted, sortable list of a vertex's connected neighbor vertices and their total count."
+  Users: 3
+  Fake user: True
+  Nodes: 13
+  Inputs:
+    - 'Vertex Index': NodeSocketInt
+        Description: 'The vertex to retrieve data from. Defaults to the vertex from the context'
+    - 'Weights': NodeSocketFloat
+        Description: 'Values used to sort the edges connected to the vertex. Uses indices by default'
+    - 'Sort Index': NodeSocketInt
+        Description: 'Which of the sorted edges to output. Negative indexing is supported'
+  Outputs:
+    - 'Other Vertex': NodeSocketInt
+        Description: 'Index of the selected neighboring vertex'
+    - 'Total': NodeSocketInt
+        Description: 'Number of vertices connected to this vertex'
+
+Name: 'A3D_Noodle'
+  Type: GEOMETRY
+  Description: "Generates a tube ('noodle') mesh along a curve, with adjustable scale and profile/cap resolution."
+  Users: 2
+  Fake user: True
+  Nodes: 51
+  Inputs:
+    - 'Curve': NodeSocketGeometry
+        Description: 'Curve to generate the tube along'
+    - 'Scale': NodeSocketFloat
+        Description: 'Radius of the tube'
+    - 'Profile Resolution': NodeSocketInt
+        Description: 'Number of points around the tube profile'
+    - 'Cap Resolution': NodeSocketInt
+        Description: 'Number of segments in each end cap'
+  Outputs:
+    - 'Mesh': NodeSocketGeometry
+        Description: 'Generated tube mesh'
+
+Name: 'A3D_Normalize Field'
+  Type: GEOMETRY
+  Description: "Remaps a per-element float attribute to the 0–1 range based on the minimum and maximum values found across the field's domain."
+  Users: 2
+  Fake user: True
+  Nodes: 4
+  Inputs:
+    - 'Value': NodeSocketFloat
+        Description: 'The values the minimum and maximum will be calculated from'
+    - 'Group ID': NodeSocketInt
+        Description: 'An index used to group values together for multiple separate operations'
+  Outputs:
+    - 'Normalized Value': NodeSocketFloat
+        Description: 'Value remapped to the 0-1 range'
+
+Name: 'A3D_Object Motion Path'
+  Type: GEOMETRY
+  Description: "Builds a trailing motion-path mesh tracking an object's movement over time, with configurable substeps and maximum trail age."
+  Users: 2
+  Fake user: True
+  Nodes: 40
+  Inputs:
+    - 'Object': NodeSocketObject
+        Description: 'Object to trace'
+    - 'Substeps': NodeSocketInt
+        Description: 'Quality of inbetween motion estimation'
+    - 'Max Trail Age': NodeSocketFloat
+        Description: 'Maximum age of the trail before it is removed'
+  Outputs:
+    - 'Geometry': NodeSocketGeometry
+        Description: 'Generated motion path geometry'
+
+Name: 'A3D_Octree'
+  Type: GEOMETRY
+  Description: 'Builds an octree spatial subdivision of a point cloud between a min and max bound, iterating to the target depth.'
+  Users: 1
+  Fake user: True
+  Nodes: 74
+  Inputs:
+    - 'Points': NodeSocketGeometry
+        Description: 'Points to subdivide'
+    - 'Iterations': NodeSocketInt
+        Description: 'Number of subdivision levels'
+    - 'Min': NodeSocketVector
+        Description: 'Minimum corner of the bounds'
+    - 'Max': NodeSocketVector
+        Description: 'Maximum corner of the bounds'
+  Outputs:
+    - 'Geometry': NodeSocketGeometry
+        Description: 'Generated octree geometry'
+
+Name: 'A3D_Opposite Corner of Triangle Adjacent to Edge'
+  Type: GEOMETRY
+  Description: 'Returns the vertex opposite an edge in a triangle attached to that edge, with weights and a sort index to choose between the attached corners.'
+  Users: 1
+  Fake user: True
+  Nodes: 9
+  Inputs:
+    - 'Edge Index': NodeSocketInt
+        Description: 'The edge to retrieve data from. Defaults to the edge from the context'
+    - 'Weights': NodeSocketFloat
+        Description: 'Values that sort the corners attached to the edge'
+    - 'Sort Index': NodeSocketInt
+        Description: 'Which of the sorted corners to output. Negative indexing is supported'
+  Outputs:
+    - 'Vertex Index': NodeSocketInt
+        Description: 'The vertex the corner is attached to'
+
+Name: 'A3D_Pack Curves'
+  Type: GEOMETRY
+  Description: 'Packs curve geometry onto a target panel/surface using a cost-based path-growth algorithm (base cost plus per-step increment), respecting a vertex group and a maximum curve count.'
+  Users: 2
+  Fake user: True
+  Nodes: 79
+  Inputs:
+    - 'Geometry': NodeSocketGeometry
+        Description: 'Geometry to pack curves onto'
+    - 'Selection': NodeSocketBool
+        Description: 'Parts of the geometry to pack curves onto'
+    - 'Base Path Cost': NodeSocketFloat
+        Description: 'Starting cost of each path'
+    - 'Path Cost Increment': NodeSocketFloat
+        Description: 'Cost added per step along a path'
+    - 'Vertex Group': NodeSocketString
+        Description: 'Name of the vertex group that limits the packing'
+    - 'Max Curves': NodeSocketInt
+        Description: 'Maximum number of curves to generate'
+    - 'Seed': NodeSocketInt
+        Description: 'Random seed'
+    - 'Panel': NodeSocketBool
+        Description: 'Restrict packing to the target panel'
+    - 'Target Position': NodeSocketVector
+        Description: 'Position the curves are packed toward'
+  Outputs:
+    - 'Curve': NodeSocketGeometry
+        Description: 'Packed curves'
+
+Name: 'A3D_Particle Tracking'
+  Type: GEOMETRY
+  Description: 'Emits and tracks particles toward a target position with per-particle emission/tracking delay and velocity ranges plus noise-driven trajectory variation, outputting velocity and age attributes.'
+  Users: 2
+  Fake user: True
+  Nodes: 63
+  Inputs:
+    - 'Geometry': NodeSocketGeometry
+        Description: 'Geometry to emit particles from'
+    - 'Selection': NodeSocketBool
+        Description: 'Points that emit particles'
+    - 'Target Position': NodeSocketVector
+        Description: '(Required) world space point particles tend to follow'
+    - 'Emission Delay Min': NodeSocketFloat
+        Description: 'Minimum time to wait before emitting a particle'
+    - 'Emission Delay Max': NodeSocketFloat
+        Description: 'Maximum time to wait before emitting a particle'
+    - 'Emission Velocity': NodeSocketFloat
+        Description: 'Initial velocity during the launch phase, before Tracking Delay has elapsed'
+    - 'Tracking Delay': NodeSocketFloat
+        Description: 'Time to wait before the particle begins to seek Target Position'
+    - 'Tracking Velocity': NodeSocketFloat
+        Description: 'Velocity during the tracking phase, after Tracking Delay has elapsed'
+    - 'Trajectory Noise Scale': NodeSocketFloat
+        Description: 'Scale of noise that alters trajectory'
+    - 'Trajectory Noise Strength': NodeSocketFloat
+        Description: 'Strength of noise that alters trajectory'
+  Outputs:
+    - 'Geometry': NodeSocketGeometry
+        Description: 'Emitted particles'
+    - 'Velocity': NodeSocketVector
+        Description: 'Velocity of each particle'
+    - 'Age': NodeSocketFloat
+        Description: 'Current age of each particle'
+    - 'Start Age': NodeSocketFloat
+        Description: 'Age at which each particle starts'
+
+Name: 'A3D_Patch Mesh'
+  Type: GEOMETRY
+  Description: "Fills or patches holes in a mesh's topology."
+  Users: 2
+  Fake user: True
+  Nodes: 20
+  Inputs:
+    - 'Mesh': NodeSocketGeometry
+        Description: 'Mesh to patch'
+  Outputs:
+    - 'Mesh': NodeSocketGeometry
+        Description: 'Mesh with holes filled'
+
+Name: 'A3D_PBD Solver Repeat'
+  Type: GEOMETRY
+  Description: 'Runs a position-based dynamics (PBD) solve over multiple outer iterations and substeps, with fixed points, external force, damping, stretch stiffness, pretension, volume preservation, and mesh collision.'
+  Users: 2
+  Fake user: True
+  Nodes: 31
+  Inputs:
+    - 'Geometry': NodeSocketGeometry
+        Description: 'Rope geometry to simulate'
+    - 'Iterations': NodeSocketInt
+        Description: 'Number of constraint solver iterations'
+    - 'Substeps': NodeSocketInt
+        Description: 'Quality of simulation'
+    - 'Fixed Points': NodeSocketBool
+        Description: 'Which points are fixed/immobile'
+    - 'Animated': NodeSocketBool
+        Description: 'Are fixed points animated/updating every frame (use for rigs)'
+    - 'External Force': NodeSocketVector
+        Description: 'External force acting on simulation'
+    - 'Damping': NodeSocketFloat
+        Description: 'Velocity reduction (recommended >0)'
+    - 'Stretch Stiffness': NodeSocketFloat
+        Description: 'How much the rope resists stretching. High values require higher steps'
+    - 'Pretension': NodeSocketFloat
+        Description: 'Tension in the rope before simulation. Helps keep ropes stiff'
+    - 'Preserve Volume': NodeSocketBool
+        Description: 'Keep the rope from losing volume when stretched'
+    - 'Collision': NodeSocketBool
+        Description: 'Enable collision with a mesh'
+    - 'Collision Mesh': NodeSocketGeometry
+        Description: 'Mesh the rope collides with'
+  Outputs:
+    - 'Geometry': NodeSocketGeometry
+        Description: 'Simulated rope geometry'
+
+Name: 'A3D_Plane Normal'
+  Type: GEOMETRY
+  Description: 'Computes the normal vector of the plane defined by three points.'
+  Users: 3
+  Fake user: True
+  Nodes: 6
+  Inputs:
+    - 'Point A': NodeSocketVector
+        Description: 'First point on the plane'
+    - 'Point B': NodeSocketVector
+        Description: 'Second point on the plane'
+    - 'Point C': NodeSocketVector
+        Description: 'Third point on the plane'
+  Outputs:
+    - 'Vector': NodeSocketVector
+        Description: 'Normal vector of the plane'
+
+Name: 'A3D_Plexus'
+  Type: GEOMETRY
+  Description: "Builds a connective 'plexus' mesh linking nearby points based on a connectivity parameter, commonly used for network/energy-field visuals."
+  Users: 2
+  Fake user: True
+  Nodes: 41
+  Inputs:
+    - 'Points': NodeSocketGeometry
+        Description: 'Points to connect'
+    - 'Connectivity': NodeSocketInt
+        Description: 'Maximum number of connections per point'
+  Outputs:
+    - 'Mesh': NodeSocketGeometry
+        Description: 'Generated network of connections'
+
+Name: 'A3D_Point Slope Line'
+  Type: GEOMETRY
+  Description: 'Constructs a line segment of a given length from a point-slope definition (X, Y, slope), returning its start and end points.'
+  Users: 2
+  Fake user: True
+  Nodes: 27
+  Inputs:
+    - 'X': NodeSocketFloat
+        Description: 'X coordinate of the point'
+    - 'Y': NodeSocketFloat
+        Description: 'Y coordinate of the point'
+    - 'Slope': NodeSocketFloat
+        Description: 'Slope of the line'
+    - 'Length': NodeSocketFloat
+        Description: 'Length of the line segment'
+  Outputs:
+    - 'Start Point': NodeSocketVector
+        Description: 'Start of the line segment'
+    - 'End Point': NodeSocketVector
+        Description: 'End of the line segment'
+
+Name: 'A3D_Poke Faces'
+  Type: GEOMETRY
+  Description: 'Pokes (fan-triangulates from a center point) all faces in the input geometry.'
+  Users: 2
+  Fake user: True
+  Nodes: 29
+  Inputs:
+    - 'Geometry': NodeSocketGeometry
+        Description: 'Geometry to poke faces on'
+  Outputs:
+    - 'Geometry': NodeSocketGeometry
+        Description: 'Geometry with faces poked'
+
+Name: 'A3D_Poke Triangle'
+  Type: GEOMETRY
+  Description: 'Pokes a single face at a given position, splitting it into a triangle fan from that point.'
+  Users: 2
+  Fake user: True
+  Nodes: 21
+  Inputs:
+    - 'Mesh': NodeSocketGeometry
+        Description: 'Mesh containing the face to poke'
+    - 'Position': NodeSocketVector
+        Description: 'Location of central vertex'
+  Outputs:
+    - 'Mesh': NodeSocketGeometry
+        Description: 'Mesh with the face poked'
+
+Name: 'A3D_Position Components'
+  Type: GEOMETRY
+  Description: 'Splits the current position attribute into its X, Y, and Z components.'
+  Users: 2
+  Fake user: True
+  Nodes: 4
+  Inputs:
+  Outputs:
+    - 'X': NodeSocketFloat
+        Description: 'X component of the position'
+    - 'Y': NodeSocketFloat
+        Description: 'Y component of the position'
+    - 'Z': NodeSocketFloat
+        Description: 'Z component of the position'
+
+Name: 'A3D_Pressure Correction'
+  Type: GEOMETRY
+  Description: (none)
+  Users: 2
+  Fake user: True
+  Nodes: 16
+  Inputs:
+    - 'Geometry': NodeSocketGeometry
+        Description: (none)
+    - 'Delta Time': NodeSocketFloat
+        Description: 'Time step of the simulation'
+    - 'Pressure Coefficient': NodeSocketFloat
+        Description: 'Strength of the pressure force'
+  Outputs:
+    - 'Vector': NodeSocketVector
+        Description: (none)
+
+Name: 'A3D_Project To Plane'
+  Type: GEOMETRY
+  Description: 'Projects a position onto a plane defined by an origin and normal.'
+  Users: 3
+  Fake user: True
+  Nodes: 11
+  Inputs:
+    - 'Position': NodeSocketVector
+        Description: 'Position to project'
+    - 'Origin': NodeSocketVector
+        Description: 'Origin of the plane'
+    - 'Plane Normal': NodeSocketVector
+        Description: 'Normal of the plane'
+  Outputs:
+    - 'Vector': NodeSocketVector
+        Description: 'Position projected onto the plane'
+
+Name: 'A3D_Quad Corners'
+  Type: GEOMETRY
+  Description: 'Returns the four corner positions (A–D) of a quad face at a given offset.'
+  Users: 6
+  Fake user: True
+  Nodes: 10
+  Inputs:
+    - 'Face Index': NodeSocketInt
+        Description: 'The face to retrieve data from. Defaults to the face from the context'
+    - 'Offset': NodeSocketInt
+        Description: 'Number of corners to rotate the corner order by'
+  Outputs:
+    - 'Corner A': NodeSocketVector
+        Description: 'Position of the first corner'
+    - 'Corner B': NodeSocketVector
+        Description: 'Position of the second corner'
+    - 'Corner C': NodeSocketVector
+        Description: 'Position of the third corner'
+    - 'Corner D': NodeSocketVector
+        Description: 'Position of the fourth corner'
+
+Name: 'A3D_Quad Sphere'
+  Type: GEOMETRY
+  Description: 'Generates a quad-topology sphere (cube-projected) of a given radius and subdivision level, with a UV map output.'
+  Users: 2
+  Fake user: True
+  Nodes: 12
+  Inputs:
+    - 'Radius': NodeSocketFloat
+        Description: 'Radius of the sphere'
+    - 'Subdivisions': NodeSocketInt
+        Description: 'Number of subdivisions per cube face'
+  Outputs:
+    - 'Mesh': NodeSocketGeometry
+        Description: 'Generated sphere mesh'
+    - 'UV Map': NodeSocketVector
+        Description: 'UV coordinates of the sphere'
+
+Name: 'A3D_Quad Tangent'
+  Type: GEOMETRY
+  Description: 'Computes the tangent vector of a quad face.'
+  Users: 2
+  Fake user: True
+  Nodes: 13
+  Inputs:
+    - 'Face Index': NodeSocketInt
+        Description: 'The face to retrieve data from. Defaults to the face from the context'
+  Outputs:
+    - 'Tangent': NodeSocketVector
+        Description: 'Vector pointing along the longest axis of the face'
+
+Name: 'A3D_Random Point In Shell'
+  Type: GEOMETRY
+  Description: 'Generates a seeded random point within a spherical shell between a minimum and maximum radius.'
+  Users: 2
+  Fake user: True
+  Nodes: 41
+  Inputs:
+    - 'Min Radius': NodeSocketFloat
+        Description: 'Radius of inner boundary'
+    - 'Max Radius': NodeSocketFloat
+        Description: 'Radius of outer boundary'
+    - 'ID': NodeSocketInt
+        Description: 'ID used to vary the random value per element'
+    - 'Seed': NodeSocketInt
+        Description: 'Random Seed'
+  Outputs:
+    - 'Position': NodeSocketVector
+        Description: 'Random position within the shell'
+
+Name: 'A3D_Random Triangulate'
+  Type: GEOMETRY
+  Description: "Randomly triangulates a subset of the mesh's faces based on a seeded probability."
+  Users: 2
+  Fake user: True
+  Nodes: 5
+  Inputs:
+    - 'Mesh': NodeSocketGeometry
+        Description: 'Mesh to triangulate'
+    - 'Probability': NodeSocketFloat
+        Description: 'Chance that each face is triangulated'
+    - 'Seed': NodeSocketInt
+        Description: 'Random seed'
+  Outputs:
+    - 'Mesh': NodeSocketGeometry
+        Description: 'Mesh with some faces triangulated'
+
+Name: 'A3D_Random XY+Z'
+  Type: GEOMETRY
+  Description: 'Generates a seeded random vector with independently ranged XY (planar) and Z (vertical) components.'
+  Users: 1
+  Fake user: True
+  Nodes: 6
+  Inputs:
+    - 'XY Min': NodeSocketFloat
+        Description: 'Minimum of the X and Y components'
+    - 'XY Max': NodeSocketFloat
+        Description: 'Maximum of the X and Y components'
+    - 'Z Min': NodeSocketFloat
+        Description: 'Minimum of the Z component'
+    - 'Z Max': NodeSocketFloat
+        Description: 'Maximum of the Z component'
+    - 'ID': NodeSocketInt
+        Description: 'ID used to vary the random value per element'
+    - 'Seed': NodeSocketInt
+        Description: 'Random seed'
+  Outputs:
+    - 'Vector': NodeSocketVector
+        Description: 'Random vector'
+
+Name: 'A3D_Roll Curve'
+  Type: GEOMETRY
+  Description: "Rolls (twists) a curve's cross-section around its tangent by a factor and tightness, with a custom roll vector and free/flip controls."
+  Users: 2
+  Fake user: True
+  Nodes: 51
+  Inputs:
+    - 'Curve': NodeSocketGeometry
+        Description: 'Curve to roll'
+    - 'Factor': NodeSocketFloat
+        Description: 'Amount of roll applied'
+    - 'Tightness': NodeSocketFloat
+        Description: 'How tightly the roll follows the curve'
+    - 'Roll Vector': NodeSocketMenu
+        Description: 'How the vector to roll about is chosen'
+    - 'Free': NodeSocketVector
+        Description: 'Roll direction used when the roll vector is free'
+    - 'Flip': NodeSocketBool
+        Description: 'Flip the roll direction'
+  Outputs:
+    - 'Curve': NodeSocketGeometry
+        Description: 'Rolled curve'
+
+Name: 'A3D_Scatter Points'
+  Type: GEOMETRY
+  Description: "Scatters points across a mesh surface using a selectable distribution mode, minimum spacing, and density falloff, returning per-point normal and rotation. When 'Use Rest Position' is True and the 'rest_position' attribute exists on the Geometry, the point positions are transferred from the un-deformed mesh to avoid popping."
+  Users: 2
+  Fake user: True
+  Nodes: 28
+  Inputs:
+    - 'Mesh': NodeSocketGeometry
+        Description: 'Mesh to scatter points on'
+    - 'Mode': NodeSocketMenu
+        Description: 'Change distribution mode'
+    - 'Selection': NodeSocketBool
+        Description: 'Faces to scatter points on'
+    - 'Distance Min': NodeSocketFloat
+        Description: 'Minimum spacing between points'
+    - 'Density': NodeSocketFloat
+        Description: 'Number of points per unit area'
+    - 'Density Factor': NodeSocketFloat
+        Description: 'Factor to scale the density by'
+    - 'Seed': NodeSocketInt
+        Description: 'Random seed'
+    - 'Radius': NodeSocketFloat
+        Description: 'Radius stored on each point'
+    - 'Use Rest Position': NodeSocketBool
+        Description: "Requires enabling 'Rest Position' in the Shape Keys panel"
+  Outputs:
+    - 'Points': NodeSocketGeometry
+        Description: 'Scattered points'
+    - 'Normal': NodeSocketVector
+        Description: 'Surface normal at each point'
+    - 'Rotation': NodeSocketRotation
+        Description: 'Rotation aligned to the surface at each point'
+
+Name: 'A3D_Seam Distance'
+  Type: GEOMETRY
+  Description: "Computes each point's distance to the nearest UV seam."
+  Users: 2
+  Fake user: True
+  Nodes: 24
+  Inputs:
+    - 'Mesh': NodeSocketGeometry
+        Description: 'Mesh to measure the seam distance on'
+    - 'UVMap': NodeSocketString
+        Description: 'Name of the UV map to read seams from'
+    - 'Seam Attribute': NodeSocketString
+        Description: 'Name of the attribute marking seam edges'
+  Outputs:
+    - 'Mesh': NodeSocketGeometry
+        Description: 'Mesh after the seam distance calculation'
+    - 'Distance': NodeSocketFloat
+        Description: 'Distance to the nearest UV seam'
+
+Name: 'A3D_Self Transform'
+  Type: GEOMETRY
+  Description: "Applies the self object's transform matrix to the input geometry, with optional inversion."
+  Users: 1
+  Fake user: True
+  Nodes: 10
+  Inputs:
+    - 'Geometry': NodeSocketGeometry
+        Description: (none)
+    - 'Invert': NodeSocketBool
+        Description: (none)
+  Outputs:
+    - 'Geometry': NodeSocketGeometry
+        Description: (none)
+
+Name: 'A3D_Set Position by Attribute'
+  Type: GEOMETRY
+  Description: "Sets a mesh's point positions directly from a named vector attribute."
+  Users: 2
+  Fake user: True
+  Nodes: 5
+  Inputs:
+    - 'Mesh': NodeSocketGeometry
+        Description: 'Mesh whose point positions are replaced'
+    - 'Attribute': NodeSocketString
+        Description: 'Name of the vector attribute to use as positions'
+  Outputs:
+    - 'Geometry': NodeSocketGeometry
+        Description: 'Geometry with positions set from the attribute'
+
+Name: 'A3D_Smooth Curve'
+  Type: GEOMETRY
+  Description: "Smooths a curve's control points over a number of iterations, with a selectable mode and target segment count/length."
+  Users: 2
+  Fake user: True
+  Nodes: 12
+  Inputs:
+    - 'Curve': NodeSocketGeometry
+        Description: 'Curve to smooth'
+    - 'Iterations': NodeSocketInt
+        Description: 'Number of smoothing iterations'
+    - 'Mode': NodeSocketMenu
+        Description: 'How to specify the amount of samples'
+    - 'Count': NodeSocketInt
+        Description: 'Number of segments to resample to'
+    - 'Length': NodeSocketFloat
+        Description: 'Segment length to resample to'
+  Outputs:
+    - 'Curve': NodeSocketGeometry
+        Description: 'Smoothed curve'
+
+Name: 'A3D_Solve XPBD Edge Constriants'
+  Type: GEOMETRY
+  Description: 'Accumulates correction vectors for rope PBD simulation'
+  Users: 3
+  Fake user: True
+  Nodes: 47
+  Inputs:
+    - 'Max Iterations': NodeSocketInt
+        Description: (none)
+    - 'Stiffness': NodeSocketFloat
+        Description: (none)
+    - 'Tension': NodeSocketFloat
+        Description: (none)
+  Outputs:
+    - 'Accumulated Correction': NodeSocketVector
+        Description: (none)
+
+Name: 'A3D_Sphere Collision'
+  Type: GEOMETRY
+  Description: 'Tests two indexed spheres for collision, returning whether they collided, their overlap amount, and the collision normal.'
+  Users: 2
+  Fake user: True
+  Nodes: 24
+  Inputs:
+    - 'Index A': NodeSocketInt
+        Description: 'Index of the first sphere'
+    - 'Index B': NodeSocketInt
+        Description: 'Index of the second sphere'
+  Outputs:
+    - 'Collided': NodeSocketBool
+        Description: 'True if the spheres collide'
+    - 'Overlap': NodeSocketFloat
+        Description: 'Amount the spheres overlap'
+    - 'Normal': NodeSocketVector
+        Description: 'Collision normal'
+
+Name: 'A3D_Split Quad'
+  Type: GEOMETRY
+  Description: 'Splits a quad face into triangles or sub-quads along a chosen direction, by a blend factor.'
+  Users: 2
+  Fake user: True
+  Nodes: 52
+  Inputs:
+    - 'Mesh': NodeSocketGeometry
+        Description: 'Mesh containing the quads to split'
+    - 'Factor': NodeSocketFloat
+        Description: 'How far along to split the face. 0.5 is the middle of the face'
+    - 'Direction': NodeSocketMenu
+        Description: 'Relative direction to split the face'
+  Outputs:
+    - 'Mesh': NodeSocketGeometry
+        Description: 'Mesh with the quads split'
+
+Name: 'A3D_Split to Instances'
+  Type: GEOMETRY
+  Description: 'Splits geometry into separate instances by a chosen domain and group ID, with a selectable pivot point.'
+  Users: 2
+  Fake user: True
+  Nodes: 16
+  Inputs:
+    - 'Pivot Point': NodeSocketMenu
+        Description: 'Pivot point of each instance'
+    - 'Domain': NodeSocketMenu
+        Description: 'Domain to split'
+    - 'Geometry': NodeSocketGeometry
+        Description: 'Geometry to split into instances'
+    - 'Selection': NodeSocketBool
+        Description: 'Elements to include'
+    - 'Group ID': NodeSocketInt
+        Description: 'Elements with the same ID go into the same instance'
+  Outputs:
+    - 'Instances': NodeSocketGeometry
+        Description: 'Generated instances'
+    - 'Group ID': NodeSocketInt
+        Description: 'Group ID of each instance'
+
+Name: 'A3D_Split to Instances_Edge'
+  Type: GEOMETRY
+  Description: 'Domain-locked variant of A3D_Split to Instances that splits geometry into separate instances per edge, with a pivot point type and group ID.'
+  Users: 2
+  Fake user: True
+  Nodes: 63
+  Inputs:
+    - 'Pivot Point Type': NodeSocketInt
+        Description: 'Type of pivot point of each instance'
+    - 'Geometry': NodeSocketGeometry
+        Description: 'Geometry to split into instances'
+    - 'Selection': NodeSocketBool
+        Description: 'Elements to include'
+    - 'Group ID': NodeSocketInt
+        Description: 'Elements with the same ID go into the same instance'
+  Outputs:
+    - 'Instances': NodeSocketGeometry
+        Description: 'Generated instances'
+    - 'Group ID': NodeSocketInt
+        Description: 'Group ID of each instance'
+
+Name: 'A3D_Split to Instances_Face'
+  Type: GEOMETRY
+  Description: 'Domain-locked variant of A3D_Split to Instances that splits geometry into separate instances per face, with a pivot point type and group ID.'
+  Users: 2
+  Fake user: True
+  Nodes: 63
+  Inputs:
+    - 'Pivot Point Type': NodeSocketInt
+        Description: 'Type of pivot point of each instance'
+    - 'Geometry': NodeSocketGeometry
+        Description: 'Geometry to split into instances'
+    - 'Selection': NodeSocketBool
+        Description: 'Elements to include'
+    - 'Group ID': NodeSocketInt
+        Description: 'Elements with the same ID go into the same instance'
+  Outputs:
+    - 'Instances': NodeSocketGeometry
+        Description: 'Generated instances'
+    - 'Group ID': NodeSocketInt
+        Description: 'Group ID of each instance'
+
+Name: 'A3D_Split to Instances_Instance'
+  Type: GEOMETRY
+  Description: 'Domain-locked variant of A3D_Split to Instances that splits geometry into separate instances per existing instance, with a pivot point type and group ID.'
+  Users: 2
+  Fake user: True
+  Nodes: 66
+  Inputs:
+    - 'Pivot Point Type': NodeSocketInt
+        Description: 'Type of pivot point of each instance'
+    - 'Geometry': NodeSocketGeometry
+        Description: 'Geometry to split into instances'
+    - 'Selection': NodeSocketBool
+        Description: 'Elements to include'
+    - 'Group ID': NodeSocketInt
+        Description: 'Elements with the same ID go into the same instance'
+  Outputs:
+    - 'Instances': NodeSocketGeometry
+        Description: 'Generated instances'
+    - 'Group ID': NodeSocketInt
+        Description: 'Group ID of each instance'
+
+Name: 'A3D_Split to Instances_Point'
+  Type: GEOMETRY
+  Description: 'Domain-locked variant of A3D_Split to Instances that splits geometry into separate instances per point, with a pivot point type and group ID.'
+  Users: 2
+  Fake user: True
+  Nodes: 63
+  Inputs:
+    - 'Pivot Point Type': NodeSocketInt
+        Description: 'Type of pivot point of each instance'
+    - 'Geometry': NodeSocketGeometry
+        Description: 'Geometry to split into instances'
+    - 'Selection': NodeSocketBool
+        Description: 'Elements to include'
+    - 'Group ID': NodeSocketInt
+        Description: 'Elements with the same ID go into the same instance'
+  Outputs:
+    - 'Instances': NodeSocketGeometry
+        Description: 'Generated instances'
+    - 'Group ID': NodeSocketInt
+        Description: 'Group ID of each instance'
+
+Name: 'A3D_Split to Instances_Spline'
+  Type: GEOMETRY
+  Description: 'Domain-locked variant of A3D_Split to Instances that splits geometry into separate instances per spline, with a pivot point type and group ID.'
+  Users: 2
+  Fake user: True
+  Nodes: 63
+  Inputs:
+    - 'Pivot Point Type': NodeSocketInt
+        Description: 'Type of pivot point of each instance'
+    - 'Geometry': NodeSocketGeometry
+        Description: 'Geometry to split into instances'
+    - 'Selection': NodeSocketBool
+        Description: 'Elements to include'
+    - 'Group ID': NodeSocketInt
+        Description: 'Elements with the same ID go into the same instance'
+  Outputs:
+    - 'Instances': NodeSocketGeometry
+        Description: 'Generated instances'
+    - 'Group ID': NodeSocketInt
+        Description: 'Group ID of each instance'
+
+Name: 'A3D_Surface Gradient'
+  Type: GEOMETRY
+  Description: 'Derives a tangential flow direction vector across a surface from an input scalar value field.'
+  Users: 2
+  Fake user: True
+  Nodes: 45
+  Inputs:
+    - 'Value': NodeSocketFloat
+        Description: 'Scalar field to take the gradient of'
+  Outputs:
+    - 'Vector': NodeSocketVector
+        Description: 'Tangential flow direction across the surface'
+
+Name: 'A3D_Surface Normal'
+  Type: GEOMETRY
+  Description: 'Samples the surface normal of a mesh at a given position (optionally scoped by group ID), with a validity flag for out-of-bounds samples.'
+  Users: 3
+  Fake user: True
+  Nodes: 5
+  Inputs:
+    - 'Mesh': NodeSocketGeometry
+        Description: 'Mesh to sample'
+    - 'Group ID': NodeSocketInt
+        Description: 'Splits the faces of the input mesh into groups which can be sampled individually'
+    - 'Sample Position': NodeSocketVector
+        Description: 'Position to sample the normal at'
+    - 'Sample Group ID': NodeSocketInt
+        Description: 'Group to sample from'
+  Outputs:
+    - 'Normal': NodeSocketVector
+        Description: 'Surface normal at the sample position'
+    - 'Is Valid': NodeSocketBool
+        Description: 'Whether the sampling was successful. It can fail when the sampled group is empty'
+
+Name: 'A3D_Sweep Curve'
+  Type: GEOMETRY
+  Description: 'Sweeps a start and end profile curve along a path curve at a given resolution, producing a lofted mesh.'
+  Users: 2
+  Fake user: True
+  Nodes: 44
+  Inputs:
+    - 'Curve': NodeSocketGeometry
+        Description: 'Path curve to sweep along'
+    - 'Sweep Resolution': NodeSocketInt
+        Description: 'Number of samples along the path'
+    - 'Start Profile': NodeSocketGeometry
+        Description: 'Profile curve at the start of the path'
+    - 'End Profile': NodeSocketGeometry
+        Description: 'Profile curve at the end of the path'
+    - 'Profile Resolution': NodeSocketInt
+        Description: 'Number of points on the profile'
+  Outputs:
+    - 'Mesh': NodeSocketGeometry
+        Description: 'Swept mesh'
+
+Name: 'A3D_Tetrahedron'
+  Type: GEOMETRY
+  Description: 'Generates a regular tetrahedron mesh of a given radius.'
+  Users: 2
+  Fake user: True
+  Nodes: 18
+  Inputs:
+    - 'Radius': NodeSocketFloat
+        Description: 'Radius of the tetrahedron'
+  Outputs:
+    - 'Mesh': NodeSocketGeometry
+        Description: 'Generated tetrahedron mesh'
+
+Name: 'A3D_Tetrahedron Volume'
+  Type: GEOMETRY
+  Description: 'Computes the signed volume of a tetrahedron defined by four vertices.'
+  Users: 3
+  Fake user: True
+  Nodes: 29
+  Inputs:
+    - 'Vertex A': NodeSocketVector
+        Description: 'First vertex of the tetrahedron'
+    - 'Vertex B': NodeSocketVector
+        Description: 'Second vertex of the tetrahedron'
+    - 'Vertex C': NodeSocketVector
+        Description: 'Third vertex of the tetrahedron'
+    - 'Vertex D': NodeSocketVector
+        Description: 'Fourth vertex of the tetrahedron'
+  Outputs:
+    - 'Volume': NodeSocketFloat
+        Description: 'Signed volume of the tetrahedron'
+
+Name: 'A3D_Univariate Newton Solver'
+  Type: GEOMETRY
+  Description: "Solves for a root of a single-variable function closure using Newton's method, iterating from an initial guess with a configurable epsilon and step size, and reporting convergence."
+  Users: 2
+  Fake user: True
+  Nodes: 17
+  Inputs:
+    - 'Function Closure': NodeSocketClosure
+        Description: 'Function to find the root of'
+    - 'Iterations': NodeSocketInt
+        Description: 'Number of Newton iterations'
+    - 'Initial Guess': NodeSocketFloat
+        Description: 'Starting value for the search'
+    - 'Epsilon': NodeSocketFloat
+        Description: 'Tolerance used to test convergence'
+    - 'Step Size': NodeSocketFloat
+        Description: 'Scale of each Newton step'
+  Outputs:
+    - 'Root': NodeSocketFloat
+        Description: 'Root found by the solver'
+    - 'Converged': NodeSocketBool
+        Description: 'True if the solver converged'
+
+Name: 'A3D_UV Mapped Strip'
+  Type: GEOMETRY
+  Description: 'Generates a UV-mapped ribbon/strip mesh along a curve using a profile curve, with scale, tilt, UV method, channel-swap, camera-facing, and cap-fill controls.'
+  Users: 2
+  Fake user: True
+  Nodes: 30
+  Inputs:
+    - 'Curve': NodeSocketGeometry
+        Description: 'Curve the strip follows'
+    - 'Profile Curve': NodeSocketGeometry
+        Description: 'Cross-section of the strip'
+    - 'Scale': NodeSocketFloat
+        Description: 'Scale of the profile at each point'
+    - 'Tilt': NodeSocketFloat
+        Description: 'Rotation of the profile around the curve'
+    - 'UV Map': NodeSocketString
+        Description: 'Name of the UV map to store'
+    - 'UV Method': NodeSocketMenu
+        Description: 'How UV coordinates are generated'
+    - 'Swap UV Channels': NodeSocketBool
+        Description: 'Swap the U and V channels'
+    - 'Align To Active Camera': NodeSocketBool
+        Description: 'Turn the strip to face the active camera'
+    - 'Fill Caps': NodeSocketBool
+        Description: 'If the profile spline is cyclic, fill the ends of the generated mesh with N-gons'
+  Outputs:
+    - 'Mesh': NodeSocketGeometry
+        Description: 'Generated strip mesh'
+    - 'UVMap': NodeSocketVector
+        Description: 'Generated UV coordinates'
+
+Name: 'A3D_UV Unwrap'
+  Type: GEOMETRY
+  Description: "Unwraps a mesh's selected faces along seam edges using a selectable method, with margin, hole-filling, iteration, and no-flip controls."
+  Users: 2
+  Fake user: True
+  Nodes: 5
+  Inputs:
+    - 'Geometry': NodeSocketGeometry
+        Description: 'Geometry to unwrap'
+    - 'Selection': NodeSocketBool
+        Description: 'Faces to participate in the unwrap operation'
+    - 'Seam': NodeSocketBool
+        Description: 'Edges to mark where the mesh is "cut" for the purposes of unwrapping'
+    - 'Margin': NodeSocketFloat
+        Description: 'Space between islands'
+    - 'Fill Holes': NodeSocketBool
+        Description: 'Virtually fill holes in mesh before unwrapping, to better avoid overlaps and preserve symmetry'
+    - 'Method': NodeSocketMenu
+        Description: 'Unwrapping algorithm'
+    - 'Iterations': NodeSocketInt
+        Description: 'Number of iterations to run the SLIM solver for'
+    - 'No Flip': NodeSocketBool
+        Description: 'Prevents flipping UVs'
+  Outputs:
+    - 'Geometry': NodeSocketGeometry
+        Description: 'Geometry with the unwrapped UVs'
+    - 'UV': NodeSocketVector
+        Description: 'UV coordinates between 0 and 1 for each face corner in the selected faces'
+
+Name: 'A3D_Vector to Angle'
+  Type: GEOMETRY
+  Description: 'Converts a 2D vector into its angle in radians.'
+  Users: 2
+  Fake user: True
+  Nodes: 4
+  Inputs:
+    - 'Vector': NodeSocketVector
+        Description: '2D vector to convert'
+  Outputs:
+    - 'Radians': NodeSocketFloat
+        Description: 'Angle of the vector in radians'
+
+Name: 'A3D_Velocity Simulation'
+  Type: GEOMETRY
+  Description: 'Derives and writes a per-point velocity attribute across simulation steps, with damping.'
+  Users: 3
+  Fake user: True
+  Nodes: 15
+  Inputs:
+    - 'Geometry': NodeSocketGeometry
+        Description: 'Geometry to simulate velocity on'
+    - 'Damping': NodeSocketFloat
+        Description: 'How much to damp the velocity'
+    - 'Write Attribute': NodeSocketBool
+        Description: 'Store Named Attribute containing Velocity value'
+    - 'Velocity Attribute': NodeSocketString
+        Description: 'Name of the attribute to store'
+  Outputs:
+    - 'Geometry': NodeSocketGeometry
+        Description: 'Geometry with the updated velocity'
+    - 'Velocity': NodeSocketVector
+        Description: 'Simulated velocity of each element'
+
+Name: 'A3D_View Transform'
+  Type: GEOMETRY
+  Description: "Transforms a world-space position through a camera's view into view-space, clip-space (with W), and NDC coordinates."
+  Users: 3
+  Fake user: True
+  Nodes: 30
+  Inputs:
+    - 'Source': NodeSocketMenu
+        Description: 'Where the camera comes from'
+    - 'Camera': NodeSocketObject
+        Description: 'Camera object to transform through'
+    - 'Position': NodeSocketVector
+        Description: 'Position to transform'
+  Outputs:
+    - 'View Space Position': NodeSocketVector
+        Description: 'Position transformed to view space'
+    - 'Clip Space Position': NodeSocketVector
+        Description: 'Position transformed to clip space'
+    - 'Clip Space W': NodeSocketFloat
+        Description: 'Depth of transformed point in clip space'
+    - 'NDC Position': NodeSocketVector
+        Description: 'Position transformed to normalized device coordinates'
+
+Name: 'A3D_Volume of Mesh'
+  Type: GEOMETRY
+  Description: 'Computes the enclosed volume of a mesh.'
+  Users: 4
+  Fake user: True
+  Nodes: 33
+  Inputs:
+    - 'Mesh': NodeSocketGeometry
+        Description: 'Mesh to measure'
+  Outputs:
+    - 'Volume': NodeSocketFloat
+        Description: 'Volume enclosed by the mesh'
+
+Name: 'A3D_Wiggle'
+  Type: GEOMETRY
+  Description: (none)
+  Users: 2
+  Fake user: True
+  Nodes: 109
+  Inputs:
+    - 'Geometry': NodeSocketGeometry
+        Description: (none)
+    - 'Influence': NodeSocketFloat
+        Description: 'Amount of mixing between the A and B inputs'
+    - 'Damping': NodeSocketFloat
+        Description: (none)
+    - 'Frequency': NodeSocketFloat
+        Description: (none)
+    - 'Gravity': NodeSocketVector
+        Description: (none)
+  Outputs:
+    - 'Geometry': NodeSocketGeometry
+        Description: (none)
+
+Name: 'A3D_XPBD Solver'
+  Type: GEOMETRY
+  Description: 'A full extended position-based dynamics (XPBD) cloth/soft-body solver. Supports fixed points, external force, damping, stretch stiffness, pretension, pressure, friction, and mesh collision, with pre/post-solve closures for custom constraint injection.'
+  Users: 2
+  Fake user: True
+  Nodes: 76
+  Inputs:
+    - 'Geometry': NodeSocketGeometry
+        Description: 'Rope geometry to simulate'
+    - 'Substeps': NodeSocketInt
+        Description: 'Quality of simulation'
+    - 'Fixed Points': NodeSocketBool
+        Description: 'Which points are fixed/immobile'
+    - 'Animated': NodeSocketBool
+        Description: 'Are fixed points animated/updating every frame (use for rigs)'
+    - 'External Force': NodeSocketVector
+        Description: 'External force acting on simulation'
+    - 'Damping': NodeSocketFloat
+        Description: 'Velocity reduction (recommended >0)'
+    - 'Stretch Stiffness': NodeSocketFloat
+        Description: 'How much the rope resists stretching. High values require higher steps'
+    - 'Pretension': NodeSocketFloat
+        Description: 'Tension in the rope before simulation. Helps keep ropes stiff'
+    - 'Pre Solve Closure': NodeSocketClosure
+        Description: 'Closure run before each solve step'
+    - 'Post Solve Closure': NodeSocketClosure
+        Description: 'Closure run after each solve step'
+    - 'Pressure': NodeSocketBool
+        Description: 'Enable pressure forces'
+    - 'Pressure Coefficient': NodeSocketFloat
+        Description: 'Strength of the pressure force'
+    - 'Friction': NodeSocketBool
+        Description: 'Enable friction'
+    - 'Friction Coefficient': NodeSocketFloat
+        Description: 'Strength of the friction'
+    - 'Collision': NodeSocketBool
+        Description: 'Enable collision'
+    - 'Collision Substeps': NodeSocketInt
+        Description: 'Number of substeps used for collision'
+    - 'Collision Use Object': NodeSocketBool
+        Description: 'Collide with an object instead of a mesh'
+    - 'Collision Object': NodeSocketObject
+        Description: 'Object to collide with'
+    - 'Collision Mesh': NodeSocketGeometry
+        Description: 'Mesh to collide with'
+  Outputs:
+    - 'Geometry': NodeSocketGeometry
+        Description: 'Simulated rope geometry'
+
+Name: 'A3D_XPBD Solver Step'
+  Type: GEOMETRY
+  Description: 'A single time-stepped iteration of the XPBD solver, taking an explicit delta time and previous position and exposing the same stiffness/pressure/friction/collision controls as the full solver.'
+  Users: 4
+  Fake user: True
+  Nodes: 106
+  Inputs:
+    - 'Delta Time': NodeSocketFloat
+        Description: 'Time step of the simulation'
+    - 'Geometry': NodeSocketGeometry
+        Description: 'Rope geometry to simulate'
+    - 'Previous Position': NodeSocketVector
+        Description: 'Positions from the previous step'
+    - 'Substeps': NodeSocketInt
+        Description: 'Number of substeps'
+    - 'Fixed': NodeSocketBool
+        Description: 'Which points are fixed in place'
+    - 'External Force': NodeSocketVector
+        Description: 'External force acting on the simulation'
+    - 'Damping': NodeSocketFloat
+        Description: 'Velocity reduction applied each step'
+    - 'Stiffness': NodeSocketFloat
+        Description: 'How much the rope resists stretching'
+    - 'Pretension': NodeSocketFloat
+        Description: 'Tension in the rope before simulation'
+    - 'Pressure': NodeSocketBool
+        Description: 'Enable pressure forces'
+    - 'Pressure Coefficient': NodeSocketFloat
+        Description: 'Strength of the pressure force'
+    - 'Friction': NodeSocketBool
+        Description: 'Enable friction'
+    - 'Friction Coefficient': NodeSocketFloat
+        Description: 'Strength of the friction'
+    - 'Collision': NodeSocketBool
+        Description: 'Enable collision'
+    - 'Collision Substeps': NodeSocketInt
+        Description: 'Number of substeps used for collision'
+    - 'Collision Mesh': NodeSocketGeometry
+        Description: 'Mesh to collide with'
+  Outputs:
+    - 'Geometry': NodeSocketGeometry
+        Description: 'Simulated rope geometry'
+    - 'Position': NodeSocketVector
+        Description: 'Updated positions'
+
+Name: 'Edge Length'
+  Type: GEOMETRY
+  Description: (none)
+  Users: 0
+  Fake user: False
+  Nodes: 4
+  Inputs:
+  Outputs:
+    - 'Length': NodeSocketFloat
+        Description: (none)
+
+Total: 141 node group(s) (3 excluded)
