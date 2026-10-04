@@ -59,8 +59,21 @@ def sockets(group, in_out):
     ]
 
 
-def to_node(group):
-    return reference.Node(group.name, group.description or "",
+def description_of(group, previous=""):
+    """A group has two descriptions: the node group's and (for assets) the asset's.
+    If they disagree, use the one that differs from the previous reference text,
+    i.e. the one that was just edited."""
+    texts = [group.description or ""]
+    if group.asset_data:
+        texts.append(group.asset_data.description or "")
+    for text in texts:
+        if text.strip() and text.strip() != previous.strip():
+            return text
+    return texts[0]
+
+
+def to_node(group, previous=""):
+    return reference.Node(group.name, description_of(group, previous),
                           sockets(group, "INPUT"), sockets(group, "OUTPUT"))
 
 
@@ -74,6 +87,7 @@ def build(prefix, exclude, catalogs, previous_text, parent=node_reference.CATALO
     ]
     previous_ref = reference.parse(previous_text)
     previous = {n.name: c.name for c in previous_ref.categories for n in c.nodes}
+    previous_desc = {n.name: n.description for c in previous_ref.categories for n in c.nodes}
     order = list(dict.fromkeys(c.name for c in previous_ref.categories if c.name))
 
     notes = []
@@ -94,7 +108,7 @@ def build(prefix, exclude, catalogs, previous_text, parent=node_reference.CATALO
     ordered = known + new + ([UNCATEGORIZED] if UNCATEGORIZED in by_category else [])
 
     ref = reference.Reference([
-        reference.Category(c, [to_node(g) for g in sorted(by_category[c], key=lambda g: g.name.lower())])
+        reference.Category(c, [to_node(g, previous_desc.get(g.name, "")) for g in sorted(by_category[c], key=lambda g: g.name.lower())])
         for c in ordered
     ])
     return reference.render(ref), len(groups), notes
