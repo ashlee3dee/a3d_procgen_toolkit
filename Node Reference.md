@@ -1164,6 +1164,18 @@ Combines intersection testing and position calculation for two line segments int
 - Intersects `Boolean`: True if the two segments intersect
 - Intersection Position `Vector`: Point where the two segments intersect
 
+### A3D_Mesh Boundary
+
+**Description**
+
+Identifies the boundary of a mesh
+
+**Inputs**
+
+**Outputs**
+
+- Boundary `Boolean`
+
 ### A3D_N Nearest Neighbors
 
 **Description**
@@ -2090,6 +2102,23 @@ Derives a per-point velocity vector from the difference between a previous and c
 
 - Vector `Vector`: Derived velocity
 
+### A3D_Geometry Motion Path
+
+**Description**
+
+Builds a trailing motion-path mesh from a set of animated points, with configurable substeps and a maximum trail age.
+
+**Inputs**
+
+- Points `Geometry`: Animated points to trace
+- Selection `Boolean`: Points to include
+- Substeps `Integer`: Quality of inbetween motion estimation
+- Max Trail Age `Float`: Maximum age of the trail before it is removed
+
+**Outputs**
+
+- Geometry `Geometry`: Generated motion path geometry
+
 ### A3D_Ground Impact Solve
 
 **Description**
@@ -2127,6 +2156,22 @@ Solves inverse kinematics for a chain of geometry between a start and end point 
 **Outputs**
 
 - Geometry `Geometry`: Solved chain
+
+### A3D_Object Motion Path
+
+**Description**
+
+Builds a trailing motion-path mesh tracking an object's movement over time, with configurable substeps and maximum trail age.
+
+**Inputs**
+
+- Object `Object`: Object to trace
+- Substeps `Integer`: Quality of inbetween motion estimation
+- Max Trail Age `Float`: Maximum age of the trail before it is removed
+
+**Outputs**
+
+- Geometry `Geometry`: Generated motion path geometry
 
 ### A3D_Particle Tracking
 
@@ -2308,7 +2353,27 @@ A single time-stepped iteration of the XPBD solver, taking an explicit delta tim
 - Geometry `Geometry`: Simulated rope geometry
 - Position `Vector`: Updated positions
 
-## Cameras, Transforms & Motion
+## Debugging & Visualization
+
+### A3D_Debug Vectors
+
+**Description**
+
+Generates arrow-like geometry that visualizes vectors, for debugging vector data.
+
+**Inputs**
+
+- Geometry `Geometry`: Points to draw the vectors at
+- Vertices `Integer`: The number of vertices on the top and bottom circles
+- Vector `Vector`: Vector to visualize
+- Length `Float`: Length of the arrows
+- Radius `Float`: Radius of the arrows
+
+**Outputs**
+
+- Geometry `Geometry`: Generated debug arrow geometry
+
+## Cameras & Transforms
 
 ### A3D_Active Camera Transform
 
@@ -2393,39 +2458,6 @@ A comprehensive camera data node. combines transform, projection matrix, focal l
 - Horizontal FOV `Float`: Horizontal field of view of the camera
 - Vertical FOV `Float`: Vertical field of view of the camera
 
-### A3D_Geometry Motion Path
-
-**Description**
-
-Builds a trailing motion-path mesh from a set of animated points, with configurable substeps and a maximum trail age.
-
-**Inputs**
-
-- Points `Geometry`: Animated points to trace
-- Selection `Boolean`: Points to include
-- Substeps `Integer`: Quality of inbetween motion estimation
-- Max Trail Age `Float`: Maximum age of the trail before it is removed
-
-**Outputs**
-
-- Geometry `Geometry`: Generated motion path geometry
-
-### A3D_Object Motion Path
-
-**Description**
-
-Builds a trailing motion-path mesh tracking an object's movement over time, with configurable substeps and maximum trail age.
-
-**Inputs**
-
-- Object `Object`: Object to trace
-- Substeps `Integer`: Quality of inbetween motion estimation
-- Max Trail Age `Float`: Maximum age of the trail before it is removed
-
-**Outputs**
-
-- Geometry `Geometry`: Generated motion path geometry
-
 ### A3D_Self Transform
 
 **Description**
@@ -2459,23 +2491,3 @@ Transforms a world-space position through a camera's view into view-space, clip-
 - Clip Space Position `Vector`: Position transformed to clip space
 - Clip Space W `Float`: Depth of transformed point in clip space
 - NDC Position `Vector`: Position transformed to normalized device coordinates
-
-## Debugging & Visualization
-
-### A3D_Debug Vectors
-
-**Description**
-
-Generates arrow-like geometry that visualizes vectors, for debugging vector data.
-
-**Inputs**
-
-- Geometry `Geometry`: Points to draw the vectors at
-- Vertices `Integer`: The number of vertices on the top and bottom circles
-- Vector `Vector`: Vector to visualize
-- Length `Float`: Length of the arrows
-- Radius `Float`: Radius of the arrows
-
-**Outputs**
-
-- Geometry `Geometry`: Generated debug arrow geometry

@@ -89,9 +89,9 @@ def render_images(node, images):
     return f'<div class="node-imgs">{imgs}</div>'
 
 
-def render_sockets(sockets):
+def render_sockets(sockets, kind):
     if not sockets:
-        return ""
+        return f'<p class="socket-empty"><em>This node has no {kind}.</em></p>'
     rows = "".join(
         '<li class="socket-row">'
         f'<span class="socket-name">{inline(s.name)}</span>'
@@ -111,8 +111,8 @@ def render_node(node, node_id, images):
         f'<h3 id="{node_id}">{esc(node.name)}</h3>'
         f"{render_images(node, images)}"
         f'<p class="sec sec-Description">Description</p>{description}'
-        f'<p class="sec sec-Inputs">Inputs</p>{render_sockets(node.inputs)}'
-        f'<p class="sec sec-Outputs">Outputs</p>{render_sockets(node.outputs)}'
+        f'<p class="sec sec-Inputs">Inputs</p>        {render_sockets(node.inputs, "inputs")}'
+                f'<p class="sec sec-Outputs">Outputs</p>{render_sockets(node.outputs, "outputs")}'
     )
 
 
