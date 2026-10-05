@@ -1168,13 +1168,13 @@ Combines intersection testing and position calculation for two line segments int
 
 **Description**
 
-Identifies the boundary of a mesh
+Identifies the boundary of a mesh.
 
 **Inputs**
 
 **Outputs**
 
-- Boundary `Boolean`
+- Boundary `Boolean`: Returns True or False if point is boundary
 
 ### A3D_N Nearest Neighbors
 
