@@ -1180,7 +1180,7 @@ Identifies the boundary of a mesh.
 
 **Description**
 
-Finds the N nearest neighboring points to each input point.
+Finds the N nearest neighboring points to each input point. Writes each points index and position as 'a3d_neighbor_*'
 
 **Inputs**
 
