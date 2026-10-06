@@ -258,7 +258,7 @@ Clamps an integer value between a minimum and maximum.
 
 **Description**
 
-An alternate/duplicate implementation of Midpoint Range, converting a midpoint-and-range pair into explicit min/max bounds.
+Converts a midpoint-and-range pair into explicit min/max bounds.
 
 **Inputs**
 
