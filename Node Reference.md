@@ -1,6 +1,6 @@
 ## Math & Numerical Methods
 
-### A3D_(A⊙B)ⁿ
+### A3D_(A op B)^n
 
 **Description**
 
@@ -16,6 +16,23 @@ Applies a selectable math operation to two values, then raises the result to a g
 **Outputs**
 
 - Value `Float`: Result of the operation raised to the exponent
+
+### A3D_A^n op B^n
+
+**Description**
+
+Raises inputs A and B to a given exponent before combining them with a selectable math operation.
+
+**Inputs**
+
+- Operation `Menu`: Type of operation to perform
+- A `Float`: First operand, raised to the exponent
+- B `Float`: Second operand, raised to the exponent
+- Exponent `Float`: Power A and B are raised to
+
+**Outputs**
+
+- Value `Float`: Result of the operation
 
 ### A3D_Angle Between Vectors
 
@@ -77,23 +94,6 @@ A menu-driven axis picker that outputs a unit vector for the selected X, Y, or Z
 **Outputs**
 
 - Vector `Vector`: Direction unit vector
-
-### A3D_Aⁿ⊙Bⁿ
-
-**Description**
-
-Raises inputs A and B to a given exponent before combining them with a selectable math operation.
-
-**Inputs**
-
-- Operation `Menu`: Type of operation to perform
-- A `Float`: First operand, raised to the exponent
-- B `Float`: Second operand, raised to the exponent
-- Exponent `Float`: Power A and B are raised to
-
-**Outputs**
-
-- Value `Float`: Result of the operation
 
 ### A3D_Ballistic Arc
 
@@ -236,7 +236,7 @@ Outputs the constant φ (the golden ratio, ≈1.618) for use in proportion-drive
 
 **Outputs**
 
-- φ `Float`: The golden ratio, approximately 1.618
+- Phi `Float`: The golden ratio, approximately 1.618
 
 ### A3D_Integer Clamp
 
@@ -2199,31 +2199,6 @@ Emits and tracks particles toward a target position with per-particle emission/t
 - Age `Float`: Current age of each particle
 - Start Age `Float`: Age at which each particle starts
 
-### A3D_PBD Solver Repeat
-
-**Description**
-
-Runs a position-based dynamics (PBD) solve over multiple outer iterations and substeps, with fixed points, external force, damping, stretch stiffness, pretension, volume preservation, and mesh collision.
-
-**Inputs**
-
-- Geometry `Geometry`: Rope geometry to simulate
-- Iterations `Integer`: Number of constraint solver iterations
-- Substeps `Integer`: Quality of simulation
-- Fixed Points `Boolean`: Which points are fixed/immobile
-- Animated `Boolean`: Are fixed points animated/updating every frame (use for rigs)
-- External Force `Vector`: External force acting on simulation
-- Damping `Float`: Velocity reduction (recommended >0)
-- Stretch Stiffness `Float`: How much the rope resists stretching. High values require higher steps
-- Pretension `Float`: Tension in the rope before simulation. Helps keep ropes stiff
-- Preserve Volume `Boolean`: Keep the rope from losing volume when stretched
-- Collision `Boolean`: Enable collision with a mesh
-- Collision Mesh `Geometry`: Mesh the rope collides with
-
-**Outputs**
-
-- Geometry `Geometry`: Simulated rope geometry
-
 ### A3D_Pressure Correction
 
 **Description**
@@ -2299,7 +2274,7 @@ A full extended position-based dynamics (XPBD) cloth/soft-body solver. Supports 
 
 **Inputs**
 
-- Geometry `Geometry`: Rope geometry to simulate
+- Geometry `Geometry`: Geometry to simulate
 - Substeps `Integer`: Quality of simulation
 - Fixed Points `Boolean`: Which points are fixed/immobile
 - Animated `Boolean`: Are fixed points animated/updating every frame (use for rigs)
@@ -2318,6 +2293,33 @@ A full extended position-based dynamics (XPBD) cloth/soft-body solver. Supports 
 - Collision Use Object `Boolean`: Collide with an object instead of a mesh
 - Collision Object `Object`: Object to collide with
 - Collision Mesh `Geometry`: Mesh to collide with
+
+**Outputs**
+
+- Geometry `Geometry`: Simulated Geometry
+
+### A3D_XPBD Solver Repeat
+
+**Description**
+
+Runs a position-based dynamics (PBD) solve over multiple outer iterations and substeps, with fixed points, external force, damping, stretch stiffness, pretension, volume preservation, and mesh collision.
+
+**Inputs**
+
+- Geometry `Geometry`: Rope geometry to simulate
+- Iterations `Integer`: Number of constraint solver iterations
+- Substeps `Integer`: Quality of simulation
+- Fixed Points `Boolean`: Which points are fixed/immobile
+- Animated `Boolean`: Are fixed points animated/updating every frame (use for rigs)
+- External Force `Vector`: External force acting on simulation
+- Damping `Float`: Velocity reduction (recommended >0)
+- Stretch Stiffness `Float`: How much the rope resists stretching. High values require higher steps
+- Pretension `Float`: Tension in the rope before simulation. Helps keep ropes stiff
+- Pressure `Boolean`: Keep the rope from losing volume when stretched
+- Pressure Coefficient `Float`: Strength of the pressure force
+- Collision `Boolean`: Enable collision with a mesh
+- Collision Substeps `Integer`: Number of substeps used for collision
+- Collision Mesh `Geometry`: Mesh the rope collides with
 
 **Outputs**
 
