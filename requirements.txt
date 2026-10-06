@@ -1,2 +1,4 @@
-# No Python packages are required (standard library only).
-# External tools: Blender (pull/push) and gifsicle (gifs).
+# Tools need no Python packages (standard library only).
+# nodebpy must be installed into Blender's own Python (not this venv):
+#   <blender>\5.2\python\bin\python.exe -m pip install nodebpy --target .blender_libs
+# External tools: Blender (pull/push/export/build) and gifsicle (gifs).

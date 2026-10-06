@@ -5,6 +5,8 @@
   python tools/run.py gifs [--lossy 40]     compress assets/node_images/*.gif
   python tools/run.py pull --blend X.blend  .blend -> Node Reference.md   (needs Blender)
   python tools/run.py push --blend X.blend  Node Reference.md -> .blend   (needs Blender)
+  python tools/run.py export --blend X.blend  .blend -> nodegroups/*.py       (one-off migration)
+  python tools/run.py build [--output X.blend]  nodegroups/*.py -> .blend      (needs Blender)
 
 Anything after the subcommand's own options is passed to the underlying script,
 e.g. `push --blend X.blend --dry-run` or `pull --blend X.blend --prefix A3D_`.
@@ -37,6 +39,18 @@ def blender_cmd(args, script):
     return [blender, "-b", blend, "--python", TOOLS / script, "--", *args.extra]
 
 
+def nodegroups_cmd(args):
+    blender = args.blender or os.environ.get("BLENDER") or shutil.which("blender")
+    if not blender:
+        sys.exit("Blender not found: pass --blender, set BLENDER, or add it to PATH.")
+    if args.command == "build":
+        return [blender, "--factory-startup", "-b", "--python", TOOLS / "build_nodegroups.py", "--", *args.extra]
+    blend = args.blend or os.environ.get("A3D_BLEND")
+    if not blend or not Path(blend).is_file():
+        sys.exit(f"Blend file not found ({blend!r}): pass --blend or set A3D_BLEND.")
+    return [blender, "--factory-startup", "-b", blend, "--python", TOOLS / "export_nodegroups.py", "--", *args.extra]
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -49,6 +63,14 @@ def main(argv=None):
         p.set_defaults(script=script)
         p.add_argument("--blend", help="the .blend file (default: $A3D_BLEND)")
         p.add_argument("--blender", help="Blender executable (default: $BLENDER, then PATH)")
+    for name, help_text in (
+        ("export", "write nodegroups/*.py from the .blend (one-off migration)"),
+        ("build", "build nodegroups/*.py into a .blend"),
+    ):
+        p = sub.add_parser(name, help=help_text)
+        p.add_argument("--blender", help="Blender executable (default: $BLENDER, then PATH)")
+        if name == "export":
+            p.add_argument("--blend", help="the .blend file (default: $A3D_BLEND)")
     sub.add_parser("site", help="rebuild docs/index.html")
     sub.add_parser("test", help="run the unit tests")
     sub.add_parser("gifs", help="compress node GIFs (options go to compress_gifs.py)")
@@ -56,6 +78,8 @@ def main(argv=None):
     args, extra = parser.parse_known_args(argv)
     args.extra = extra
 
+    if args.command in ("export", "build"):
+        return run(nodegroups_cmd(args))
     if args.command in ("pull", "push"):
         return run(blender_cmd(args, args.script))
     if args.command == "site":
@@ -67,3 +91,4 @@ def main(argv=None):
 
 if __name__ == "__main__":
     sys.exit(main())
+
