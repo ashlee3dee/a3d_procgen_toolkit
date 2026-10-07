@@ -1,7 +1,8 @@
 /assets/node_images_originals/
 /assets/node_images/
-
 /nodegroups/
+/tests/
+/tools/
 
 __pycache__/
 *.pyc
@@ -26,3 +27,5 @@ venv/
 
 # nodebpy installed for Blender's Python (see requirements.txt)
 .blender_libs/
+
+AGENTS.md

@@ -321,6 +321,22 @@ Constructs a line segment of a given length from a point-slope definition (X, Y,
 - Start Point `Vector`: Start of the line segment
 - End Point `Vector`: End of the line segment
 
+### A3D_Polar Decomposition
+
+**Description**
+
+Splits the 3x3 part of a matrix into a rotation and a symmetric stretch, so that Matrix = Rotation x Stretch.
+
+**Inputs**
+
+- Matrix `Matrix`: Matrix to decompose; only the upper 3x3 part is used
+
+**Outputs**
+
+- Rotation Matrix `Matrix`: Orthogonal factor R of the polar decomposition
+- Stretch `Matrix`: Symmetric positive semi-definite factor P, so that Matrix = R x P
+- Rotation `Rotation`: Rotation factor R as a rotation
+
 ### A3D_Univariate Newton Solver
 
 **Description**
@@ -777,6 +793,24 @@ Converts a mesh into a lattice-cell structure using a selectable cell type and o
 **Outputs**
 
 - Mesh `Geometry`: Lattice generated from the mesh
+
+### A3D_Minimum Spanning Tree
+
+**Description**
+
+Finds the minimum spanning tree of a connected mesh using Prim's algorithm, returning only the tree edges and their total weight.
+
+**Inputs**
+
+- Mesh `Geometry`: Mesh whose edges form a connected graph, such as a triangulated mesh
+- Weight `Float`: Per-edge weight to minimize. Ignored when Use Edge Length is enabled
+- Use Edge Length `Boolean`: Weight each edge by its length
+- Start Vertex `Integer`: Vertex the tree grows from. Only the component containing it is spanned
+
+**Outputs**
+
+- Mesh `Geometry`: Edges of the minimum spanning tree
+- Total Weight `Float`: Sum of the weights of the tree edges
 
 ### A3D_Mirror
 
