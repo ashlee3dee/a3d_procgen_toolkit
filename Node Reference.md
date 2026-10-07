@@ -559,6 +559,46 @@ Scatters points across a mesh surface using a selectable distribution mode, mini
 - Normal `Vector`: Surface normal at each point
 - Rotation `Rotation`: Rotation aligned to the surface at each point
 
+### A3D_Straight Skeleton
+
+**Description**
+
+Computes the straight skeleton of closed planar (XY) polygon curves by simulating the shrinking wavefront and processing edge and split events. Returns the skeleton edges, with the Offset (distance inward from the outline) of each point, an Is Boundary flag on outline edges, and the two roof facets (polygon edge indices) each edge separates. Concave polygons are supported; holes are not.
+
+**Inputs**
+
+- Curve `Geometry`: Closed polygon curves, planar in the XY plane. Each curve is an independent polygon without holes
+- Include Boundary `Boolean`: Add the polygon outline to the skeleton. These edges have Is Boundary set
+- Tolerance `Float`: Distance below which events and points are treated as coincident. Raised automatically for large polygons to stay above float precision
+
+**Outputs**
+
+- Skeleton `Geometry`: Skeleton edges with an 'offset' point attribute and an 'is_boundary' edge attribute
+- Offset `Float`: Offset (time) at which each skeleton point is reached: the distance inward from the polygon outline. Use it as height for roofs
+- Facet A `Integer`: On skeleton edges, the roof facet on one side: the index of the curve point its polygon edge starts from. -1 outside the polygon
+- Facet B `Integer`: On skeleton edges, the roof facet on the other side. Outline edges have only Facet A
+- Is Boundary `Boolean`: True on the polygon outline edges (requires Include Boundary)
+
+### A3D_Straight Skeleton Roof
+
+**Description**
+
+Builds a roof mesh from the output of A3D_Straight Skeleton: one face per polygon edge, with heights taken from Offset times Slope. Connect the skeleton's Offset, Facet A and Facet B outputs to the matching inputs. The skeleton must include its boundary.
+
+**Inputs**
+
+- Skeleton `Geometry`: Output of A3D_Straight Skeleton with Include Boundary enabled
+- Offset `Float`: Distance in from the outline at each skeleton point. Connect the skeleton's Offset output
+- Facet A `Integer`: Roof facet on one side of each skeleton edge. Connect the skeleton's Facet A output
+- Facet B `Integer`: Roof facet on the other side of each skeleton edge. Connect the skeleton's Facet B output
+- Slope `Float`: Height gained per unit of distance in from the outline. 0 gives a flat roof
+- Facet Type `Menu`
+
+**Outputs**
+
+- Roof `Geometry`: Roof mesh with one face per polygon edge
+- Facet `Integer`: On faces, the polygon edge the face belongs to: the index of the curve point it starts from
+
 ### A3D_Tetrahedron
 
 **Description**
@@ -661,13 +701,10 @@ Builds a Delaunay triangulation over the input geometry's points, with controls 
 
 **Inputs**
 
-- Geometry `Geometry`: Points to triangulate
-- Distance Min `Float`: Minimum spacing between points
-- Density Max `Float`: Maximum point density
-- Density Factor `Float`: How quickly density falls off
-- Seed `Integer`: Random seed
+- Boundary `Geometry`: Boundary of triangulation
+- Points `Geometry`: Points to triangulate
+- Boundary Density `Float`: Spacing between points on the boundary
 - Keep Boundaries `Boolean`: Preserve the boundary of the input
-- Inset `Float`: Distance to inset from the boundary
 
 **Outputs**
 
@@ -1199,6 +1236,18 @@ Combines intersection testing and position calculation for two line segments int
 - Intersection Position `Vector`: Point where the two segments intersect
 
 ### A3D_Mesh Boundary
+
+**Description**
+
+Identifies the boundary of a mesh.
+
+**Inputs**
+
+**Outputs**
+
+- Boundary `Boolean`: Returns True or False if point is boundary
+
+### A3D_Mesh Boundary.001
 
 **Description**
 

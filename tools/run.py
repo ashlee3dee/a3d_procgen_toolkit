@@ -36,7 +36,7 @@ def blender_cmd(args, script):
         sys.exit("Blender not found: pass --blender, set BLENDER, or add it to PATH.")
     if not blend or not Path(blend).is_file():
         sys.exit(f"Blend file not found ({blend!r}): pass --blend or set A3D_BLEND.")
-    return [blender, "-b", blend, "--python", TOOLS / script, "--", *args.extra]
+    return [blender, "--factory-startup", "-b", blend, "--python", TOOLS / script, "--", *args.extra]
 
 
 def nodegroups_cmd(args):
@@ -91,4 +91,3 @@ def main(argv=None):
 
 if __name__ == "__main__":
     sys.exit(main())
-
