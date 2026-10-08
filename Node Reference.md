@@ -592,7 +592,7 @@ Builds a roof mesh from the output of A3D_Straight Skeleton: one face per polygo
 - Facet A `Integer`: Roof facet on one side of each skeleton edge. Connect the skeleton's Facet A output
 - Facet B `Integer`: Roof facet on the other side of each skeleton edge. Connect the skeleton's Facet B output
 - Slope `Float`: Height gained per unit of distance in from the outline. 0 gives a flat roof
-- Facet Type `Menu`
+- Fill Mode `Menu`: Mode for filling in facets. Triangles produce more stable results.
 
 **Outputs**
 
@@ -1234,30 +1234,6 @@ Combines intersection testing and position calculation for two line segments int
 
 - Intersects `Boolean`: True if the two segments intersect
 - Intersection Position `Vector`: Point where the two segments intersect
-
-### A3D_Mesh Boundary
-
-**Description**
-
-Identifies the boundary of a mesh.
-
-**Inputs**
-
-**Outputs**
-
-- Boundary `Boolean`: Returns True or False if point is boundary
-
-### A3D_Mesh Boundary.001
-
-**Description**
-
-Identifies the boundary of a mesh.
-
-**Inputs**
-
-**Outputs**
-
-- Boundary `Boolean`: Returns True or False if point is boundary
 
 ### A3D_N Nearest Neighbors
 

@@ -5,7 +5,8 @@
   python tools/run.py gifs [--lossy 40]     compress assets/node_images/*.gif
   python tools/run.py pull --blend X.blend  .blend -> Node Reference.md   (needs Blender)
   python tools/run.py push --blend X.blend  Node Reference.md -> .blend   (needs Blender)
-  python tools/run.py export --blend X.blend  .blend -> nodegroups/*.py       (one-off migration)
+  python tools/run.py export --blend X.blend [--keep-positions]
+                                            .blend -> nodegroups/*.py       (one-off migration)
   python tools/run.py build [--output X.blend]  nodegroups/*.py -> .blend      (needs Blender)
 
 Anything after the subcommand's own options is passed to the underlying script,
@@ -44,11 +45,15 @@ def nodegroups_cmd(args):
     if not blender:
         sys.exit("Blender not found: pass --blender, set BLENDER, or add it to PATH.")
     if args.command == "build":
-        return [blender, "--factory-startup", "-b", "--python", TOOLS / "build_nodegroups.py", "--", *args.extra]
+        flags = ["--output", args.output] if args.output else []
+        return [blender, "--factory-startup", "-b", "--python", TOOLS / "build_nodegroups.py", "--", *flags, *args.extra]
     blend = args.blend or os.environ.get("A3D_BLEND")
     if not blend or not Path(blend).is_file():
         sys.exit(f"Blend file not found ({blend!r}): pass --blend or set A3D_BLEND.")
-    return [blender, "--factory-startup", "-b", blend, "--python", TOOLS / "export_nodegroups.py", "--", *args.extra]
+    flags = [f for f, on in (("--keep-positions", args.keep_positions),
+                             ("--keep-reroutes", args.keep_reroutes)) if on]
+    return [blender, "--factory-startup", "-b", blend, "--python", TOOLS / "export_nodegroups.py",
+            "--", *flags, *args.extra]
 
 
 def main(argv=None):
@@ -69,8 +74,14 @@ def main(argv=None):
     ):
         p = sub.add_parser(name, help=help_text)
         p.add_argument("--blender", help="Blender executable (default: $BLENDER, then PATH)")
+        if name == "build":
+            p.add_argument("--output", help="the .blend to write (default: A3D_Procgen Toolkit_Generated.blend)")
         if name == "export":
             p.add_argument("--blend", help="the .blend file (default: $A3D_BLEND)")
+            p.add_argument("--keep-positions", action="store_true",
+                           help="restore node locations on rebuild (no auto-layout)")
+            p.add_argument("--keep-reroutes", action="store_true",
+                           help="keep reroute nodes in the exported groups")
     sub.add_parser("site", help="rebuild docs/index.html")
     sub.add_parser("test", help="run the unit tests")
     sub.add_parser("gifs", help="compress node GIFs (options go to compress_gifs.py)")

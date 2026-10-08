@@ -4,9 +4,12 @@ Export every A3D_ node group in the open .blend to nodegroups/<module>.py (nodeb
 One module per group, defining one Custom*Group class; groups used by other groups
 are imported from their own module instead of being redefined. Asset metadata
 (catalog, description, tags, author) goes to nodegroups/assets.json. Node positions
-are not kept. Existing generated files are overwritten.
+are not kept unless --keep-positions is given, which restores each node's location
+(and disables auto-layout) when the group is rebuilt; add --keep-reroutes to also
+preserve reroute nodes. Existing generated files are overwritten.
 
   blender -b file.blend --python tools/export_nodegroups.py -- [--prefix A3D_]
+                                                            [--keep-positions] [--keep-reroutes]
 """
 import argparse
 import json
@@ -18,9 +21,22 @@ import bpy
 
 ROOT = Path(r"T:\Art\Blender Projects\Gumroad Products\a3d_procgen_toolkit")
 sys.path.insert(0, str(ROOT / ".blender_libs"))
-from nodebpy.export import to_python  # noqa: E402
+from nodebpy.export import codegen, to_python  # noqa: E402
 
 OUT = ROOT / "nodegroups"
+
+
+def _force_reroute_sockets():
+    # A reroute passed bare into a typed input can't be best-matched at build time
+    # (its output type is unresolved until linked), so always reference `.o.output`.
+    original = codegen._output_expr
+
+    def output_expr(val, from_node, from_socket, **kwargs):
+        if from_node.bl_idname == "NodeReroute":
+            kwargs["force_socket"] = True
+        return original(val, from_node, from_socket, **kwargs)
+
+    codegen._output_expr = output_expr
 
 
 def class_name(name):
@@ -40,7 +56,14 @@ def main():
     argv = sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else []
     ap = argparse.ArgumentParser()
     ap.add_argument("--prefix", default="A3D_")
-    prefix = ap.parse_args(argv).prefix
+    ap.add_argument("--keep-positions", action="store_true",
+                    help="restore node locations on rebuild (no auto-layout)")
+    ap.add_argument("--keep-reroutes", action="store_true",
+                    help="keep reroute nodes (implies disabling auto-layout)")
+    opts = ap.parse_args(argv)
+    prefix = opts.prefix
+    if opts.keep_reroutes:
+        _force_reroute_sockets()
 
     groups = sorted((g for g in bpy.data.node_groups
                      if g.bl_idname == "GeometryNodeTree" and g.name.startswith(prefix)),
@@ -60,7 +83,9 @@ def main():
     for g in groups:
         deps = [d for d in direct_deps(g) if d in names]
         code = to_python(g, top_level="class", group_class_names=classes,
-                         external_groups=deps)
+                         external_groups=deps,
+                         snapshot_positions=opts.keep_positions,
+                         keep_reroutes=opts.keep_reroutes)
         imports = "".join(f"from .{modules[d]} import {classes[d]}\n" for d in deps)
         header, _, rest = code.partition("\n\n\n")
         if not rest:  # no preamble separation; fall back to prepending
