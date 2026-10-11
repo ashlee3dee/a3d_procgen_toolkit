@@ -8,6 +8,9 @@
   python tools/run.py export --blend X.blend [--keep-positions]
                                             .blend -> nodegroups/*.py       (one-off migration)
   python tools/run.py build [--output X.blend]  nodegroups/*.py -> .blend      (needs Blender)
+  python tools/run.py diff [--old OLD.blend] [--new NEW.blend] [--prefix A3D]
+                                            diff A3D node group names (OLD defaults to NEW.blend1;
+                                            --blend fills in NEW, or OLD when --new is given)
 
 Anything after the subcommand's own options is passed to the underlying script,
 e.g. `push --blend X.blend --dry-run` or `pull --blend X.blend --prefix A3D_`.
@@ -82,6 +85,13 @@ def main(argv=None):
                            help="restore node locations on rebuild (no auto-layout)")
             p.add_argument("--keep-reroutes", action="store_true",
                            help="keep reroute nodes in the exported groups")
+    p = sub.add_parser("diff", help="diff A3D node group names between two .blend files")
+    p.add_argument("--blend", help="the .blend to compare (default: $A3D_BLEND); it is the "
+                   "new side unless --new is given, then it is the old side")
+    p.add_argument("--old", help="the previous .blend (default: <new>1)")
+    p.add_argument("--new", help="the current .blend")
+    p.add_argument("--prefix", default="A3D", help="node group name prefix (default: A3D)")
+    p.add_argument("--blender", help="Blender executable (default: $BLENDER, then PATH)")
     sub.add_parser("site", help="rebuild docs/index.html")
     sub.add_parser("test", help="run the unit tests")
     sub.add_parser("gifs", help="compress node GIFs (options go to compress_gifs.py)")
@@ -91,6 +101,23 @@ def main(argv=None):
 
     if args.command in ("export", "build"):
         return run(nodegroups_cmd(args))
+    if args.command == "diff":
+        blender = args.blender or os.environ.get("BLENDER") or shutil.which("blender")
+        if extra:
+            parser.error(f"diff: unrecognized arguments: {' '.join(extra)}")
+        if not blender:
+            sys.exit("Blender not found: pass --blender, set BLENDER, or add it to PATH.")
+        blend = args.blend or os.environ.get("A3D_BLEND")
+        if args.new:
+            new, old = args.new, args.old or blend or args.new + "1"
+        else:
+            new = blend
+            old = args.old or (blend + "1" if blend else None)
+        for path in (old, new):
+            if not path or not Path(path).is_file():
+                sys.exit(f"Blend file not found ({path!r}): pass --old/--new/--blend or set A3D_BLEND.")
+        return run([blender, "--factory-startup", "-b", "--python", TOOLS / "diff_nodegroups.py",
+                    "--", Path(new).resolve(), Path(old).resolve(), "--prefix", args.prefix])
     if args.command in ("pull", "push"):
         return run(blender_cmd(args, args.script))
     if args.command == "site":

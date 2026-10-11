@@ -337,6 +337,22 @@ Splits the 3x3 part of a matrix into a rotation and a symmetric stretch, so that
 - Stretch `Matrix`: Symmetric positive semi-definite factor P, so that Matrix = R x P
 - Rotation `Rotation`: Rotation factor R as a rotation
 
+### A3D_Round to Step
+
+**Description**
+
+Rounds a value to a multiple of the absolute step size using Round, Ceil, or Floor. Round chooses the nearest multiple, with halfway ties toward positive infinity; Ceil rounds upward and Floor downward. A zero step leaves the value unchanged.
+
+**Inputs**
+
+- Mode `Menu`: Round: nearest, with halfway ties upward; Ceil: toward positive infinity; Floor: toward negative infinity
+- Value `Float`: Value or field to round
+- Step Size `Float`: Spacing between multiples; negative steps use their absolute value, and zero leaves Value unchanged
+
+**Outputs**
+
+- Value `Float`: Value rounded to a step multiple, or the original value when Step Size is zero
+
 ### A3D_Univariate Newton Solver
 
 **Description**
@@ -437,6 +453,31 @@ Displaces curve points into a helical pattern around the curve's path, driven by
 
 - Curves `Geometry`: Curves displaced into a helix
 
+### A3D_Lot Subdivision
+
+**Description**
+
+Recursively partitions closed polygon curves into 2D lots and filled faces at Z = 0; input height is discarded. Keep future subdivision operations in XY, without capturing or restoring height. Require Frontage reuses Curve Frontage to search balanced, compact cuts with access to each source polygon's original boundary (all outer edges count as roads). Min Area, Min Frontage and Max Depth may leave oversized lots. Concave polygons are supported; holes are not.
+
+**Inputs**
+
+- Curve `Geometry`: Closed polygon curves. Each curve is an independent polygon without holes. Input Z is discarded before all processing
+- Max Area `Float`: Target maximum lot area. Lots may remain larger when Min Area, Min Frontage or Max Depth prevents a valid split
+- Min Area `Float`: Smallest lot a cut may create. Cuts that would leave a lot below this area are rejected, so a lot can stay above Max Area when no valid cut exists. Lots under twice this area are never split
+- Split Variation `Float`: Random offset of each cut from the middle of the lot. 0 always splits in half, 1 allows any cut that keeps both lots above Min Area
+- Seed `Integer`: Seed for the random cut positions
+- Max Depth `Integer`: Maximum number of times a lot can be split. A polygon yields at most 2^Max Depth lots
+- Align to Longest Edge `Boolean`: Use edge-aligned cuts. Require Frontage searches oriented bounds and original street-edge directions; otherwise the longest lot edge is used. Disable for world-axis cuts
+- Require Frontage `Boolean`: Search alternative cuts and reject any creating a lot with less than Min Frontage along the original polygon boundary. All outer edges count as roads
+- Min Frontage `Float`: Minimum total shared road-boundary length for children of frontage-aware cuts. Ignored when Require Frontage is disabled. A corner-only contact does not count
+
+**Outputs**
+
+- Lots `Geometry`: Closed counter-clockwise polygon curves at Z = 0, one per lot, with Lot ID and Source Index fields
+- Faces `Geometry`: The lots as filled n-gon faces at Z = 0, with Lot ID and Source Index fields
+- Lot ID `Integer`: Unique index of each lot. Available on both the curves and the faces
+- Source Index `Integer`: Index of the input curve each lot was cut from. Available on both the curves and the faces
+
 ### A3D_Noodle
 
 **Description**
@@ -483,6 +524,25 @@ Builds a connective 'plexus' mesh linking nearby points based on a connectivity 
 
 - Mesh `Geometry`: Generated network of connections
 
+### A3D_Point Lattice
+
+**Description**
+
+Creates a regular 3D lattice of points covering a bounding box, at least as large as the box and spaced by the cell size. Reports the point count along each axis, and the point at index i + SizeX * (j + SizeY * k) has lattice coordinate (i, j, k).
+
+**Inputs**
+
+- Min `Vector`: Lower corner of the box covered by the lattice
+- Max `Vector`: Upper corner of the box covered by the lattice
+- Cell Size `Float`: Distance between neighboring lattice points
+
+**Outputs**
+
+- Points `Geometry`: Lattice points
+- Size X `Integer`: Number of lattice points along X
+- Size Y `Integer`: Number of lattice points along Y
+- Size Z `Integer`: Number of lattice points along Z
+
 ### A3D_Quad Sphere
 
 **Description**
@@ -498,6 +558,36 @@ Generates a quad-topology sphere (cube-projected) of a given radius and subdivis
 
 - Mesh `Geometry`: Generated sphere mesh
 - UV Map `Vector`: UV coordinates of the sphere
+
+### A3D_Radial City Blocks
+
+**Description**
+
+Fills closed polygon curves with a radial street pattern: ring roads around a central plaza, crossed by straight spokes. Each polygon is laid out around its area centroid (plus Center Offset). Ring widths vary randomly, and every ring picks its own spoke count (from Block Length) and rotation, so blocks differ from ring to ring. Streets keep a constant width. Blocks are clipped to the polygon with a boolean, so concave polygons work and a block cut in two becomes two blocks. Outputs closed counter-clockwise block curves and filled faces at Z = 0, with Block ID, Source Index, Ring Index and Sector Index. Input height is discarded; holes are not supported.
+
+**Inputs**
+
+- Curve `Geometry`: Closed polygon curves. Each curve is filled independently around its own center. Input Z is discarded
+- Center Offset `Vector`: Moves the radial center away from each polygon's area centroid. Z is ignored
+- Plaza Radius `Float`: Radius of the first ring road's centerline. The open space inside it becomes a round plaza block. Rings close to the center lose blocks whose spoke gaps leave no room
+- Ring Spacing `Float`: Average distance between neighboring ring road centerlines
+- Ring Variation `Float`: Random change of each ring's width, as a fraction of Ring Spacing. Also changes how many rings fit
+- Block Length `Float`: Target arc length of a block along the middle of its ring. Sets each ring's spoke count, so outer rings get more spokes
+- Spoke Variation `Float`: Random change of each ring's spoke count, as a fraction of the count from Block Length
+- Min Spokes `Integer`: Fewest spokes (and blocks) a ring can have
+- Spoke Twist `Float`: Random rotation of each ring's spokes, as a fraction of one block's angle. 0 starts every ring's spokes at the same angle
+- Street Width `Float`: Width of the ring and spoke streets between blocks. The polygon boundary gets no street
+- Arc Resolution `Integer`: Points along each block's inner and outer arc. The plaza uses four times as many
+- Seed `Integer`: Seed for ring widths, spoke counts and rotations
+
+**Outputs**
+
+- Blocks `Geometry`: Closed counter-clockwise block curves at Z = 0 with Block ID, Source Index, Ring Index and Sector Index fields
+- Faces `Geometry`: The blocks as filled n-gon faces at Z = 0, one mesh island per block, with the same fields
+- Block ID `Integer`: Unique index of each block. Available on both the curves and the faces
+- Source Index `Integer`: Index of the input curve each block fills
+- Ring Index `Integer`: Ring a block lies in. 0 is the plaza, 1 the first ring outside it
+- Sector Index `Integer`: Position of the block around its ring, counter-clockwise from the ring's first spoke
 
 ### A3D_Random Point In Shell
 
@@ -534,6 +624,26 @@ Generates a seeded random vector with independently ranged XY (planar) and Z (ve
 **Outputs**
 
 - Vector `Vector`: Random vector
+
+### A3D_Road Mesh
+
+**Description**
+
+Turns an undirected mesh-edge graph into a road surface. Each vertex with two or more connections gets an angularly ordered inner polygon and rectangular spokes; edges get road quads. Width, Intersection Radius and Spoke Length are vertex fields. Junctions are horizontal in XY at the source vertex's Z; road quads connect their elevations. Radius is enlarged when necessary to keep adjacent branches apart. Short edges proportionally reduce both endpoint footprints, reserving 10 percent of edge length for the connecting road, reported by Limited. Extremely acute branches on short edges can still overlap when no room exists for the minimum radius. Unconnected crossings are not intersections. Isolated vertices and zero-XY-length edges produce no surface. No fixed branch limit.
+
+**Inputs**
+
+- Graph `Geometry`: Undirected mesh-edge graph. Faces are ignored; crossings must share a vertex
+- Width `Float`: Full road width, evaluated on input vertices. Edge roads taper between endpoint widths; zero disables that vertex's width
+- Intersection Radius `Float`: Distance from a junction center to each spoke root, evaluated on vertices. Automatically enlarged for acute angles to fit the road width; clipped on short edges
+- Spoke Length `Float`: Length of rectangular spokes beyond the inner polygon, evaluated on vertices. Clipped proportionally with the radius when the two ends exceed 90 percent of an edge's XY length
+
+**Outputs**
+
+- Mesh `Geometry`: Roads and intersections joined and welded into a surface mesh
+- Is Intersection `Boolean`: True on intersection cores and spokes, false on edge road faces
+- Source Index `Integer`: Original input vertex index for intersections; original input edge index for road faces. Use Is Intersection to distinguish them
+- Limited `Boolean`: Requested footprint was reduced to fit a short edge. Acute junctions marked Limited may overlap because their minimum radius cannot fit
 
 ### A3D_Scatter Points
 
@@ -630,7 +740,44 @@ Computes the signed volume of a tetrahedron defined by four vertices.
 
 - Volume `Float`: Signed volume of the tetrahedron
 
+### A3D_Wavefront Inset
+
+**Description**
+
+Shrinks closed planar (XY) polygon curves inward by a distance using the straight skeleton wavefront, processing edge and split events along the way. Returns the curves of the wavefront loops left at that distance. Corners stay sharp, concave polygons can split into several loops, and loops that collapse before the distance is reached disappear. Holes are not supported.
+
+**Inputs**
+
+- Curve `Geometry`: Closed polygon curves, planar in the XY plane. Each curve is an independent polygon without holes
+- Distance `Float`: How far the wavefront moves inward from the outline before stopping
+- Tolerance `Float`: Distance below which events and points are treated as coincident. Raised automatically for large polygons to stay above float precision
+
+**Outputs**
+
+- Curves `Geometry`: Closed curves of the inset loops, in the XY plane, with the same winding as the input polygons. Empty when every loop has collapsed
+
 ## Mesh Editing & Construction
+
+### A3D_2D Boolean
+
+**Description**
+
+Planar intersection, union, A minus B and exclusive-or without mesh booleans. Accepts closed curves or mesh boundaries, realizes instances and discards Z. Each operand uses even-odd filling, independent of winding: nested contours make holes and overlapping contours within one operand cancel. Returns triangulated faces and closed boundaries with Region ID; outer boundaries are counter-clockwise and holes clockwise. Point-only contacts stay separate regions. Curve resolution determines the polygonal approximation. Tolerance welds nearby vertices and can remove features smaller than that distance. Welding has a float32 precision floor of 1e-7 times the combined XY span. Input attributes are not preserved. Self-intersecting contours are not supported.
+
+**Inputs**
+
+- Curve A `Geometry`: Closed curves or mesh boundaries for operand A. Instances are realized; Z and input attributes are discarded. Nested contours form holes using even-odd filling
+- Curve B `Geometry`: Closed curves or mesh boundaries for operand B. Winding is ignored. Overlapping contours within this operand cancel under even-odd filling
+- Operation `Menu`: Intersection, Union, Difference (A minus B), or Exclusive Or
+- Tolerance `Float`: Absolute XY welding distance, with a float32 precision floor of 1e-7 times the combined XY span. Smaller features may merge or disappear; zero still welds numerical seams
+
+**Outputs**
+
+- Boundaries `Geometry`: Closed polygon curves at Z = 0: counter-clockwise outer loops and clockwise holes. Group by Region ID when filling so holes remain empty
+- Faces `Geometry`: Triangulated filled result at Z = 0 with upward normals and face-domain Region ID. Point-contact regions have separate vertices
+- Region ID `Integer`: Connected filled-region index, shared by its outer and hole boundaries and by its faces. IDs are local to this result, not persistent across edits
+- Boundary ID `Integer`: Unique curve-domain index for each outer or hole loop; available on Boundaries only
+- Is Hole `Boolean`: Curve-domain flag for clockwise hole loops; false on outer loops. Available on Boundaries only
 
 ### A3D_2D Line Cut
 
@@ -671,6 +818,27 @@ Cuts a body mesh using an arbitrary 2D tool mesh as the cutting shape, returning
 - Intersected `Boolean`: True where the tool mesh intersects the body
 - Intersection Position `Vector`: Position of the intersection
 
+### A3D_ARAP Deform
+
+**Description**
+
+As-rigid-as-possible deformation: moves handle points to their target positions and bends the rest of the mesh while keeping each neighbourhood locally rigid.
+
+**Inputs**
+
+- Mesh `Geometry`: Mesh to deform. Only points connected by faces take part in the solve
+- Handles `Boolean`: Points that are moved to their target position
+- Target Position `Vector`: Where each handle point is moved to. Ignored for non-handle points
+- Pinned `Boolean`: Points that stay exactly where they are. Overrides Handles
+- Iterations `Integer`: Number of local/global ARAP iterations
+- Solver Steps `Integer`: Conjugate gradient steps per iteration for the global position solve. Dense meshes need more
+- Weights `Menu`: How each edge's rigidity is weighted: by the cotangents of its opposite angles, or equally
+
+**Outputs**
+
+- Mesh `Geometry`: The deformed mesh
+- Rotation `Rotation`: Best-fit rotation of each point's neighbourhood from rest to deformed
+
 ### A3D_Cell Fracture
 
 **Description**
@@ -701,7 +869,7 @@ Builds a Delaunay triangulation over the input geometry's points, with controls 
 
 **Inputs**
 
-- Boundary `Geometry`: Boundary of triangulation
+- Boundary Mesh `Geometry`: Boundary of triangulation
 - Points `Geometry`: Points to triangulate
 - Boundary Density `Float`: Spacing between points on the boundary
 - Keep Boundaries `Boolean`: Preserve the boundary of the input
@@ -755,6 +923,27 @@ Grows or shrinks a boolean selection outward across a chosen domain by a number 
 **Outputs**
 
 - Result `Boolean`: Expanded selection
+
+### A3D_Fit Polygon Edge Lengths
+
+**Description**
+
+Iteratively fits closed mesh polygon loops to an edge-domain target length field using simultaneous averaged distance projections. Preserves topology, centroid and the input plane. Every vertex must have exactly two incident edges; initial edges and targets must be positive and finite. Invalid input is returned unchanged. Targets are frozen before iteration. Incompatible lengths, collinear stationary configurations and insufficient iterations may not converge: inspect Valid Input, Converged and Max Error. Shape is not unique; convexity and freedom from self-intersection are not guaranteed. Each loop requires its longest target to be no greater than the sum of the others (strictly less for a nondegenerate loop).
+
+**Inputs**
+
+- Mesh `Geometry`: Closed edge loops, with or without n-gon faces. No shared-edge surfaces or isolated vertices
+- Target Length `Float`: Positive target length evaluated on each original mesh edge, then frozen for the solve
+- Iterations `Integer`: Maximum simultaneous projection steps. Stops moving once all edges meet Tolerance
+- Tolerance `Float`: Maximum absolute edge-length error in mesh units for convergence
+
+**Outputs**
+
+- Mesh `Geometry`: Adjusted mesh with unchanged topology; other geometry components are omitted
+- Edge Error `Float`: Signed final length minus the original target, on the edge domain
+- Max Error `Float`: Largest absolute final edge-length error across all loops
+- Valid Input `Boolean`: Nonempty mesh with degree-two vertices and positive finite initial and target lengths; does not certify target feasibility
+- Converged `Boolean`: Valid input and every edge within Tolerance; false for infeasible or unfinished solves
 
 ### A3D_Inset Faces
 
@@ -988,6 +1177,63 @@ Determines whether a test point lies inside, on, or outside the circumcircle def
 **Outputs**
 
 - Determinant `Float`: Sign shows whether the point is inside, on, or outside the circumcircle
+
+### A3D_Curve Frontage
+
+**Description**
+
+Measures the length of each polygon curve's edges shared with a road boundary in XY. Uses collinear segment overlap, not point proximity: touching at a corner is not frontage. Returns curve-domain Frontage Length and Has Frontage fields on the output curves.
+
+**Inputs**
+
+- Curves `Geometry`: Polygon lot outlines to measure; Z is ignored for the measurement
+- Boundary `Geometry`: Polygon curves whose edges count as roads. Avoid overlapping duplicate edges
+- Min Frontage `Float`: Required total shared boundary length. A corner-only contact never qualifies
+- Tolerance `Float`: XY distance tolerance for collinear edges
+
+**Outputs**
+
+- Curves `Geometry`: Input lot curves with frontage measurement fields
+- Frontage Length `Float`: Total shared road-boundary length per lot, on the curve domain
+- Has Frontage `Boolean`: True when the lot has positive road contact of at least Min Frontage
+
+### A3D_Curve Frontage.001
+
+**Description**
+
+Measures the length of each polygon curve's edges shared with a road boundary in XY. Uses collinear segment overlap, not point proximity: touching at a corner is not frontage. Returns curve-domain Frontage Length and Has Frontage fields on the output curves.
+
+**Inputs**
+
+- Curves `Geometry`: Polygon lot outlines to measure; Z is ignored for the measurement
+- Boundary `Geometry`: Polygon curves whose edges count as roads. Avoid overlapping duplicate edges
+- Min Frontage `Float`: Required total shared boundary length. A corner-only contact never qualifies
+- Tolerance `Float`: XY distance tolerance for collinear edges
+
+**Outputs**
+
+- Curves `Geometry`: Input lot curves with frontage measurement fields
+- Frontage Length `Float`: Total shared road-boundary length per lot, on the curve domain
+- Has Frontage `Boolean`: True when the lot has positive road contact of at least Min Frontage
+
+### A3D_Curve Frontage.002
+
+**Description**
+
+Measures the length of each polygon curve's edges shared with a road boundary in XY. Uses collinear segment overlap, not point proximity: touching at a corner is not frontage. Returns curve-domain Frontage Length and Has Frontage fields on the output curves.
+
+**Inputs**
+
+- Curves `Geometry`: Polygon lot outlines to measure; Z is ignored for the measurement
+- Boundary `Geometry`: Polygon curves whose edges count as roads. Avoid overlapping duplicate edges
+- Min Frontage `Float`: Required total shared boundary length. A corner-only contact never qualifies
+- Tolerance `Float`: XY distance tolerance for collinear edges
+
+**Outputs**
+
+- Curves `Geometry`: Input lot curves with frontage measurement fields
+- Frontage Length `Float`: Total shared road-boundary length per lot, on the curve domain
+- Has Frontage `Boolean`: True when the lot has positive road contact of at least Min Frontage
 
 ### A3D_Distance to Boundary
 
@@ -1319,6 +1565,57 @@ Returns the vertex opposite an edge in a triangle attached to that edge, with we
 
 - Vertex Index `Integer`: The vertex the corner is attached to
 
+### A3D_Oriented Bounds 2D
+
+**Description**
+
+Finds the minimum-area oriented bounding rectangle of XY polygon curves or meshes by testing convex-hull edge directions. Returns its perpendicular axes and side lengths. Empty geometry returns zero sizes.
+
+**Inputs**
+
+- Geometry `Geometry`: Planar polygon curves or mesh outlines. Z is ignored
+
+**Outputs**
+
+- Axis U `Vector`: Unit direction of the rectangle's first side
+- Axis V `Vector`: Perpendicular unit direction, forming a right-handed XY basis
+- Size U `Float`: Rectangle length along Axis U
+- Size V `Float`: Rectangle length along Axis V
+
+### A3D_Oriented Bounds 2D.001
+
+**Description**
+
+Finds the minimum-area oriented bounding rectangle of XY polygon curves or meshes by testing convex-hull edge directions. Returns its perpendicular axes and side lengths. Empty geometry returns zero sizes.
+
+**Inputs**
+
+- Geometry `Geometry`: Planar polygon curves or mesh outlines. Z is ignored
+
+**Outputs**
+
+- Axis U `Vector`: Unit direction of the rectangle's first side
+- Axis V `Vector`: Perpendicular unit direction, forming a right-handed XY basis
+- Size U `Float`: Rectangle length along Axis U
+- Size V `Float`: Rectangle length along Axis V
+
+### A3D_Oriented Bounds 2D.002
+
+**Description**
+
+Finds the minimum-area oriented bounding rectangle of XY polygon curves or meshes by testing convex-hull edge directions. Returns its perpendicular axes and side lengths. Empty geometry returns zero sizes.
+
+**Inputs**
+
+- Geometry `Geometry`: Planar polygon curves or mesh outlines. Z is ignored
+
+**Outputs**
+
+- Axis U `Vector`: Unit direction of the rectangle's first side
+- Axis V `Vector`: Perpendicular unit direction, forming a right-handed XY basis
+- Size U `Float`: Rectangle length along Axis U
+- Size V `Float`: Rectangle length along Axis V
+
 ### A3D_Quad Corners
 
 **Description**
@@ -1352,6 +1649,22 @@ Computes the enclosed volume of a mesh.
 - Volume `Float`: Volume enclosed by the mesh
 
 ## Curves & Surface Operations
+
+### A3D_2D Quad Fill
+
+**Description**
+
+Fills closed 2D curves such as text with an all-quad mesh. The input outline must already be resampled to an even point spacing, e.g. with A3D_Resample Curve Sharp; that spacing sets the grid size and the output quads are half of it. Rows of points are offset inwards from the outline and the deep interior is filled with a regular grid. The border is triangulated, neighbouring triangles are paired into quads and every face is split into quads. Boundary vertices are snapped to the input curve and the interior is relaxed. Works in the XY plane like Fill Curve.
+
+**Inputs**
+
+- Curve `Geometry`: Closed curves to fill, already resampled to an even point spacing (e.g. with A3D_Resample Curve Sharp). Output quads are half that spacing
+- Border Rows `Integer`: Rows of transition points between the outline and the interior grid
+- Relax Iterations `Integer`: Smoothing iterations applied to the interior vertices
+
+**Outputs**
+
+- Mesh `Geometry`: Quad mesh filling the curves
 
 ### A3D_Catenary Curve
 
@@ -1439,6 +1752,25 @@ Grows a path of points across a surface from a starting direction, stepping and 
 
 - Geometry `Geometry`: Grown path geometry
 
+### A3D_Guided 2D Quad Fill
+
+**Description**
+
+Fills closed 2D boundary curves with an all-quad mesh that also follows guide curves, e.g. roads or rivers through a lot. The boundary must already be resampled to an even point spacing (e.g. with A3D_Resample Curve Sharp); that spacing sets the grid size and the output quads are half of it. Guides are resampled to the same spacing with sharp corners kept, clipped to the boundary, and become unbroken edge loops of the output. Rows of points are offset inwards from the boundary and to both sides of every guide; the remaining interior is a regular grid. Guides that leave the boundary end exactly on it, and crossing guides are joined. Works in the XY plane like Fill Curve.
+
+**Inputs**
+
+- Boundary Curve `Geometry`: Closed boundary curves to fill, already resampled to an even point spacing (e.g. with A3D_Resample Curve Sharp). Output quads are half that spacing
+- Guide Curve `Geometry`: Curves (or mesh edges) the quads must follow. Resampled to the boundary spacing with sharp corners kept and clipped to the boundary
+- Border Rows `Integer`: Rows of transition points between the boundary and the interior grid
+- Guide Rows `Integer`: Rows of points aligned with the guide on each side of it before the interior grid takes over. This is the guide's influence width in cells
+- Relax Iterations `Integer`: Smoothing iterations applied to vertices that are on neither the boundary nor a guide
+
+**Outputs**
+
+- Mesh `Geometry`: Quad mesh filling the boundary and following the guides
+- Guide Edge `Boolean`: True on edges lying on a guide curve. Also stored as the 'guide_edge' edge attribute
+
 ### A3D_Make Curve Acyclic
 
 **Description**
@@ -1504,6 +1836,23 @@ Computes the tangent vector of a quad face.
 **Outputs**
 
 - Tangent `Vector`: Vector pointing along the longest axis of the face
+
+### A3D_Resample Curve Sharp
+
+**Description**
+
+Resamples curves by length while preserving sharp corners. Each spline is split at corners sharper than the angle threshold and every run between corners is resampled with the most evenly spaced points that fit the target length, keeping corners and endpoints fixed.
+
+**Inputs**
+
+- Curve `Geometry`: Curves to resample
+- Length `Float`: Target distance between resampled points
+- Sharp Angle `Float`: Points where the curve turns by more than this angle are kept as corners
+- Tolerance `Float`: How much shorter than Length a segment may be. 0 never goes below Length, positive values allow denser sampling, negative values force sparser sampling
+
+**Outputs**
+
+- Curve `Geometry`: Resampled poly curves
 
 ### A3D_Roll Curve
 
@@ -1632,6 +1981,24 @@ Converts a flat grid index into 2D (X, Y) coordinates for a grid of a given reso
 
 - X `Integer`: X coordinate in the grid
 - Y `Integer`: Y coordinate in the grid
+
+### A3D_Coordinate of Lattice Index
+
+**Description**
+
+Converts a flat index into 3D (X, Y, Z) coordinates for a lattice of a given size, with X varying fastest. The inverse of Index of Lattice Coordinate.
+
+**Inputs**
+
+- Size X `Integer`: Number of lattice points along X
+- Size Y `Integer`: Number of lattice points along Y
+- Index `Integer`: Flat index into the lattice
+
+**Outputs**
+
+- X `Integer`: X coordinate in the lattice
+- Y `Integer`: Y coordinate in the lattice
+- Z `Integer`: Z coordinate in the lattice
 
 ### A3D_Domain Index
 
@@ -1794,6 +2161,26 @@ Converts 2D (X, Y) grid coordinates into a flat index for a grid of a given reso
 
 - Index `Integer`: Flat index of the coordinate
 - In Bounds `Boolean`: True if the coordinate is inside the grid
+
+### A3D_Index of Lattice Coordinate
+
+**Description**
+
+Converts 3D (X, Y, Z) lattice coordinates into a flat index for a lattice of a given size, with X varying fastest, and checks that the coordinate is inside the lattice.
+
+**Inputs**
+
+- Size X `Integer`: Number of lattice points along X
+- Size Y `Integer`: Number of lattice points along Y
+- Size Z `Integer`: Number of lattice points along Z
+- X `Integer`: X coordinate in the lattice
+- Y `Integer`: Y coordinate in the lattice
+- Z `Integer`: Z coordinate in the lattice
+
+**Outputs**
+
+- Index `Integer`: Flat index of the coordinate
+- In Bounds `Boolean`: True if the coordinate is inside the lattice
 
 ### A3D_Laplacian
 

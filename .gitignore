@@ -29,3 +29,4 @@ venv/
 .blender_libs/
 
 AGENTS.md
+*.zip
