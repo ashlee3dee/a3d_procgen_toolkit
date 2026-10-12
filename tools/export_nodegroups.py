@@ -6,7 +6,12 @@ are imported from their own module instead of being redefined. Asset metadata
 (catalog, description, tags, author) goes to nodegroups/assets.json. Node positions
 are not kept unless --keep-positions is given, which restores each node's location
 (and disables auto-layout) when the group is rebuilt; add --keep-reroutes to also
-preserve reroute nodes. Existing generated files are overwritten.
+preserve reroute nodes. Existing generated files are overwritten, but only after
+every group has been generated successfully, so a failed run leaves nodegroups/ intact.
+
+Before generating anything, every group node inside every exported group is checked:
+a node with no node_tree, a linked (library) node_tree, or a node_tree outside the
+exported set (e.g. missing the prefix) is reported and the run aborts.
 
   blender -b file.blend --python tools/export_nodegroups.py -- [--prefix A3D_]
                                                             [--keep-positions] [--keep-reroutes]
@@ -52,6 +57,26 @@ def direct_deps(group):
                    if getattr(n, "node_tree", None) is not None and n.node_tree is not group})
 
 
+def preflight(groups, names):
+    """Return a list of human-readable problems with nested group nodes."""
+    problems = []
+    for g in groups:
+        for n in g.nodes:
+            if n.bl_idname != "GeometryNodeGroup":
+                continue
+            t = n.node_tree
+            where = f"[{g.name}] node {n.name!r} (label {n.label!r})"
+            if t is None:
+                problems.append(f"{where}: node_tree is None (deleted/renamed group or broken link)")
+            elif t.library is not None:
+                problems.append(f"{where}: uses linked tree {t.name!r} from {t.library.filepath!r}; "
+                                f"make it local")
+            elif t.name not in names:
+                problems.append(f"{where}: uses tree {t.name!r}, which is not an exported group "
+                                f"(prefix mismatch?)")
+    return problems
+
+
 def main():
     argv = sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else []
     ap = argparse.ArgumentParser()
@@ -73,26 +98,34 @@ def main():
     modules = {n: module_name(n) for n in names}
     assert len(set(modules.values())) == len(modules), "module name collision"
 
-    OUT.mkdir(exist_ok=True)
-    for old in OUT.glob("*.py"):
-        if old.name != "__init__.py":
-            old.unlink()
-    (OUT / "__init__.py").write_text('"""Node groups as nodebpy source; see tools/build_nodegroups.py."""\n')
+    problems = preflight(groups, names)
+    if problems:
+        print("\nExport aborted: problems with nested group nodes:", file=sys.stderr)
+        for p in problems:
+            print("  - " + p, file=sys.stderr)
+        sys.exit(1)
 
+    # Generate everything in memory first so a failure doesn't wipe nodegroups/.
+    files = {}
     assets = {}
     for g in groups:
         deps = [d for d in direct_deps(g) if d in names]
-        code = to_python(g, top_level="class", group_class_names=classes,
-                         external_groups=deps,
-                         snapshot_positions=opts.keep_positions,
-                         keep_reroutes=opts.keep_reroutes)
+        try:
+            code = to_python(g, top_level="class", group_class_names=classes,
+                             external_groups=deps,
+                             snapshot_positions=opts.keep_positions,
+                             keep_reroutes=opts.keep_reroutes)
+        except codegen.CodegenError as e:
+            print(f"\nCodegen failed for group {g.name!r}", file=sys.stderr)
+            print(f"  deps passed: {deps}", file=sys.stderr)
+            print(f"  error: {e}", file=sys.stderr)
+            sys.exit(1)
         imports = "".join(f"from .{modules[d]} import {classes[d]}\n" for d in deps)
         header, _, rest = code.partition("\n\n\n")
         if not rest:  # no preamble separation; fall back to prepending
             header, rest = "", code
-        (OUT / f"{modules[g.name]}.py").write_text(
-            f"{header}\n{imports}\n\n{rest}" if header else f"{imports}\n\n{rest}",
-            encoding="utf-8")
+        files[modules[g.name]] = (f"{header}\n{imports}\n\n{rest}" if header
+                                  else f"{imports}\n\n{rest}")
         a = g.asset_data
         if a:
             assets[g.name] = {"catalog_id": a.catalog_id, "description": a.description,
@@ -101,6 +134,13 @@ def main():
         else:
             assets[g.name] = {"class": classes[g.name], "module": modules[g.name]}
 
+    OUT.mkdir(exist_ok=True)
+    for old in OUT.glob("*.py"):
+        if old.name != "__init__.py":
+            old.unlink()
+    (OUT / "__init__.py").write_text('"""Node groups as nodebpy source; see tools/build_nodegroups.py."""\n')
+    for mod, text in files.items():
+        (OUT / f"{mod}.py").write_text(text, encoding="utf-8")
     (OUT / "assets.json").write_text(json.dumps(assets, indent=2, ensure_ascii=False) + "\n",
                                      encoding="utf-8")
     print(f"exported {len(groups)} node groups to {OUT}")

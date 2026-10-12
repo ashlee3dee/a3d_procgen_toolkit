@@ -629,7 +629,7 @@ Generates a seeded random vector with independently ranged XY (planar) and Z (ve
 
 **Description**
 
-Turns an undirected mesh-edge graph into a road surface. Each vertex with two or more connections gets an angularly ordered inner polygon and rectangular spokes; edges get road quads. Width, Intersection Radius and Spoke Length are vertex fields. Junctions are horizontal in XY at the source vertex's Z; road quads connect their elevations. Radius is enlarged when necessary to keep adjacent branches apart. Short edges proportionally reduce both endpoint footprints, reserving 10 percent of edge length for the connecting road, reported by Limited. Extremely acute branches on short edges can still overlap when no room exists for the minimum radius. Unconnected crossings are not intersections. Isolated vertices and zero-XY-length edges produce no surface. No fixed branch limit.
+Generates a road surface from an undirected mesh-edge graph, with field-controlled widths, inner intersection polygons and rectangular spokes, arbitrary branch counts, and short-edge clipping diagnostics.
 
 **Inputs**
 
@@ -740,16 +740,16 @@ Computes the signed volume of a tetrahedron defined by four vertices.
 
 - Volume `Float`: Signed volume of the tetrahedron
 
-### A3D_Wavefront Inset
+### A3D_Wavefront Offset
 
 **Description**
 
-Shrinks closed planar (XY) polygon curves inward by a distance using the straight skeleton wavefront, processing edge and split events along the way. Returns the curves of the wavefront loops left at that distance. Corners stay sharp, concave polygons can split into several loops, and loops that collapse before the distance is reached disappear. Holes are not supported.
+Offsets closed planar (XY) polygon curves inward (positive distance) or outward (negative distance) using the straight skeleton wavefront. Returns the curves of the wavefront loops left at that distance. Holes are not supported.
 
 **Inputs**
 
 - Curve `Geometry`: Closed polygon curves, planar in the XY plane. Each curve is an independent polygon without holes
-- Distance `Float`: How far the wavefront moves inward from the outline before stopping
+- Distance `Float`: How far the wavefront moves from the outline before stopping. Positive values inset (shrink) the polygons, negative values outset (grow) them
 - Tolerance `Float`: Distance below which events and points are treated as coincident. Raised automatically for large polygons to stay above float precision
 
 **Outputs**
@@ -907,7 +907,7 @@ Grows or shrinks a boolean selection outward across a chosen domain by a number 
 
 **Description**
 
-Iteratively fits closed mesh polygon loops to an edge-domain target length field using simultaneous averaged distance projections. Preserves topology, centroid and the input plane. Every vertex must have exactly two incident edges; initial edges and targets must be positive and finite. Invalid input is returned unchanged. Targets are frozen before iteration. Incompatible lengths, collinear stationary configurations and insufficient iterations may not converge: inspect Valid Input, Converged and Max Error. Shape is not unique; convexity and freedom from self-intersection are not guaranteed. Each loop requires its longest target to be no greater than the sum of the others (strictly less for a nondegenerate loop).
+Fits closed mesh polygon loops to a frozen edge-domain target length field using simultaneous distance projections, exposing signed edge errors, validity and convergence.
 
 **Inputs**
 
@@ -1422,6 +1422,18 @@ Combines intersection testing and position calculation for two line segments int
 - Intersects `Boolean`: True if the two segments intersect
 - Intersection Position `Vector`: Point where the two segments intersect
 
+### A3D_Mesh Boundary
+
+**Description**
+
+Returns a selection of boundary edges
+
+**Inputs**
+
+**Outputs**
+
+- Is Edge Boundary `Boolean`: Selection of edges that are part of the boundary of a mesh surface
+
 ### A3D_N Nearest Neighbors
 
 **Description**
@@ -1523,40 +1535,6 @@ Finds the minimum-area oriented bounding rectangle of XY polygon curves or meshe
 - Size U `Float`: Rectangle length along Axis U
 - Size V `Float`: Rectangle length along Axis V
 
-### A3D_Oriented Bounds 2D.001
-
-**Description**
-
-Finds the minimum-area oriented bounding rectangle of XY polygon curves or meshes by testing convex-hull edge directions. Returns its perpendicular axes and side lengths. Empty geometry returns zero sizes.
-
-**Inputs**
-
-- Geometry `Geometry`: Planar polygon curves or mesh outlines. Z is ignored
-
-**Outputs**
-
-- Axis U `Vector`: Unit direction of the rectangle's first side
-- Axis V `Vector`: Perpendicular unit direction, forming a right-handed XY basis
-- Size U `Float`: Rectangle length along Axis U
-- Size V `Float`: Rectangle length along Axis V
-
-### A3D_Oriented Bounds 2D.002
-
-**Description**
-
-Finds the minimum-area oriented bounding rectangle of XY polygon curves or meshes by testing convex-hull edge directions. Returns its perpendicular axes and side lengths. Empty geometry returns zero sizes.
-
-**Inputs**
-
-- Geometry `Geometry`: Planar polygon curves or mesh outlines. Z is ignored
-
-**Outputs**
-
-- Axis U `Vector`: Unit direction of the rectangle's first side
-- Axis V `Vector`: Perpendicular unit direction, forming a right-handed XY basis
-- Size U `Float`: Rectangle length along Axis U
-- Size V `Float`: Rectangle length along Axis V
-
 ### A3D_Quad Corners
 
 **Description**
@@ -1595,7 +1573,7 @@ Computes the enclosed volume of a mesh.
 
 **Description**
 
-Fills closed 2D curves such as text with an all-quad mesh. The input outline must already be resampled to an even point spacing, e.g. with A3D_Resample Curve Sharp; that spacing sets the grid size and the output quads are half of it. Rows of points are offset inwards from the outline and the deep interior is filled with a regular grid. The border is triangulated, neighbouring triangles are paired into quads and every face is split into quads. Boundary vertices are snapped to the input curve and the interior is relaxed. Works in the XY plane like Fill Curve.
+Fills closed 2D curves such as text with clean quads. Expects an outline already resampled to an even spacing (e.g. by A3D_Resample Curve Sharp); output quads are half that spacing and the boundary follows the input curve.
 
 **Inputs**
 
@@ -1606,6 +1584,27 @@ Fills closed 2D curves such as text with an all-quad mesh. The input outline mus
 **Outputs**
 
 - Mesh `Geometry`: Quad mesh filling the curves
+
+### A3D_Adaptive Quad Fill
+
+**Description**
+
+Fills closed 2D curves with as few squares as possible: an adaptive quadtree of square cells, smallest along the outline and doubling in size towards the inside. Neighbouring cells never differ by more than one size, and a coarse cell next to finer ones is split by a small transition template (quads plus at most one triangle) that includes the fine cells' extra vertices, so the seams between sizes are welded with no T-junctions. Fit Outline fills the gap between the squares and the curve with a band of quads and triangles: the outline is resampled at Cell Size with sharp corners kept, the gap is triangulated and neighbouring triangles are paired into quads. Works in the XY plane like Fill Curve.
+
+**Inputs**
+
+- Curve `Geometry`: Closed curves to fill. Filled meshes (e.g. converted text) also work: their open edges are used as the outline. Holes are filled even-odd like Fill Curve
+- Cell Size `Float`: Size of the smallest squares, used along the outline
+- Levels `Integer`: How many times the squares may double in size towards the inside. The largest squares are Cell Size x 2^Levels
+- Grading `Float`: Extra squares of each size before the next size up, measured in squares of that size. 0 gives the fewest squares; larger values give smoother size changes
+- Fit Outline `Boolean`: Fill the gap between the squares and the curve with a band of quads and triangles. Off leaves a staircase of whole squares whose centres are inside the shape
+- Sharp Angle `Float`: With Fit Outline, outline points that turn by more than this angle are kept as band vertices so corners stay sharp
+
+**Outputs**
+
+- Mesh `Geometry`: Quad-dominant mesh filling the curves, at Z = 0 with upward normals
+- Level `Integer`: Face size level: 0 for the smallest squares and the outline band, n for squares of Cell Size x 2^n. Transition faces take their cell's level
+- Square `Boolean`: True on whole quadtree squares, false on transition faces and the outline band
 
 ### A3D_Catenary Curve
 
@@ -1697,7 +1696,7 @@ Grows a path of points across a surface from a starting direction, stepping and 
 
 **Description**
 
-Fills closed 2D boundary curves with an all-quad mesh that also follows guide curves, e.g. roads or rivers through a lot. The boundary must already be resampled to an even point spacing (e.g. with A3D_Resample Curve Sharp); that spacing sets the grid size and the output quads are half of it. Guides are resampled to the same spacing with sharp corners kept, clipped to the boundary, and become unbroken edge loops of the output. Rows of points are offset inwards from the boundary and to both sides of every guide; the remaining interior is a regular grid. Guides that leave the boundary end exactly on it, and crossing guides are joined. Works in the XY plane like Fill Curve.
+Fills closed 2D boundary curves with clean quads that also follow guide curves such as roads or rivers. Guides become unbroken edge loops, meet the boundary and each other cleanly, and Guide Rows sets how many aligned rows flank each guide before the interior grid takes over.
 
 **Inputs**
 
